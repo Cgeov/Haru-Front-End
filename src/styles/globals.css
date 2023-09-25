@@ -8,6 +8,22 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/EncodeSansExpanded-Regular.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Inter-Bold';
+  src: url('../assets/fonts/EncodeSansExpanded-Bold.ttf') format('ttf');
+}
+
+
+@font-face {
+  font-family: 'Berkshire Swash';
+  src: url('../assets/fonts/BerkshireSwash-Regular.ttf') format('ttf');
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
