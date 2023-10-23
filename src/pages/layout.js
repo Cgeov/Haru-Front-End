@@ -1,11 +1,11 @@
-import Navbar from "@/components/navbar/navbar"
-import React from "react"
+import Navbar from "@/components/navbar/navbar";
+import React from "react";
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
   return (
-    <div>
-    <Navbar></Navbar>
-    {children}
+    <div className="bg-gradient-to-b from-tertiary via-four to-five">
+      <Navbar></Navbar>
+      {children}
     </div>
-  )
+  );
 }
