@@ -15,7 +15,6 @@ import {
   ChevronDownIcon,
   PhoneIcon,
   PlayCircleIcon,
-  ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import {MdShoppingCart} from "react-icons/md"
@@ -179,12 +178,12 @@ export default function Navbar() {
           </Link>
           
         </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-[10px]">
           <Link href="#" className="text-lg font-semibold leading-6 text-gray-900">
-              <MdShoppingCart size={30}></MdShoppingCart>
+              <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
           <Link className="bg-primary py-[5px] px-[15px] text-white rounded-lg" href={'/login'}>
-            Iniciar Sesión
+            Inicia Sesión
           </Link>
         </div>
       </nav>
