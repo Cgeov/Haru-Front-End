@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
+import Link from 'next/link'
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -17,7 +18,7 @@ import {
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import Link from "next/link";
+import {MdShoppingCart} from "react-icons/md"
 
 const products = [
   {
@@ -91,12 +92,27 @@ export default function Navbar() {
           >
             Inicio
           </Link>
-          <a href="#" className="text-lg font-semibold leading-6 text-primary">
-            Marketplace
-          </a>
+          <Link
+            href={"/gallery"}
+            className="text-lg font-semibold leading-6 text-primary"
+          >
+            Servicios
+          </Link>
+          <Link
+            href={"/gallery"}
+            className="text-lg font-semibold leading-6 text-primary"
+          >
+            Galería
+          </Link>
+          <Link
+            href={"/gallery"}
+            className="text-lg font-semibold leading-6 text-primary"
+          >
+            Cotizaciones
+          </Link>
           <Popover className="relative">
             <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
-              Product
+              Categorias
               <ChevronDownIcon
                 className="h-5 w-5 flex-none text-primary"
                 aria-hidden="true"
@@ -161,14 +177,15 @@ export default function Navbar() {
           >
             Sobre Haru
           </Link>
+          
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-lg font-semibold leading-6 text-gray-900">
-            <ShoppingBagIcon
-              className="h-6 w-6 text-primary group-hover:text-secondary"
-              aria-hidden="true"
-            />
-          </a>
+          <Link href="#" className="text-lg font-semibold leading-6 text-gray-900">
+              <MdShoppingCart size={30}></MdShoppingCart>
+          </Link>
+          <Link className="bg-primary py-[5px] px-[15px] text-white rounded-lg" href={'/login'}>
+            Iniciar Sesión
+          </Link>
         </div>
       </nav>
       <Dialog
@@ -200,7 +217,7 @@ export default function Navbar() {
                   {({ open }) => (
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Product
+                      Categorias
                         <ChevronDownIcon
                           className={classNames(
                             open ? "rotate-180" : "",
@@ -224,24 +241,24 @@ export default function Navbar() {
                     </>
                   )}
                 </Disclosure>
-                <a
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Features
-                </a>
-                <a
+                </Link>
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Marketplace
-                </a>
-                <a
+                  Servicios
+                </Link>
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Company
-                </a>
+                </Link>
               </div>
               <div className="py-6">
                 <a
