@@ -1,16 +1,8 @@
-import type { NextPage } from "next";
-import { useMemo, type CSSProperties } from "react";
-import { Button } from "@mui/material";
+import { useMemo } from "react";
+import PrimaryDefaultLargeNoIcon from "./primary-default-large-no-icon";
 
-type CardServicioType = {
-  /** Style props */
-  cardServicioFlexShrink?: CSSProperties["flexShrink"];
-};
-
-const CardServicio: NextPage<CardServicioType> = ({
-  cardServicioFlexShrink,
-}) => {
-  const cardServicioStyle: CSSProperties = useMemo(() => {
+const CardServicio = ({ cardServicioFlexShrink }) => {
+  const cardServicioStyle = useMemo(() => {
     return {
       flexShrink: cardServicioFlexShrink,
     };
@@ -18,7 +10,7 @@ const CardServicio: NextPage<CardServicioType> = ({
 
   return (
     <div
-      className="w-[647px] h-[635px] flex flex-row items-start justify-start p-8 box-border gap-[32px] text-left text-29xl text-palevioletred font-caption-regular"
+      className="w-[647px] h-[635px] flex flex-row items-start justify-start p-8 box-border gap-[32px] text-left text-29xl text-palevioletred font-buttons-large-semibold"
       style={cardServicioStyle}
     >
       <div className="flex-1 h-[500px] flex flex-col items-start justify-center py-0 pr-8 pl-0 box-border gap-[24px]">
@@ -38,9 +30,14 @@ const CardServicio: NextPage<CardServicioType> = ({
           </div>
         </div>
         <div className="self-stretch flex flex-row items-center justify-center">
-          <Button color="secondary" variant="contained">
-            Button
-          </Button>
+          <PrimaryDefaultLargeNoIcon
+            primaryDefaultLargeNoIconBackgroundColor="#eb7bb7"
+            primaryDefaultLargeNoIconBoxSizing="border-box"
+            primaryDefaultLargeNoIconCursor="pointer"
+            primaryDefaultLargeNoIconBorder="none"
+            buttonTextColor="#48091a"
+            buttonTextDisplay="inline-block"
+          />
         </div>
       </div>
       <div className="flex-1 relative bg-primary-100 h-[500px] text-grey-900">

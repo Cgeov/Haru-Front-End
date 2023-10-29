@@ -1,13 +1,10 @@
-import type { NextPage } from "next";
 import { useCallback, useEffect } from "react";
-import { Button, Icon } from "@mui/material";
-import { Select } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import DivqodefHeaderWrapper from "../components/divqodef-header-wrapper";
+import Header from "../components/header";
 import CardServicio from "../components/card-servicio";
 import Footer from "../components/footer";
 
-const Inicio: NextPage = () => {
+const Inicio = () => {
   const router = useRouter();
 
   const onHomeClick = useCallback(() => {
@@ -52,10 +49,10 @@ const Inicio: NextPage = () => {
     };
   }, []);
   return (
-    <div className="relative [background:linear-gradient(180deg,_#eb7bb7_3.65%,_rgba(243,_174,_213,_0.74)_99.98%,_#fae9f3_99.99%)] w-full overflow-hidden flex flex-col items-center justify-start gap-[30px] text-left text-29xl text-palevioletred font-caption-regular">
-      <DivqodefHeaderWrapper
-        divqodefHeaderWrapperAlignSelf="stretch"
-        divqodefHeaderWrapperWidth="unset"
+    <div className="relative [background:linear-gradient(180deg,_#eb7bb7_3.65%,_rgba(243,_174,_213,_0.74)_99.98%,_#fae9f3_99.99%)] w-full overflow-hidden flex flex-col items-center justify-start gap-[30px] text-left text-29xl text-palevioletred font-buttons-large-semibold">
+      <Header
+        headerAlignSelf="stretch"
+        headerWidth="unset"
         onHomeClick={onHomeClick}
         onCotizacionesClick={onCotizacionesClick}
         onFrameButtonClick={onFrameButtonClick}
@@ -89,10 +86,10 @@ const Inicio: NextPage = () => {
         </div>
       </div>
       <Footer
-        divqodefPageFooterTopAreaPosition="unset"
-        divqodefPageFooterTopAreaTop="unset"
-        divqodefPageFooterTopAreaLeft="unset"
-        divqodefPageFooterTopAreaAlignSelf="stretch"
+        footerWidth="unset"
+        footerAlignSelf="stretch"
+        instagramIconHeight="51.67%"
+        instagramIconBottom="24.17%"
       />
     </div>
   );
