@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import FormContainer from "./form-container";
-import InputDefaultNoIcon from "./input-default-no-icon";
 import { useRouter } from "next/router";
 
 const FormularioInicio = () => {
@@ -20,34 +19,24 @@ const FormularioInicio = () => {
       <div className="absolute top-[373px] left-[149px] w-[300px] h-12 overflow-hidden">
         <FormContainer ctaButtonText="ingresa" propTop="0px" propLeft="32px" />
       </div>
-      <div className="absolute top-[140px] left-[33px] w-[532px] h-32 overflow-hidden">
+      <div className="absolute top-[140px] left-[33px] w-[532px] h-32 overflow-hidden text-left text-xs text-gray font-buttons-large-semibold">
         <div className="absolute top-[0px] left-[32px] w-[500px] h-32 overflow-hidden">
-          <InputDefaultNoIcon
-            inputLabel="Correo electronico "
-            inputDefaultNoIconWidth="500px"
-            inputDefaultNoIconPosition="absolute"
-            inputDefaultNoIconTop="0px"
-            inputDefaultNoIconLeft="0px"
-            inputDefaultNoIconGap="8px"
-            inputDefaultNoIconBorder="unset"
-            inputDefaultNoIconFontFamily="unset"
-            inputDefaultNoIconFontSize="unset"
-            inputDefaultNoIconBackgroundColor="unset"
-            inputLabelDisplay="inline-block"
-          />
-          <InputDefaultNoIcon
-            inputLabel="Contraseña"
-            inputDefaultNoIconWidth="500px"
-            inputDefaultNoIconPosition="absolute"
-            inputDefaultNoIconTop="64px"
-            inputDefaultNoIconLeft="0px"
-            inputDefaultNoIconGap="8px"
-            inputDefaultNoIconBorder="unset"
-            inputDefaultNoIconFontFamily="unset"
-            inputDefaultNoIconFontSize="unset"
-            inputDefaultNoIconBackgroundColor="unset"
-            inputLabelDisplay="inline-block"
-          />
+          <div className="absolute top-[0px] left-[0px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+            <div className="self-stretch relative leading-[20px]">{`Correo electronico `}</div>
+            <input
+              className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+              type="text"
+            />
+          </div>
+          <div className="absolute top-[64px] left-[0px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+            <div className="self-stretch relative leading-[20px]">
+              Contraseña
+            </div>
+            <input
+              className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+              type="password"
+            />
+          </div>
         </div>
       </div>
       <div className="absolute top-[313px] left-[65px] w-[468px] h-[15px] overflow-hidden text-mini">

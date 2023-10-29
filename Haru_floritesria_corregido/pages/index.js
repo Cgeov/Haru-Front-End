@@ -49,7 +49,7 @@ const Inicio = () => {
     };
   }, []);
   return (
-    <div className="relative [background:linear-gradient(180deg,_#eb7bb7_3.65%,_rgba(243,_174,_213,_0.74)_99.98%,_#fae9f3_99.99%)] w-full overflow-hidden flex flex-col items-center justify-start gap-[30px] text-left text-29xl text-palevioletred font-caption-regular">
+    <div className="relative [background:linear-gradient(180deg,_#eb7bb7_3.65%,_rgba(243,_174,_213,_0.74)_99.98%,_#fae9f3_99.99%)] w-full overflow-hidden flex flex-col items-center justify-start gap-[30px] text-left text-29xl text-palevioletred font-buttons-large-semibold">
       <Header
         headerAlignSelf="stretch"
         headerWidth="unset"

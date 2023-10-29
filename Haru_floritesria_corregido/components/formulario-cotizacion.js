@@ -1,4 +1,3 @@
-import InputDefaultNoIcon from "./input-default-no-icon";
 import FormContainer1 from "./form-container1";
 import FormContainer from "./form-container";
 
@@ -10,45 +9,31 @@ const FormularioCotizacion = () => {
           <p className="m-0">cotizacion</p>
         </span>
       </b>
-      <InputDefaultNoIcon
-        inputLabel="Correo electronico "
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="128px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
-      <InputDefaultNoIcon
-        inputLabel="Nombre completo"
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="64px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
-      <InputDefaultNoIcon
-        inputLabel="Numero"
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="192px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
+      <div className="absolute top-[128px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">{`Correo electronico `}</div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="email"
+        />
+      </div>
+      <div className="absolute top-[64px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">
+          Nombre completo
+        </div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="text"
+        />
+      </div>
+      <div className="absolute top-[192px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">
+          Numero
+        </div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="text"
+        />
+      </div>
       <FormContainer1 />
       <FormContainer ctaButtonText="¡Cotiza!" />
     </form>

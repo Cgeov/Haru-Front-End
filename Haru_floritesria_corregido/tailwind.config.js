@@ -7,23 +7,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        pink: "#fbd0d5",
-        "grey-400": "#afafaf",
-        gray: "#48091a",
-        "primary-500": "#2666cf",
-        "background-white": "#fff",
         palevioletred: "#932150",
         mediumvioletred: {
           "100": "rgba(206, 52, 121, 0)",
           "200": "rgba(206, 52, 121, 0.52)",
         },
+        pink: "#fbd0d5",
+        gray: "#48091a",
         "primary-100": "#d3e9fc",
         "grey-900": "#000",
         hotpink: "#eb7bb7",
+        "primary-500": "#2666cf",
+        "background-white": "#fff",
+        "grey-400": "#afafaf",
       },
       spacing: {},
       fontFamily: {
-        "caption-regular": "Montserrat",
+        "buttons-large-semibold": "Montserrat",
         inter: "Inter",
       },
       borderRadius: {
@@ -32,13 +32,13 @@ module.exports = {
       },
     },
     fontSize: {
-      xs: "12px",
-      base: "16px",
-      mini: "15px",
-      "17xl": "36px",
-      lgi: "19px",
-      "29xl": "48px",
       "11xl": "30px",
+      "29xl": "48px",
+      base: "16px",
+      lgi: "19px",
+      mini: "15px",
+      xs: "12px",
+      "17xl": "36px",
       inherit: "inherit",
     },
     screens: {

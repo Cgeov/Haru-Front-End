@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import InputDefaultNoIcon from "./input-default-no-icon";
 import { useRouter } from "next/router";
 
 const FormularioRegistro = () => {
@@ -16,69 +15,48 @@ const FormularioRegistro = () => {
           <p className="m-0">Registrate</p>
         </span>
       </b>
-      <InputDefaultNoIcon
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="29px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="unset"
-        inputDefaultNoIconBorder="none"
-        inputDefaultNoIconFontFamily="Montserrat"
-        inputDefaultNoIconFontSize="12px"
-        inputDefaultNoIconBackgroundColor="transparent"
-      />
-      <InputDefaultNoIcon
-        inputLabel="Apellido"
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="93px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
-      <InputDefaultNoIcon
-        inputLabel="Correo electronico "
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="157px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
-      <InputDefaultNoIcon
-        inputLabel="Numero"
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="221px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
-      <InputDefaultNoIcon
-        inputLabel="Contraseña"
-        inputDefaultNoIconWidth="500px"
-        inputDefaultNoIconPosition="absolute"
-        inputDefaultNoIconTop="285px"
-        inputDefaultNoIconLeft="49px"
-        inputDefaultNoIconGap="8px"
-        inputDefaultNoIconBorder="unset"
-        inputDefaultNoIconFontFamily="unset"
-        inputDefaultNoIconFontSize="unset"
-        inputDefaultNoIconBackgroundColor="unset"
-        inputLabelDisplay="inline-block"
-      />
+      <div className="absolute top-[29px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">{`Nombre `}</div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="text"
+        />
+      </div>
+      <div className="absolute top-[93px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">
+          Apellido
+        </div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="text"
+        />
+      </div>
+      <div className="absolute top-[157px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">{`Correo electronico `}</div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          placeholder="correo@email.com"
+          type="email"
+        />
+      </div>
+      <div className="absolute top-[221px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">
+          Numero
+        </div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="tel"
+        />
+      </div>
+      <div className="absolute top-[285px] left-[49px] w-[500px] flex flex-col items-start justify-start gap-[8px]">
+        <div className="self-stretch relative text-xs leading-[20px] font-buttons-large-semibold text-gray text-left">
+          Contraseña
+        </div>
+        <input
+          className="bg-pink self-stretch rounded box-border h-9 flex flex-row items-center justify-start p-2 border-[1px] border-solid border-grey-400"
+          type="password"
+        />
+      </div>
       <b className="absolute top-[363px] left-[49px] text-mini tracking-[-0.3px] leading-[15px] uppercase font-inter text-palevioletred text-center">
         ¿ya tienes cuenta?
       </b>
@@ -89,7 +67,7 @@ const FormularioRegistro = () => {
         inicia sesion
       </button>
       <button className="cursor-pointer [border:none] py-3 px-6 bg-palevioletred absolute top-[393px] left-[165px] rounded-md w-[268px] flex flex-row items-center justify-center box-border">
-        <div className="relative text-base leading-[24px] font-semibold font-caption-regular text-gray text-left">
+        <div className="relative text-base leading-[24px] font-semibold font-buttons-large-semibold text-gray text-left">
           ¡Únete!
         </div>
       </button>

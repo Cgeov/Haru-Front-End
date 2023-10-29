@@ -10,7 +10,7 @@ const CardServicio = ({ cardServicioFlexShrink }) => {
 
   return (
     <div
-      className="w-[647px] h-[635px] flex flex-row items-start justify-start p-8 box-border gap-[32px] text-left text-29xl text-palevioletred font-caption-regular"
+      className="w-[647px] h-[635px] flex flex-row items-start justify-start p-8 box-border gap-[32px] text-left text-29xl text-palevioletred font-buttons-large-semibold"
       style={cardServicioStyle}
     >
       <div className="flex-1 h-[500px] flex flex-col items-start justify-center py-0 pr-8 pl-0 box-border gap-[24px]">

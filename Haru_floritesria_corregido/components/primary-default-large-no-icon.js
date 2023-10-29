@@ -31,7 +31,7 @@ const PrimaryDefaultLargeNoIcon = ({
 
   return (
     <div
-      className="rounded-md bg-primary-500 flex flex-row items-center justify-center py-3 px-6 text-left text-base text-background-white font-caption-regular"
+      className="rounded-md bg-primary-500 flex flex-row items-center justify-center py-3 px-6 text-left text-base text-background-white font-buttons-large-semibold"
       style={primaryDefaultLargeNoIconStyle}
     >
       <div
