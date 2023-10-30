@@ -1,9 +1,15 @@
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Register() {
+
+    const sendRequest = ()=>{
+
+    }
+
   return (
-    <div className="w-full flex flex-col my-20 mx-auto max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <form className="space-y-6" action="#">
+    <div className="w-[80%] flex flex-row gap-[15px] justify-between my-20 mx-auto max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <form className="space-y-6 w-[100%] max-w-xs" action="#">
         <h5 className="text-xl font-medium text-primary dark:text-white">
           Registrate en nuestra Plataforma
         </h5>
@@ -33,7 +39,7 @@ export default function Register() {
             name="email"
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            placeholder="correo@correo.com"
+            placeholder="Nombre"
             required
           />
         </div>
@@ -48,7 +54,7 @@ export default function Register() {
             name="email"
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            placeholder="correo@correo.com"
+            placeholder="Apellido"
             required
           />
         </div>
@@ -76,13 +82,13 @@ export default function Register() {
           ¿Ya posees una cuenta?{" "}
           <Link
             href="/login"
-            className="text-primary hover:underline dark:text-blue-500">
+            className=" text-primary hover:underline dark:text-blue-500">
             Inicia Sesión
           </Link>
         </div>
       </form>
-      <div>
-        <img src=""></img>
+      <div className="max-w-md">
+        <img className="rounded-lg h-[100%] object-cover" src="https://cdn.shopify.com/s/files/1/1034/3311/files/stunning-gradient-of-fresh-blossoming-flowers-from-dark-purple-to-picture-id951907832_1024x1024.jpg?v=1551840991"></img>
       </div>
     </div>
   );
