@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* <HeroBanner></HeroBanner> */}
+      <HeroBanner></HeroBanner>
       {loading ? (
         <div>Cargando ..</div>
       ) : (
