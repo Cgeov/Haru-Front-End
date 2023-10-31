@@ -4,6 +4,7 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     extend: {
@@ -14,10 +15,12 @@ module.exports = {
       },
       colors: {
         primary: "#7c2750",
-        secondary: "#fa5992",
+        secondary: "#ff5b7b",
         tertiary: "#EB7BB7",
         four: "#FAE9F3",
         five: "#FDF1F1",
+        white: "#FFFFFF",
+        
       },
       gradientColorStopPositions: {
         100: "100%",
@@ -26,5 +29,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 };
