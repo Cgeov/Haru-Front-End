@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import {
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { MdShoppingCart } from "react-icons/md";
+import { ContextUser } from "../../context/context";
 
 const products = [
   {
@@ -62,6 +63,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const {user} = useContext(ContextUser);
+
   return (
     <header>
       <nav
@@ -172,11 +175,14 @@ export default function Navbar() {
             className="text-lg font-semibold leading-6 text-gray-900">
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
-          <Link
+          {
+            user ? <p>Hola</p> :  <Link
             className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
             href={"/login"}>
             Inicia Sesión
-          </Link>
+          </Link> 
+          }
+          
         </div>
       </nav>
       <Dialog

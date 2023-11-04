@@ -1,5 +1,6 @@
+import { ContextUser } from "@/context/context";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 export default function Register() {
   
@@ -26,7 +27,7 @@ export default function Register() {
 
   return (
     <div className="w-[80%] flex flex-row gap-[15px] justify-between my-20 mx-auto max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <form className="space-y-6 w-[100%] max-w-xs" action="#" onSubmit={sendRequest}>
+      <form onSubmit={handleSubmitSignUp}  className="space-y-6 w-[100%] max-w-xs" >
         <h5 className="text-xl font-medium text-primary dark:text-white">
           Registrate en nuestra Plataforma
         </h5>
@@ -40,6 +41,7 @@ export default function Register() {
             type="email"
             name="email"
             id="email"
+            onChange={(e)=> setEmail(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             placeholder="correo@correo.com"
             onChange={(event) => setEmail(event.target.value)}
@@ -55,8 +57,9 @@ export default function Register() {
           </label>
           <input
             type="text"
-            name="nombre"
-            id="nombre"
+            name="name"
+            id="name"
+            onChange={(e)=> setName(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             placeholder="Nombre"
             onChange={(event) => setName(event.target.value)}
@@ -71,8 +74,9 @@ export default function Register() {
           </label>
           <input
             type="text"
-            name="apellido"
-            id="apellido"
+            name="apellidos"
+            id="apellidos"
+            onChange={(e)=> setLastName(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             placeholder="Apellido"
             onChange={(event) => setLastName(event.target.value)}
@@ -88,6 +92,7 @@ export default function Register() {
           <input
             type="password"
             name="password"
+            onChange={(e)=> setPassword(e.target.value)}
             id="password"
             placeholder="••••••••"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
