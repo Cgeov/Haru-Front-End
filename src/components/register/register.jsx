@@ -2,14 +2,31 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Register() {
+  
+  const [name, setName] = useState('');
+  const [lastname, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState(null);
 
-    const sendRequest = ()=>{
+  let headers = new Headers();
 
-    }
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+  headers.append("Access-Control-Allow-Credentials", "true");
+  headers.append("GET", "POST", "OPTIONS");
+
+  const sendRequest = event =>{
+    setErrors(null);
+    
+
+
+  }
 
   return (
     <div className="w-[80%] flex flex-row gap-[15px] justify-between my-20 mx-auto max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <form className="space-y-6 w-[100%] max-w-xs" action="#">
+      <form className="space-y-6 w-[100%] max-w-xs" action="#" onSubmit={sendRequest}>
         <h5 className="text-xl font-medium text-primary dark:text-white">
           Registrate en nuestra Plataforma
         </h5>
@@ -25,36 +42,40 @@ export default function Register() {
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             placeholder="correo@correo.com"
+            onChange={(event) => setEmail(event.target.value)}
             required
+            
           />
         </div>
         <div>
           <label
-            htmlFor="email"
+            htmlFor="nombre"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Nombre
           </label>
           <input
-            type="email"
-            name="email"
-            id="email"
+            type="text"
+            name="nombre"
+            id="nombre"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             placeholder="Nombre"
+            onChange={(event) => setName(event.target.value)}
             required
           />
         </div>
         <div>
           <label
-            htmlFor="email"
+            htmlFor="apellido"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Apellidos
           </label>
           <input
-            type="email"
-            name="email"
-            id="email"
+            type="text"
+            name="apellido"
+            id="apellido"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             placeholder="Apellido"
+            onChange={(event) => setLastName(event.target.value)}
             required
           />
         </div>
@@ -70,6 +91,7 @@ export default function Register() {
             id="password"
             placeholder="••••••••"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+            onChange={(event) => setPassword(event.target.value)}
             required
           />
         </div>
