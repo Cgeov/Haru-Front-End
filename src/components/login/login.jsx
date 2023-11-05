@@ -1,9 +1,12 @@
+import { ContextUser } from "@/context/context";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 export default function LoginForm() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+
+  const {login} = useContext(ContextUser);
 
   let dataRegister = {
     email: email,
@@ -25,7 +28,7 @@ export default function LoginForm() {
       .then((response) => response.json())
       .then((data) => {
         login(data);
-        cconsole.log(data)
+        console.log(data)
       })
       .catch((error) => {
       });

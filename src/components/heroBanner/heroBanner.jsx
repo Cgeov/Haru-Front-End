@@ -10,7 +10,7 @@ const images = [
 
 export default function HeroBanner(){
     return(
-        <div className="">
+        <div className="relative -z-50">
             <Slide infinite={true} canSwipe={false} arrows={false} autoplay={true} pauseOnHover={true} easing={"linear"} transitionDuration={1000} duration={5000}>
                 <img width={'100%'} src={images[0]}></img>
                 <img width={'100%'} src={images[1]}></img>
