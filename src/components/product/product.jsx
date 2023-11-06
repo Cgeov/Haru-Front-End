@@ -3,6 +3,10 @@ import Star from "../stars/stars";
 import { Slide } from "react-slideshow-image";
 import ViewProduct from "../viewProduct/viewProduct";
 import { Dialog } from "@headlessui/react";
+import { Modal } from "flowbite";
+import { useContext } from "react";
+import { ContextUser } from "@/context/context";
+import { resolve } from "styled-jsx/css";
 
 const responsiveSettings = [
   {
@@ -27,13 +31,31 @@ const responsiveSettings = [
     },
   },
 ];
+function getDataUser() {
+  if (localStorage.getItem("user") == undefined) {
+    Router.replace("/login");
+  }
+}
 
 export default function Product({ products }) {
+  const { user, cart, cartProducts, cleanCart } = useContext(ContextUser);
   const handleModalViewProduct = (id) => {
-    console.log(id, "hola");
-    <Dialog>
-      <ViewProduct></ViewProduct>;
-    </Dialog>;
+    console.log(localStorage.getItem("user"));
+    if (localStorage.getItem("user") == undefined) {
+      Router.replace("/login");
+    } else {
+      console.log(id, "hola");
+      <Modal>
+        <ViewProduct></ViewProduct>;
+      </Modal>;
+    }
+  };
+
+  const addProduct = (product) => {
+    localStorage.clear();
+    cartProducts([...cart, product]);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log(localStorage.getItem("cart"));
   };
 
   return (
@@ -94,7 +116,9 @@ export default function Product({ products }) {
                   )}
                 </p>
                 <a
-                  href="#"
+                  onClick={() => {
+                    addProduct(product);
+                  }}
                   className="flex items-center gap-[5px] rounded-md bg-primary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
                 >
                   <BsCart3 color="white" size={20}></BsCart3>
