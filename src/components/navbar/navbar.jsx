@@ -94,7 +94,7 @@ export default function Navbar() {
             Galería
           </Link>
           <Link
-            href={"/gallery"}
+            href={"/quote"}
             className="text-lg font-semibold leading-6 text-primary">
             Cotizaciones
           </Link>
