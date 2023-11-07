@@ -163,11 +163,11 @@ const ProductList = ({ products }) => {
       <div className="mt-10">
         <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Productos</h1>
         <div className="mx-10">
-          <button onClick={() => { handleModalNew() }} className="text-white bg-pink-700 px-2 py-1 rounded hover:bg-blue-600 font-bold">Nuevo Producto</button>
+          <button onClick={() => { handleModalNew() }} className="text-white bg-primary px-2 py-1 rounded hover:bg-secondary font-bold">Nuevo Producto</button>
         </div>
         <div className="flex justify-center">
           <table className="table-auto mt-5">
-            <thead className="text-white bg-red-600">
+            <thead className="text-white bg-primary">
               <tr>
                 <th className="border border-black px-5">Nombre</th>
                 <th className="border border-black px-5">Precio</th>
@@ -177,7 +177,7 @@ const ProductList = ({ products }) => {
                 <th className="border border-black px-5">Acciones</th>
               </tr>
             </thead>
-            <tbody className="bg-red-300 text-black">
+            <tbody className="bg-[#ffced3]  text-black">
               {productsList.map((product) => (
                 <tr key={product.id}>
                   <td className="border border-black px-5">{product.name} </td>
@@ -189,7 +189,7 @@ const ProductList = ({ products }) => {
                   <td className="border border-black px-5">
                     <div className="space-x-2">
                       <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-cyan-600 px-2 py-1 rounded hover:bg-blue-600">Editar</button>
-                      <button onClick={() => handleDelete(product.id)} className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
+                      <button onClick={() => handleDelete(product.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                     </div>
                   </td>
                 </tr>
