@@ -1,11 +1,9 @@
-import Footer from "@/components/footer/footer";
-import Navbar from "@/components/navbar/navbar";
 import React from "react";
-
+import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/footer/footer";
 export default function Layout({ children }) {
   return (
-    <div className="bg-white">
-    {/* <div className="bg-gradient-to-b from-tertiary via-four to-five"> */}
+    <div>
       <Navbar></Navbar>
       {children}
       <Footer></Footer>

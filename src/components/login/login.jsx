@@ -1,23 +1,57 @@
+import { ContextUser } from "@/context/context";
 import Link from "next/link";
+import { useContext, useState } from "react";
 
 export default function LoginForm() {
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+
+  const {login} = useContext(ContextUser);
+
+  let dataRegister = {
+    email: email,
+    password: password,
+  }
+  let headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+  headers.append("Access-Control-Allow-Credentials", "true");
+  headers.append("GET", "POST", "OPTIONS");
+  const handleSubmitSignUp = async (e) => {
+    e.preventDefault();
+    fetch("http://localhost:5000/auth/sign-in", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(dataRegister),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        login(data);
+        console.log(data)
+      })
+      .catch((error) => {
+      });
+  }
+
   return (
-    <div className="w-full my-20 mx-auto max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <form className="space-y-6" action="#">
-        <h5 className="text-xl font-medium text-primary dark:text-white">
+    <div className="w-full my-20 mx-auto max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
+      <form className="space-y-6" onSubmit={handleSubmitSignUp}>
+        <h5 className="text-xl font-medium text-primary">
           Iniciar Sesión en nuestra plataforma
         </h5>
         <div>
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            className="block mb-2 text-sm font-medium text-gray-900">
             Correo Electronico
           </label>
           <input
             type="email"
+            onChange={(e)=> setEmail(e.target.value)}
             name="email"
             id="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="correo@correo.com"
             required
           />
@@ -25,15 +59,16 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            className="block mb-2 text-sm font-medium text-gray-900">
             Contraseña
           </label>
           <input
+            onChange={(e)=> setPassword(e.target.value)}
             type="password"
             name="password"
             id="password"
             placeholder="••••••••"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             required
           />
         </div>
@@ -44,32 +79,32 @@ export default function LoginForm() {
                 id="remember"
                 type="checkbox"
                 value=""
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                required
+                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
+                
               />
             </div>
             <label
               htmlFor="remember"
-              className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+              className="ml-2 text-sm font-medium text-gray-900">
               Remember me
             </label>
           </div>
-          <a
+          {/* <a
             href="#"
-            className="ml-auto text-sm text-primary hover:underline dark:text-blue-500">
+            className="ml-auto text-sm text-primary hover:underline">
             Lost Password?
-          </a>
+          </a> */}
         </div>
         <button
           type="submit"
-          className="w-full text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          className="w-full text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
           Iniciar Sesión
         </button>
-        <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+        <div className="text-sm font-medium text-gray-500">
           ¿Aún no estas Registrado?{" "}
           <Link
             href="/sign-up"
-            className="text-primary hover:underline dark:text-blue-500">
+            className="text-primary hover:underline">
             Create tu cuenta
           </Link>
         </div>

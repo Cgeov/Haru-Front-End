@@ -1,59 +1,52 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
-import {
-  ArrowPathIcon,
-  Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  PhoneIcon,
-  PlayCircleIcon,
-} from "@heroicons/react/20/solid";
 import Image from "next/image";
+import { ContextUser } from "../../context/context";
+
+import {RxHamburgerMenu} from "react-icons/rx"
+import {BiPieChartAlt} from "react-icons/bi"
+import {GrClose} from "react-icons/gr"
+import {BsChevronDown, BsFillTelephoneFill} from "react-icons/bs"
 import { MdShoppingCart } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 
 const products = [
   {
     name: "Analytics",
     description: "Get a better understanding of your traffic",
     href: "#",
-    icon: ChartPieIcon,
+    icon: BiPieChartAlt,
   },
   {
     name: "Engagement",
     description: "Speak directly to your customers",
     href: "#",
-    icon: CursorArrowRaysIcon,
+    icon: BiPieChartAlt,
   },
   {
     name: "Security",
     description: "Your customers’ data will be safe and secure",
     href: "#",
-    icon: FingerPrintIcon,
+    icon: BiPieChartAlt,
   },
   {
     name: "Integrations",
     description: "Connect with third-party tools",
     href: "#",
-    icon: SquaresPlusIcon,
+    icon: BiPieChartAlt,
   },
   {
     name: "Automations",
     description: "Build strategic funnels that will convert",
     href: "#",
-    icon: ArrowPathIcon,
+    icon: BiPieChartAlt,
   },
 ];
 const callsToAction = [
-  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-  { name: "Contact sales", href: "#", icon: PhoneIcon },
+  { name: "Watch demo", href: "#", icon: BsFillTelephoneFill },
+  { name: "Contact sales", href: "#", icon: BsFillTelephoneFill },
 ];
 
 function classNames(...classes) {
@@ -62,6 +55,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const {user} = useContext(ContextUser);
+
   return (
     <header>
       <nav
@@ -79,7 +74,7 @@ export default function Navbar() {
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             onClick={() => setMobileMenuOpen(true)}>
             <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <RxHamburgerMenu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
@@ -99,14 +94,14 @@ export default function Navbar() {
             Galería
           </Link>
           <Link
-            href={"/gallery"}
+            href={"/quote"}
             className="text-lg font-semibold leading-6 text-primary">
             Cotizaciones
           </Link>
           <Popover className="relative">
             <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
               Categorias
-              <ChevronDownIcon
+              <BsChevronDown
                 className="h-5 w-5 flex-none text-primary"
                 aria-hidden="true"
               />
@@ -168,15 +163,18 @@ export default function Navbar() {
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-[10px]">
           <Link
-            href="#"
+            href="/cart"
             className="text-lg font-semibold leading-6 text-gray-900">
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
-          <Link
+          {
+            user ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
             className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
             href={"/login"}>
             Inicia Sesión
-          </Link>
+          </Link> 
+          }
+          
         </div>
       </nav>
       <Dialog
@@ -196,7 +194,7 @@ export default function Navbar() {
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
               onClick={() => setMobileMenuOpen(false)}>
               <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <GrClose className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           <div className="mt-6 flow-root">
@@ -207,7 +205,7 @@ export default function Navbar() {
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                         Categorias
-                        <ChevronDownIcon
+                        <BsChevronDown
                           className={classNames(
                             open ? "rotate-180" : "",
                             "h-5 w-5 flex-none"
