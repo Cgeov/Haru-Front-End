@@ -188,7 +188,7 @@ const ProductList = ({ products }) => {
                   </td>
                   <td className="border border-black px-5">
                     <div className="space-x-2">
-                      <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-cyan-600 px-2 py-1 rounded hover:bg-blue-600">Editar</button>
+                      <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-blue-800 px-2 py-1 rounded hover:bg-blue-600">Editar</button>
                       <button onClick={() => handleDelete(product.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                     </div>
                   </td>
@@ -212,7 +212,7 @@ const ProductList = ({ products }) => {
             <UploadButton options={options}
               onComplete={files => handleImgProductNew(files.map(x => x.fileUrl))}>
               {({ onClick }) =>
-                <button onClick={onClick} className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded mb-3">
+                <button onClick={onClick} className="text-white bg-blue-800 hover:bg-blue-700 font-bold py-2 px-4 rounded mb-3">
                   Upload a file...
                 </button>
               }
@@ -220,7 +220,7 @@ const ProductList = ({ products }) => {
             <input name="img" value={imgProductNew} type="text" placeholder="Imagen" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleImgProductNew} disabled />
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Rate</label>
             <input name="rate" type="text" placeholder="rate" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleRateProduct} />
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Guardar</button>
+            <button className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Guardar</button>
           </form>
         </Modal>
       )
@@ -239,7 +239,7 @@ const ProductList = ({ products }) => {
               <UploadButton options={options}
                 onComplete={files => handleImgProduct(files.map(x => x.fileUrl))}>
                 {({ onClick }) =>
-                  <button onClick={onClick} className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded mb-3">
+                  <button onClick={onClick} className="text-white bg-blue-800 hover:bg-blue-700 font-bold py-2 px-4 rounded mb-3">
                     Upload a file...
                   </button>
                 }
@@ -247,7 +247,7 @@ const ProductList = ({ products }) => {
               <input name="img" value={imgProduct} type="text" placeholder="Imagen" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleImgProduct}  disabled/>
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Rate</label>
               <input name="rate" value={rateProduct} type="text" placeholder="rate" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleRateProduct} />
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Editar</button>
+              <button className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Editar</button>
             </form>
           </Modal>
         )
