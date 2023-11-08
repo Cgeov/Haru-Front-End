@@ -84,7 +84,7 @@ export default function Navbar() {
             Inicio
           </Link>
           <Link
-            href={"/gallery"}
+            href={"/services"}
             className="text-lg font-semibold leading-6 text-primary">
             Servicios
           </Link>
