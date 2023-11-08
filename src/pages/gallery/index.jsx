@@ -2,7 +2,7 @@ import Layout from "../layout";
 import react from "react";
 
 export default function Gallery(){
-    <Layout>
+    return(<Layout>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="grid gap-4">
             <div>
@@ -50,4 +50,5 @@ export default function Gallery(){
         </div>
         </div>
     </Layout>
+    )
 }
