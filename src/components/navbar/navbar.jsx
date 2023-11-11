@@ -84,7 +84,7 @@ export default function Navbar() {
             Inicio
           </Link>
           <Link
-            href={"/gallery"}
+            href={"/services"}
             className="text-lg font-semibold leading-6 text-primary">
             Servicios
           </Link>
@@ -254,6 +254,7 @@ export default function Navbar() {
           </div>
         </Dialog.Panel>
       </Dialog>
+      <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </header>
   );
 }

@@ -52,10 +52,7 @@ export default function Quote() {
               Arreglos Florales de Ensueño
             </h1>
             <p className="text-white">
-              En Haru, entendemos la importancia de hacer que cada momento
-              especial sea inolvidable. Si estás planeando un evento, estamos
-              aquí para ayudarte a crear la atmósfera perfecta con nuestros
-              exquisitos arreglos florales. Contáctanos hoy mismo y comencemos a
+              Contáctanos hoy mismo y comencemos a
               planificar juntos. Ya sea que tengas una idea clara de lo que
               deseas o necesites orientación en la selección de arreglos,
               nuestro equipo te brindará asesoramiento experto y soluciones
