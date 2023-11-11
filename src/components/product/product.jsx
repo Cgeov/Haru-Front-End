@@ -7,6 +7,7 @@ import { Modal } from "flowbite";
 import { useContext } from "react";
 import { ContextUser } from "@/context/context";
 import { resolve } from "styled-jsx/css";
+import showSweetAlert from "../Alerts/Alert";
 
 const responsiveSettings = [
   {
@@ -52,9 +53,9 @@ export default function Product({ products }) {
   };
 
   const addProduct = (product) => {
-    localStorage.clear();
     cartProducts([...cart, product]);
     localStorage.setItem("cart", JSON.stringify(cart));
+    showSweetAlert('Producto agregado a tu carrito.', 'success');
     console.log(localStorage.getItem("cart"));
   };
 
@@ -119,7 +120,7 @@ export default function Product({ products }) {
                   onClick={() => {
                     addProduct(product);
                   }}
-                  className="flex items-center gap-[5px] rounded-md bg-primary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  className="cursor-pointer flex items-center gap-[5px] rounded-md bg-primary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
                 >
                   <BsCart3 color="white" size={20}></BsCart3>
                 </a>
