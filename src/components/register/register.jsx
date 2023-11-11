@@ -1,6 +1,7 @@
 import { ContextUser } from "@/context/context";
 import Link from "next/link";
 import { useContext, useState } from "react";
+import showSweetAlert from "../Alerts/Alert";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -34,7 +35,14 @@ export default function Register() {
     })
       .then((response) => response.json())
       .then((data) => {
-        login(data);
+        console.log(data.hasOwnProperty('error'))
+        if(data.hasOwnProperty('error')){
+          showSweetAlert("Correo ya existente", "error");
+        }else{
+          login(data);
+          showSweetAlert("Bienvenido "+ data.name + "!", "success");
+        }
+        
       })
       .catch((error) => {
       });
@@ -103,6 +111,7 @@ export default function Register() {
           <input
             type="password"
             name="password"
+            minLength={6}
             onChange={(e)=> setPassword(e.target.value)}
             id="password"
             placeholder="••••••••"

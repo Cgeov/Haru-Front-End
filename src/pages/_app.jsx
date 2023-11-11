@@ -10,6 +10,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
+    localStorage.clear()
   }, []);
 
   function getDataUser() {
@@ -19,7 +20,7 @@ export default function App({ Component, pageProps }) {
   }
 
   function getDataCart() {
-    console.log(localStorage.clear());
+    
     console.log(localStorage.getItem("cart"));
     if (
       localStorage.getItem("cart") != undefined &&
