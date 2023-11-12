@@ -2,11 +2,9 @@ import { BsCart3 } from "react-icons/bs";
 import Star from "../stars/stars";
 import { Slide } from "react-slideshow-image";
 import ViewProduct from "../viewProduct/viewProduct";
-import { Dialog } from "@headlessui/react";
 import { Modal } from "flowbite";
 import { useContext } from "react";
 import { ContextUser } from "@/context/context";
-import { resolve } from "styled-jsx/css";
 import showSweetAlert from "../Alerts/Alert";
 
 const responsiveSettings = [
@@ -32,19 +30,11 @@ const responsiveSettings = [
     },
   },
 ];
-function getDataUser() {
-  if (localStorage.getItem("user") == undefined) {
-    Router.replace("/login");
-  }
-}
 
 export default function Product({ products }) {
   const { user, cart, cartProducts, cleanCart } = useContext(ContextUser);
   const handleModalViewProduct = (id) => {
-    console.log(localStorage.getItem("user"));
-    if (localStorage.getItem("user") == undefined) {
-      Router.replace("/login");
-    } else {
+    console.log(localStorage.getItem("user")); {
       console.log(id, "hola");
       <Modal>
         <ViewProduct></ViewProduct>;
@@ -53,14 +43,33 @@ export default function Product({ products }) {
   };
 
   const addProduct = (product) => {
-    cartProducts([...cart, product]);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    let alreadyExist = false;
+    product.quantity = 1;
+    if(cart.length > 0){
+      cart.forEach((cartProduct)=>{
+        if(cartProduct.id == product.id){
+          cartProduct.quantity += 1;
+          alreadyExist = true;
+        }
+      })
+    }
+
+    if(alreadyExist){
+      console.log(cart)
+      cartProducts([...cart]);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }else{
+      cartProducts([...cart, product]);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    
     showSweetAlert('Producto agregado a tu carrito.', 'success');
     console.log(localStorage.getItem("cart"));
   };
 
   return (
-    <div className="mx-[50px]">
+    <div className="mt-[50px] mb-[20px] mx-[50px]">
       <h2 className="text-2xl font-bold text-primary ml-[60px]">
         Nuestros Productos
       </h2>
@@ -81,9 +90,9 @@ export default function Product({ products }) {
                 onClick={() => {
                   handleModalViewProduct(product.id);
                 }}
-                className="h-60 rounded-t-lg object-contain w-[100%]"
+                className="h-60 rounded-t-lg object-cover w-[100%]"
                 src={product.img}
-                alt="product image"
+                alt={product.name}
               />
             </a>
             <span className="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-primary text-center text-sm text-white">
@@ -91,7 +100,7 @@ export default function Product({ products }) {
             </span>
             <div className="mt-4 px-5 pb-5">
               <a href="#">
-                <h5 className="text-xl font-semibold tracking-tight text-slate-900">
+                <h5 className="whitespace-nowrap overflow-hidden text-ellipsis text-xl font-semibold tracking-tight text-slate-900">
                   {product.name}
                 </h5>
               </a>
@@ -110,7 +119,7 @@ export default function Product({ products }) {
                   <span className="text-3xl font-bold text-slate-900">
                     ${product.price}
                   </span>
-                  {product.priceBefore && (
+                  {product.priceBefore != 0  && (
                     <span className="text-sm text-slate-900 line-through">
                       ${product.priceBefore}
                     </span>
