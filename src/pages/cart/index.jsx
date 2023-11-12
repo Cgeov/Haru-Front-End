@@ -6,7 +6,7 @@ import {BiSolidTrash} from "react-icons/bi"
 import showSweetAlert from "@/components/Alerts/Alert";
 
 export default function Cart() {
-  const { cart,cartProducts } = useContext(ContextUser);
+  const { cart,cartProducts,user } = useContext(ContextUser);
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
 
@@ -19,7 +19,7 @@ export default function Cart() {
       let totalDiscount = 0;
       if(product.hasOwnProperty('priceBefore') && product.priceBefore != 0 && !isNaN(product.priceBefore)){
         console.log(product.priceBefore)
-        totalDiscount = acc + (product.priceBefore - product.price)
+        totalDiscount = acc + (product.priceBefore - product.price) * product.quantity
       }
       return totalDiscount;
     }, 0);
@@ -51,6 +51,12 @@ export default function Cart() {
     cartProducts(cart.filter((productsCart) => productsCart.id !== product.id));
     localStorage.setItem("cart", JSON.stringify(cart));
     showSweetAlert("Producto Eliminado del Carrito", "warning")
+  }
+
+  const sendRequest = () => {
+    if(!user){
+      showSweetAlert("Debe de Iniciar Sesión","error")
+    }
   }
 
   return (
@@ -145,7 +151,7 @@ export default function Cart() {
                 <p className="text-sm text-gray-700">Incluye IVA</p>
               </div>
             </div>
-            <button className="mt-6 w-full rounded-md bg-primary py-1.5 font-medium text-blue-50 hover:bg-secondary">
+            <button onClick={()=>{sendRequest()}} className="mt-6 w-full rounded-md bg-primary py-1.5 font-medium text-blue-50 hover:bg-secondary">
               Enviar
             </button>
           </div>
