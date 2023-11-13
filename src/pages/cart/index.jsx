@@ -4,6 +4,7 @@ import { ContextUser } from "@/context/context";
 import React from "react";
 import {BiSolidTrash} from "react-icons/bi"
 import showSweetAlert from "@/components/Alerts/Alert";
+import FacturaPDF from "@/components/invoice/invoice";
 
 export default function Cart() {
   const { cart,cartProducts,user } = useContext(ContextUser);
@@ -56,6 +57,9 @@ export default function Cart() {
   const sendRequest = () => {
     if(!user){
       showSweetAlert("Debe de Iniciar Sesión","error")
+    }else{
+      const facturaPDFInstance = new FacturaPDF();
+      facturaPDFInstance.generarFacturaPDF();
     }
   }
 
@@ -157,6 +161,7 @@ export default function Cart() {
           </div>
         </div>
       </div>
+      <FacturaPDF></FacturaPDF>
     </Layout>
   );
 }
