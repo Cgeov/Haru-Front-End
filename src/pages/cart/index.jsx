@@ -42,6 +42,7 @@ export default function Cart() {
     }
   }
 
+
   const addQuantity = (product) => {
     product.quantity +=1;
       cartProducts([...cart]);

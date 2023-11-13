@@ -12,7 +12,6 @@ class FacturaPDF extends React.Component {
     // Configuración para la generación de PDF
     const pdfOptions = {
       filename: "factura.pdf",
-      margin: 10,
       image: { type: "jpg", quality: 0.99 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
@@ -27,6 +26,11 @@ class FacturaPDF extends React.Component {
       console.error("El elemento con ID 'factura' no fue encontrado en el DOM.");
     }
   };
+
+  
+
+
+  
 
   render() {
     return (
