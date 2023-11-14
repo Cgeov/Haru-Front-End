@@ -1,6 +1,7 @@
 import { ContextUser } from "@/context/context";
 import Link from "next/link";
 import { useContext, useState } from "react";
+import showSweetAlert from "../Alerts/Alert";
 
 export default function LoginForm() {
   const [email,setEmail] = useState("");
@@ -27,8 +28,12 @@ export default function LoginForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-        login(data);
-        console.log(data)
+        if(data.hasOwnProperty('error')){
+          showSweetAlert("Creedenciales Incorrectas", "error");
+        }else{
+          login(data);
+          showSweetAlert("Bienvenido "+ data.name + "!", "success");
+        }
       })
       .catch((error) => {
       });

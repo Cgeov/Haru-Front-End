@@ -84,7 +84,7 @@ export default function Navbar() {
             Inicio
           </Link>
           <Link
-            href={"/gallery"}
+            href={"/services"}
             className="text-lg font-semibold leading-6 text-primary">
             Servicios
           </Link>
@@ -168,7 +168,7 @@ export default function Navbar() {
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
           {
-            user ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
+            (user != null || user != undefined) ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
             className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
             href={"/login"}>
             Inicia Sesión
@@ -254,6 +254,7 @@ export default function Navbar() {
           </div>
         </Dialog.Panel>
       </Dialog>
+      <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </header>
   );
 }
