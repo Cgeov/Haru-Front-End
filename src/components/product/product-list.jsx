@@ -28,7 +28,7 @@ const ProductList = ({ products }) => {
   const [isProductSuccess, setProductSuccess] = useState(false)
   const [isProductSuccessEdit, setProductSuccessEdit] = useState(false)
   const [isDeleteConfirm, setDeleteConfirm] = useState(false)
-  const [isDelete, setIsDelete]=useState(false)
+  const [isDelete, setIsDelete] = useState(false)
   //validaciones 
   const [validaciones, setValidaciones] = useState([])
 
@@ -133,11 +133,12 @@ const ProductList = ({ products }) => {
     if (!esDecimal.test(priceProduct)) {
       validaciones.push('- Precio incorrecto')
     }
-    if(beforePriceProduct !== ""){
+    if (beforePriceProduct !== "") {
       console.log(beforePriceProduct)
-    if (!esDecimal.test(beforePriceProduct)) {
-      validaciones.push('- Precio anterior incorrecto')
-    }}
+      if (!esDecimal.test(beforePriceProduct)) {
+        validaciones.push('- Precio anterior incorrecto')
+      }
+    }
     if (imgProductNew === "") {
       validaciones.push('- Imagén del producto')
     }
@@ -223,11 +224,12 @@ const ProductList = ({ products }) => {
     if (!esDecimal.test(priceProduct)) {
       validaciones.push('- Precio incorrecto')
     }
-    if(beforePriceProduct !== ""){
+    if (beforePriceProduct !== "") {
       console.log(beforePriceProduct)
-    if (!esDecimal.test(beforePriceProduct)) {
-      validaciones.push('- Precio anterior incorrecto')
-    }}
+      if (!esDecimal.test(beforePriceProduct)) {
+        validaciones.push('- Precio anterior incorrecto')
+      }
+    }
     if (imgProduct === "") {
       validaciones.push('- Imagén del producto')
     }
@@ -366,9 +368,11 @@ const ProductList = ({ products }) => {
             <label htmlFor="opciones" className=" text-gray-700 text-sm font-bold mb-2 mt-2">Selecciona una categoría:</label>
             <select id="opciones" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" value={opcionSeleccionada} onChange={handleSelectChange}>
               <option value="">Selecciona...</option>
-              <option value="opcion1">Opción 1</option>
-              <option value="opcion2">Opción 2</option>
-              <option value="opcion3">Opción 3</option>
+              <option value="Mixtos">Mixtos</option>
+              <option value="Canasta">Canasta</option>
+              <option value="Girasoles">Girasoles</option>
+              <option value="Detalles">Detalles(regalos)</option>
+              <option value="Rosas">Rosas</option>
             </select>
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Precio</label>
             <input name="price" type="text" placeholder="Precio" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handlePriceProduct} />
@@ -409,9 +413,11 @@ const ProductList = ({ products }) => {
               <label htmlFor="opciones" className=" text-gray-700 text-sm font-bold mb-2 mt-2">Selecciona una categoría:</label>
               <select id="opciones" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" value={categoryProduct} onChange={handleSelectChange}>
                 <option value="">Selecciona...</option>
-                <option value="opcion1">Opción 1</option>
-                <option value="opcion2">Opción 2</option>
-                <option value="opcion3">Opción 3</option>
+                <option value="Mixtos">Mixtos</option>
+                <option value="Canasta">Canasta</option>
+                <option value="Girasoles">Girasoles</option>
+                <option value="Detalles">Detalles(regalos)</option>
+                <option value="Rosas">Rosas</option>
               </select>
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Precio</label>
               <input name="price" value={priceProduct} type="text" placeholder="Precio" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handlePriceProduct} />
