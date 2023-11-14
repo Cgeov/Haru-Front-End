@@ -1,0 +1,13 @@
+diff --git a/node_modules/html2pdf.js/dist/html2pdf.js b/node_modules/html2pdf.js/dist/html2pdf.js
+index b01e7e6..d712670 100644
+--- a/node_modules/html2pdf.js/dist/html2pdf.js
++++ b/node_modules/html2pdf.js/dist/html2pdf.js
+@@ -12,7 +12,7 @@
+ 		exports["html2pdf"] = factory(require("jspdf"), require("html2canvas"));
+ 	else
+ 		root["html2pdf"] = factory(root["jspdf"], root["html2canvas"]);
+-})(self, function(__WEBPACK_EXTERNAL_MODULE_jspdf__, __WEBPACK_EXTERNAL_MODULE_html2canvas__) {
++})(this, function(__WEBPACK_EXTERNAL_MODULE_jspdf__, __WEBPACK_EXTERNAL_MODULE_html2canvas__) {
+ return /******/ (function() { // webpackBootstrap
+ /******/ 	var __webpack_modules__ = ({
+ 

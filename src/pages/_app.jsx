@@ -1,6 +1,5 @@
 import { ContextUser } from "@/context/context";
 import "@/styles/globals.css";
-import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
@@ -10,16 +9,16 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
+    localStorage.clear();
   }, []);
 
   function getDataUser() {
-    if (localStorage.getItem("user") != undefined) {
+    if (localStorage.getItem("user") != undefined || localStorage.getItem("user") != null) {
       setUser(localStorage.getItem("user"));
     }
   }
 
   function getDataCart() {
-    console.log(localStorage.clear());
     console.log(localStorage.getItem("cart"));
     if (
       localStorage.getItem("cart") != undefined &&
@@ -27,10 +26,8 @@ export default function App({ Component, pageProps }) {
       localStorage.getItem("cart") != null
     ) {
       setCart(JSON.parse(localStorage.getItem("cart")));
-      console.log(localStorage.getItem("cart"));
     } else {
       setCart([]);
-      console.log(localStorage.getItem("cart"));
     }
   }
 
