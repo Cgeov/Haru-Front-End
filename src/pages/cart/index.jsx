@@ -4,12 +4,22 @@ import { ContextUser } from "@/context/context";
 import React from "react";
 import {BiSolidTrash} from "react-icons/bi"
 import showSweetAlert from "@/components/Alerts/Alert";
-import FacturaPDF from "@/components/invoice/invoice";
+import html2pdf from "html2pdf.js";
+import { BiSolidPhoneCall } from "react-icons/bi";
+import { TfiWorld } from "react-icons/tfi";
+import { ImLocation } from "react-icons/im";
+import logo from "../../assets/img/logoTextResized.png";
+import Image from "next/image";
 
 export default function Cart() {
   const { cart,cartProducts,user } = useContext(ContextUser);
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [numberOrder, setnumberOrder] = useState(0)
+
+  useEffect(()=>{
+    setnumberOrder(generarNumerosAleatorios());
+  },[])
 
   useEffect(() => {
     const calculatedTotal = cart.reduce((acc, product) => {
@@ -59,10 +69,77 @@ export default function Cart() {
     if(!user){
       showSweetAlert("Debe de Iniciar Sesión","error")
     }else{
-      const facturaPDFInstance = new FacturaPDF();
-      facturaPDFInstance.generarFacturaPDF();
+      generarFacturaPDF();
     }
   }
+
+  const generarNumerosAleatorios = () => {
+    const numerosAleatorios = [];
+
+    for (let i = 0; i < 5; i++) {
+      const numeroAleatorio = Math.floor(Math.random() * 10) + 1;
+      numerosAleatorios.push(numeroAleatorio);
+    }
+  
+    return numerosAleatorios;
+  }
+
+
+  const generarFacturaPDF = () => {
+    const pdfOptions = {
+      filename: "factura.pdf",
+      image: { type: "jpg", quality: 0.99 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
+
+    const content = document.getElementById("factura");
+    if (content) {
+      html2pdf()
+        .from(content)
+        .set(pdfOptions)
+        .outputImg()
+        .then(async (pdf) => {
+          let headers = new Headers();
+          headers.append(
+            "Access-Control-Allow-Origin",
+            "http://localhost:3000"
+          );
+          headers.append("Access-Control-Allow-Credentials", "true");
+          const binaryString = await atob(pdf.src.split(",")[1]);
+
+          const length = binaryString.length;
+          const bytes = new Uint8Array(length);
+          for (let i = 0; i < length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+
+          const blob = new Blob([bytes], { type: "image/png" });
+          var fd = new FormData();
+          fd.append("upl", blob, "image.png");
+          console.log(blob);
+
+          await fetch("http://localhost:5000/service/saveImage", {
+            method: "POST",
+            headers: headers,
+            body: fd,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+            });
+
+            html2pdf()
+            .from(content)
+            .set(pdfOptions)
+            .outputPdf().save()
+        });
+    } else {
+      console.error(
+        "El elemento con ID 'factura' no fue encontrado en el DOM."
+      );
+    }
+  };
 
   return (
     <Layout>
@@ -131,7 +208,7 @@ export default function Cart() {
                 );
               })
             ) : (
-              <p>Poner algo Aquí si está vacio</p>
+              <p className="text-primary y quitar esto -->">Poner algo Aquí si está vacio</p>
             )}
           </div>
           <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
@@ -162,7 +239,114 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      <FacturaPDF></FacturaPDF>
+
+
+
+      <div hidden={true}>
+        <div
+          id="factura"
+          className="bg-gray-100 text-gray-600 py-[2cm] px-[3cm]">
+          <div className="flex justify-between items-center py-[10px]">
+            <div className="px-[20px]">
+              <Image
+                id="facturaimg"
+                className="h-[50px] w-[120px]"
+                src={logo}
+                alt=""></Image>
+            </div>
+            <div className="text-primary text-2xl font-bold">Haru Flower</div>
+          </div>
+          <div className="flex justify-between mt-[2cm]">
+            <div>
+              <p className="text-primary text-3xl font-bold">Factura</p>
+              <p className="flex justify-between gap-[40px] font-bold">
+                <span className="text-gray-400 font-medium">N° Factura</span>{numberOrder}
+              </p>
+              <p className="flex justify-between gap-[40px] font-bold">
+                <span className="text-gray-400 font-medium">Pedido</span>{numberOrder}
+              </p>
+              <p className="flex justify-between gap-[40px] font-bold">
+                <span className="text-gray-400 font-medium">Fecha</span>{new Date().toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              <span className="text-primary text-right font-bold">Facturado a</span>
+              {
+                user ?<div><p className="text-right font-bold">{user.name}</p>
+                <p className="text-right font-bold">{user.email}</p>
+                <p className="text-right font-bold">{user.phoneNumber}</p></div>
+                 : <p className="text-right font-bold">Faltan Campos</p>
+              }
+              
+            </div>
+          </div>
+          <div className="w-full mt-[2cm]">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-primary text-white">
+                  <td className="text-right pr-[15px] pb-[10px]">N°</td>
+                  <td className="pb-[10px]">Producto</td>
+                  <td className="text-right pb-[10px]">Precio Unitario</td>
+                  <td className="text-right pb-[10px]">Cantidad</td>
+                  <td className="text-right pr-[10px] pb-[10px]">Total</td>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                cart.length > 0 ? (
+                  cart.map((product, index) => {
+                    return(<tr key={index} className="bg-gray-200 odd:bg-gray-100">
+                    <td className="text-right pr-[15px] py-[5px]">{index + 1}</td>
+                    <td>{product.name}</td>
+                    <td className="text-right py-[5px]">${product.price.toFixed(2)}</td>
+                    <td className="text-right py-[5px]">{product.quantity}</td>
+                    <td className="text-right pr-[10px] py-[5px]">${(product.quantity * product.price).toFixed(2)}</td>
+                  </tr>)
+                  }))
+                  : <tr className="bg-gray-200 odd:bg-gray-100"></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-[20px]">
+            <p className="flex gap-[1cm] justify-end">
+              <span className="text-left">Subtotal</span> ${total.toFixed(2)}
+            </p>
+            <p className="flex gap-[1cm] justify-end">
+              <span className="text-left">Descuentos</span> ${discount.toFixed(2)}
+            </p>
+            <p className="flex gap-[1cm] justify-end">
+              <span className="text-left">Gastos Administrativos</span> $2.99
+            </p>
+            <p className="pb-[10px] mt-[5px] flex justify-end gap-[1cm] text-primary font-bold border-b-solid border-b-2 border-b-primary">
+              <span>TOTAL</span> ${(total + 2.99).toFixed(2)}
+            </p>
+          </div>
+          <div className="flex justify-between mt-[2cm]">
+            <div>
+              <p className="text-primary">Forma de Pago</p>
+              <p>------</p>
+            </div>
+            <div>
+              <p className="text-primary">Haru Flowers</p>
+              <p>Dirección 1</p>
+              <p>Codigo Postal</p>
+              <p>El Salvador</p>
+            </div>
+          </div>
+          <div className="flex justify-center gap-[1cm] mt-[2cm] pb-[1cm]">
+            <div className="flex flex-col items-center gap-[10px]">
+              <BiSolidPhoneCall size={25}></BiSolidPhoneCall> 2313-2343
+            </div>
+            <div className="flex flex-col items-center gap-[10px]">
+              <TfiWorld size={25}></TfiWorld>www.haruFlowers.com
+            </div>
+            <div className="flex flex-col items-center gap-[10px]">
+              <ImLocation size={25}></ImLocation>Street 0349
+            </div>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }
