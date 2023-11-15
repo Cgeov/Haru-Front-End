@@ -17,4 +17,13 @@ const showSweetAlert = (title, icon) => {
     
 };
 
+export function CotizacionError(data){
+  Swal.fire({
+    icon: "error",
+    title: "Error en los campos",
+    text: data,
+    confirmButtonColor: '#7C2750'
+  })
+}
+
 export default showSweetAlert;
