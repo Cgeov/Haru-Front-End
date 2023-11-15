@@ -1,30 +1,10 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
 import { BsCart3 } from "react-icons/bs";
 import Star from "../stars/stars";
-import { Slide } from "react-slideshow-image";
-import { Modal } from "flowbite";
 import { useContext } from "react";
 import { ContextUser } from "@/context/context";
 import showSweetAlert from "../Alerts/Alert";
-import { Fragment, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '@/pages/layout'
-import Product from '../product/product'
-import { Dialog, RadioGroup, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { StarIcon } from '@heroicons/react/20/solid'
 
 
 

@@ -6,9 +6,9 @@ import Image from "next/image";
 import { ContextUser } from "../../context/context";
 
 import {RxHamburgerMenu} from "react-icons/rx"
-import {BiPieChartAlt, BiSolidFlorist, BiBasket, } from "react-icons/bi"
+import {BiSolidFlorist, BiBasket, } from "react-icons/bi"
 import {GrClose} from "react-icons/gr"
-import {BsChevronDown, BsFillTelephoneFill, BsFlower1, BsGift} from "react-icons/bs"
+import {BsChevronDown, BsFlower1, BsGift} from "react-icons/bs"
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import {IoIosRose} from "react-icons/io";
@@ -139,20 +139,6 @@ export default function Navbar() {
                       </div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                    {callsToAction.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100">
-                        <item.icon
-                          className="h-5 w-5 flex-none text-gray-400"
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
                 </Popover.Panel>
               </Transition>
             </Popover>
@@ -233,7 +219,7 @@ export default function Navbar() {
                         />
                       </Disclosure.Button>
                       <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...products, ...callsToAction].map((item) => (
+                        {[...products].map((item) => (
                           <Disclosure.Button
                             key={item.name}
                             as="a"
