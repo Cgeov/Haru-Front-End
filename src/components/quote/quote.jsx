@@ -1,9 +1,7 @@
 import { UploadButton } from "@bytescale/upload-widget-react";
-import React, { useState, useEffect, Children, useRef } from "react";
+import React, { useState, useRef } from "react";
 import axios from 'axios'
-import {showSweetAlert, CotizacionError} from "../Alerts/Alert";
-
-
+import showSweetAlert,{CotizacionError} from "../Alerts/Alert";
 
 export default function Quote() {
 
