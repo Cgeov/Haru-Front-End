@@ -5,49 +5,47 @@ import Link from "next/link";
 import Image from "next/image";
 import { ContextUser } from "../../context/context";
 
-import { RxHamburgerMenu } from "react-icons/rx";
-import { BiPieChartAlt } from "react-icons/bi";
-import { GrClose } from "react-icons/gr";
-import { BsChevronDown, BsFillTelephoneFill } from "react-icons/bs";
+import {RxHamburgerMenu} from "react-icons/rx"
+import {BiPieChartAlt, BiSolidFlorist, BiBasket, } from "react-icons/bi"
+import {GrClose} from "react-icons/gr"
+import {BsChevronDown, BsFillTelephoneFill, BsFlower1, BsGift} from "react-icons/bs"
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
+import {IoIosRose} from "react-icons/io";
 
 const products = [
   {
-    name: "Analytics",
-    description: "Get a better understanding of your traffic",
-    href: "#",
-    icon: BiPieChartAlt,
+    name: "Mixtos",
+    description: "Combina tus flores preferidas",
+    href: "/category",
+    icon: BiSolidFlorist,
   },
   {
-    name: "Engagement",
-    description: "Speak directly to your customers",
-    href: "#",
-    icon: BiPieChartAlt,
+    name: "Canasta",
+    description: "Otra forma de presentación",
+    href: "/category",
+    icon: BiBasket,
   },
   {
-    name: "Security",
-    description: "Your customers’ data will be safe and secure",
-    href: "#",
-    icon: BiPieChartAlt,
+    name: "Girasoles",
+    description: "Simbolizan alegría, admiración y lealtad",
+    href: "/category",
+    icon: BsFlower1,
   },
   {
-    name: "Integrations",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: BiPieChartAlt,
+    name: "Detalles",
+    description: "Sorprende a esa persona especial",
+    href: "/category",
+    icon: BsGift,
   },
   {
-    name: "Automations",
-    description: "Build strategic funnels that will convert",
-    href: "#",
-    icon: BiPieChartAlt,
+    name: "Rosas",
+    description: "Simbolo de amor, amistad y pasión",
+    href: "/category",
+    icon: IoIosRose,
   },
 ];
-const callsToAction = [
-  { name: "Watch demo", href: "#", icon: BsFillTelephoneFill },
-  { name: "Contact sales", href: "#", icon: BsFillTelephoneFill },
-];
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
