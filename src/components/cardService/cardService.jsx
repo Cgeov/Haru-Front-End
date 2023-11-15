@@ -2,25 +2,25 @@ import { Slide } from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css';
 
 const images = [
-    "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-    "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
-    "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+    "https://i.pinimg.com/736x/ee/50/83/ee5083836b7fba86ea032ce5d5a27d8f.jpg",
+    "https://poga.mx/wp-content/uploads/2022/04/curso-eventos-galeria-1.jpg",
+    "https://previsionexequialcolombia.com.co/wp-content/uploads/2021/08/arreglos-funebres-viena.jpeg",
 ];
 
 const services = [
     {
         title: "Bodas",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae bibendum varius dictumst consectetur non ullamcorper massa. Bibendum libero urna semper ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae bibendum varius dictumst consectetur non ullamcorper massa. Bibendum libero urna semper ornare.",
+        description: "¿Estás buscando una forma de darle un toque especial a tu evento? Ya sea una boda, un cumpleaños, un aniversario o cualquier otra ocasión, los arreglos florales son una excelente opción para decorar y crear un ambiente único. En nuestra empresa, te ofrecemos servicios de arreglos florales para diferentes eventos, centros de mesa, ramos, arcos florales y más. Contactanos y conoce las maneras de personalizar los arreglos",
         image: images[0]
     },
     {
-        title: "Bodas",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae bibendum varius dictumst consectetur non ullamcorper massa. Bibendum libero urna semper ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae bibendum varius dictumst consectetur non ullamcorper massa. Bibendum libero urna semper ornare.",
+        title: "Eventos",
+        description: "¿Estás buscando una forma de darle un toque especial a tu evento? Ya sea un cumpleaños, un aniversario o cualquier otra ocasión, los arreglos florales son una excelente opción para decorar y crear un ambiente único. En nuestra empresa, te ofrecemos servicios de arreglos florales para diferentes eventos, centros de mesa, ramos, arcos florales y más.",
         image: images[1]
     },
     {
-        title: "Bodas",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae bibendum varius dictumst consectetur non ullamcorper massa. Bibendum libero urna semper ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae bibendum varius dictumst consectetur non ullamcorper massa. Bibendum libero urna semper ornare.",
+        title: "Funebre",
+        description: "Ofrecemos una gran variedad de opciones para honrar la memoria de tus seres queridos. Podrás elegir entre diferentes tipos de flores, colores, tamaños y formas, y personalizar tu arreglo como desees, ponte en contacto con nosotros para saber disponibilidad y precio de los arreglos personalizados. Nuestros precios son muy competitivos, y nuestra calidad es inmejorable.",
         image: images[2]
     }
 ]
@@ -53,7 +53,9 @@ export default function CardService(){
                                 <div className="flex flex-col gap-20 pr-5">
                                     <h3 className="text-primary text-5xl">{service.title}</h3>
                                     <p className="text-primary">{service.description}</p>
-                                    <button className="rounded-md bg-primary py-3 px-6 text-white font-bold">Ver más</button>
+                                    <a href="/quote" class="w-full">
+                                    <button className="rounded-md bg-primary py-3 px-6 text-white font-bold" >Ver más</button>
+                                    </a>
                                 </div>
                                 <div>
                                     <img className="h-[100%]" src={service.image} alt={service.title}></img>
