@@ -11,6 +11,7 @@ import { ImLocation } from "react-icons/im";
 import logo from "../../assets/img/logoTextResized.png";
 import Image from "next/image";
 import Loader from "@/components/loader/loader";
+import emptyCart from "../../assets/img/empty-cart.png"
 
 export default function Cart() {
   const { cart, cartProducts, user } = useContext(ContextUser);
@@ -174,7 +175,7 @@ export default function Cart() {
                 headers: headers2,
                 body: JSON.stringify(cartDetails),
               }).then((response) => {
-                console.log(response);
+                cartProducts([]);
               });
             });
 
@@ -194,9 +195,10 @@ export default function Cart() {
         <h1 className="mb-10 text-center text-primary text-2xl font-bold">
           Tu carrito
         </h1>
+        {cart.length > 0 ? (
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">
-            {cart.length > 0 ? (
+            {
               cart.map((product, index) => {
                 return (
                   <div
@@ -265,11 +267,8 @@ export default function Cart() {
                   </div>
                 );
               })
-            ) : (
-              <p className="text-primary y quitar esto -->">
-                Poner algo Aquí si está vacio
-              </p>
-            )}
+            }
+            
           </div>
           <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
             <div className="mb-2 flex justify-between">
@@ -304,6 +303,13 @@ export default function Cart() {
             </button>
           </div>
         </div>
+        ) : (
+          <div className="flex flex-col items-center">
+            <Image src={emptyCart} width={200} height={200} alt="empty cart"></Image>
+            <h1 className="text-primary font-bold text-3xl mt-[20px]">Tu carrito parece estar vacio</h1>
+            <p className="text-secondary font-bold">Parece que no haz añadido nada a tu carrito, ve y explora todo nuestro catalogo de flores que tenemos para ofrecerte!</p>
+          </div>
+        )}
       </div>
 
       <Loader ref={loaderRef} />
@@ -338,8 +344,8 @@ export default function Cart() {
                 {new Date().toLocaleDateString()}
               </p>
             </div>
-            <div>
-              <span className="text-primary text-right font-bold">
+            <div className="text-right">
+              <span className="text-primary font-bold">
                 Facturado a
               </span>
               {user ? (

@@ -9,7 +9,6 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
-    localStorage.clear();
   }, []);
 
   function getDataUser() {
@@ -44,11 +43,6 @@ export default function App({ Component, pageProps }) {
     localStorage.setItem("cart", cartData);
   };
 
-  const cleanCart = () => {
-    setCart([]);
-    localStorage.setItem("cart", undefined);
-  };
-
   const logout = () => {
     setUser(null);
     localStorage.setItem("user", undefined);
@@ -56,7 +50,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <ContextUser.Provider
-      value={{ user, cart, login, logout, cleanCart, cartProducts }}
+      value={{ user, cart, login, logout, cartProducts }}
     >
       <Component {...pageProps} />
     </ContextUser.Provider>

@@ -32,7 +32,7 @@ const responsiveSettings = [
 ];
 
 export default function Product({ products }) {
-  const { user, cart, cartProducts, cleanCart } = useContext(ContextUser);
+  const { user, cart, cartProducts } = useContext(ContextUser);
   const handleModalViewProduct = (id) => {
     console.log(localStorage.getItem("user")); {
       console.log(id, "hola");
