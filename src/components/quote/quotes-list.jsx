@@ -84,7 +84,7 @@ const getQuotes = async () => {
     });
 
 }
-
+//funcion para actualizar datos
 const updateQuotes = async () => {
 
 
@@ -102,7 +102,7 @@ const updateQuotes = async () => {
       getQuotes();
      
     }
-  }, [isOpenModalSeeDetails],[quotesobj]);
+  }, [isOpenModalSeeDetails]);
 
 
   const handleSeeDetails = (id) => {
@@ -124,31 +124,33 @@ const updateQuotes = async () => {
   //toshi
   const handleCotizacionEstado = async (e) =>{
     e.preventDefault();
-const res = await axios.put('http://localhost:5000/service/update',bodyObj)
-updateQuotes();
-handleCerrar();
+    const res = await axios.put('http://localhost:5000/service/update',bodyObj)
+    
+   handleCerrar();
 
   }
 
   const handleOnChange = () =>{
     setIsChecked(!isChecked);
+    filtroEstado();
 
-    if(isChecked===false)
-    {
-      filtroEstado()
-      const quotesobjfiltrado = quotesobj.filter(quote => quote.leido===false);
-      setQuotesobj(quotesobjfiltrado);
-    }
-    else
-    {
-    updateQuotes();
-    }
   }
   
 
   const filtroEstado = () => {
 
-console.log("Filttrando")
+    if(isChecked==false)
+    {
+
+      const quotesobjfiltrado = quotesobj.filter(quote => quote.leido===false);
+      setQuotesobj(quotesobjfiltrado);
+    }
+    else
+    {
+      updateQuotes();
+     
+   
+    }
 
   }
 
@@ -177,7 +179,7 @@ console.log("Filttrando")
               {quotesobj.map((quote, index) => (
                 <tr key={quote.id}>
                   <td className="border border-black px-2 text-center">{index + 1}</td>
-                  <td className="border border-black px-3 w-30 text-center">{(quote.leido==true)?"leido":"sin leer"} </td>
+                  <td className="border border-black px-3 w-30 text-center">{quote.firstName} </td>
                   <td className="border border-black px-5 w-30 text-center overflow-hidden">{quote.lastName} </td>
                   <td className="border border-black px-3 w-20 text-center">{quote.phone}</td>
                   <td className="border border-black px-5 text-center">{quote.email}</td>
