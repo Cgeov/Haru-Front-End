@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Layout from "../layout";
 import { ContextUser } from "@/context/context";
 import React from "react";
-import {BiSolidTrash} from "react-icons/bi"
+import { BiSolidTrash } from "react-icons/bi";
 import showSweetAlert from "@/components/Alerts/Alert";
 import html2pdf from "html2pdf.js";
 import { BiSolidPhoneCall } from "react-icons/bi";
@@ -10,16 +10,31 @@ import { TfiWorld } from "react-icons/tfi";
 import { ImLocation } from "react-icons/im";
 import logo from "../../assets/img/logoTextResized.png";
 import Image from "next/image";
+import Loader from "@/components/loader/loader";
 
 export default function Cart() {
-  const { cart,cartProducts,user } = useContext(ContextUser);
+  const { cart, cartProducts, user } = useContext(ContextUser);
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [numberOrder, setnumberOrder] = useState(0)
+  const [numberOrder, setnumberOrder] = useState(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     setnumberOrder(generarNumerosAleatorios());
-  },[])
+  }, []);
+
+  const loaderRef = useRef(null);
+
+  const handleShowLoader = () => {
+    if (loaderRef.current) {
+      loaderRef.current.showLoader();
+    }
+  };
+
+  const handleHideLoader = () => {
+    if (loaderRef.current) {
+      loaderRef.current.hideLoader();
+    }
+  };
 
   useEffect(() => {
     const calculatedTotal = cart.reduce((acc, product) => {
@@ -28,9 +43,14 @@ export default function Cart() {
 
     const calculatedDiscount = cart.reduce((acc, product) => {
       let totalDiscount = 0;
-      if(product.hasOwnProperty('priceBefore') && product.priceBefore != 0 && !isNaN(product.priceBefore)){
-        console.log(product.priceBefore)
-        totalDiscount = acc + (product.priceBefore - product.price) * product.quantity
+      if (
+        product.hasOwnProperty("priceBefore") &&
+        product.priceBefore != 0 &&
+        !isNaN(product.priceBefore)
+      ) {
+        console.log(product.priceBefore);
+        totalDiscount =
+          acc + (product.priceBefore - product.price) * product.quantity;
       }
       return totalDiscount;
     }, 0);
@@ -40,52 +60,49 @@ export default function Cart() {
   }, [cart]);
 
   const removeQuantity = (product) => {
-    product.quantity -=1;
-    if(product.quantity < 1){
-      cartProducts(cart.filter((productsCart) => productsCart.id !== product.id));
+    product.quantity -= 1;
+    if (product.quantity < 1) {
+      cartProducts(
+        cart.filter((productsCart) => productsCart.id !== product.id)
+      );
       localStorage.setItem("cart", JSON.stringify(cart));
-      showSweetAlert("Producto Eliminado del Carrito", "warning")
-    }else{
-      console.log(2)
+      showSweetAlert("Producto Eliminado del Carrito", "warning");
+    } else {
       cartProducts([...cart]);
       localStorage.setItem("cart", JSON.stringify(cart));
     }
-  }
-
+  };
 
   const addQuantity = (product) => {
-    product.quantity +=1;
-      cartProducts([...cart]);
-      localStorage.setItem("cart", JSON.stringify(cart));
-  }
+    product.quantity += 1;
+    cartProducts([...cart]);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
 
-  const deleteProduct = (product) =>{
+  const deleteProduct = (product) => {
     cartProducts(cart.filter((productsCart) => productsCart.id !== product.id));
     localStorage.setItem("cart", JSON.stringify(cart));
-    showSweetAlert("Producto Eliminado del Carrito", "warning")
-  }
+    showSweetAlert("Producto Eliminado del Carrito", "warning");
+  };
 
   const sendRequest = () => {
-    if(!user){
-      showSweetAlert("Debe de Iniciar Sesión","error")
-    }else{
+    if (!user) {
+      showSweetAlert("Debe de Iniciar Sesión", "error");
+    } else {
       generarFacturaPDF();
     }
-  }
+  };
 
   const generarNumerosAleatorios = () => {
-    const numerosAleatorios = [];
 
-    for (let i = 0; i < 5; i++) {
-      const numeroAleatorio = Math.floor(Math.random() * 10) + 1;
-      numerosAleatorios.push(numeroAleatorio);
-    }
-  
-    return numerosAleatorios;
-  }
+    let numeroAleatorio = Math.floor(Math.random() * 100000);
+    numeroAleatorio = ("00000" + numeroAleatorio).slice(-5);
 
+    return parseInt(numeroAleatorio);
+  };
 
   const generarFacturaPDF = () => {
+    handleShowLoader();
     const pdfOptions = {
       filename: "factura.pdf",
       image: { type: "jpg", quality: 0.99 },
@@ -125,14 +142,44 @@ export default function Cart() {
             body: fd,
           })
             .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
+            .then(async (data) => {
+              let headers2 = new Headers();
+              headers2.append("Content-Type", "application/json");
+              headers2.append("Accept", "application/json");
+              headers2.append(
+                "Access-Control-Allow-Origin",
+                "http://localhost:3000"
+              );
+              headers2.append("Access-Control-Allow-Credentials", "true");
+              headers2.append("GET", "POST", "OPTIONS");
+              const cartDetails = {
+                collection: "orders",
+                document: {
+                  products: cart,
+                  subtotal: total,
+                  total: total + 2.99,
+                  discounts: discount,
+                  user: user,
+                  fee: 2.99,
+                  invoice: data.url,
+                  status: "pending",
+                  numberOrder: numberOrder
+                },
+              };
+
+              console.log(cartDetails);
+
+              await fetch("http://localhost:5000/service/add", {
+                method: "POST",
+                headers: headers2,
+                body: JSON.stringify(cartDetails),
+              }).then((response) => {
+                console.log(response);
+              });
             });
 
-            html2pdf()
-            .from(content)
-            .set(pdfOptions)
-            .outputPdf().save()
+          html2pdf().from(content).set(pdfOptions).outputPdf().save();
+          handleHideLoader();
         });
     } else {
       console.error(
@@ -154,8 +201,7 @@ export default function Cart() {
                 return (
                   <div
                     key={index}
-                    className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
-                  >
+                    className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
                     <div className="w-[200px] rounded-lg h-[150px]">
                       <img
                         src={product.img}
@@ -166,15 +212,19 @@ export default function Cart() {
                     <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                       <div className="mt-5 sm:mt-0 flex flex-col justify-between">
                         <div>
-                        <h2 className="text-lg font-bold text-gray-900">
-                          {product.name}
-                        </h2>
-                        <p className="mt-1 text-xs text-gray-700">
-                          {product.description}
-                        </p>
+                          <h2 className="text-lg font-bold text-gray-900">
+                            {product.name}
+                          </h2>
+                          <p className="mt-1 text-xs text-gray-700">
+                            {product.description}
+                          </p>
                         </div>
                         <div className="flex items-center border-gray-100">
-                          <span onClick={() => {removeQuantity(product)}} className="cursor-pointer rounded-l bg-gray-200 text-primary py-2 px-5 duration-100 hover:bg-primary hover:text-white">
+                          <span
+                            onClick={() => {
+                              removeQuantity(product);
+                            }}
+                            className="cursor-pointer rounded-l bg-gray-200 text-primary py-2 px-5 duration-100 hover:bg-primary hover:text-white">
                             {" "}
                             -{" "}
                           </span>
@@ -185,7 +235,11 @@ export default function Cart() {
                             value={product.quantity}
                             min="1"
                           />
-                          <span onClick={() => {addQuantity(product)}} className="cursor-pointer rounded-r text-primary bg-gray-200 py-2 px-5 duration-100 hover:bg-primary hover:text-white">
+                          <span
+                            onClick={() => {
+                              addQuantity(product);
+                            }}
+                            className="cursor-pointer rounded-r text-primary bg-gray-200 py-2 px-5 duration-100 hover:bg-primary hover:text-white">
                             {" "}
                             +{" "}
                           </span>
@@ -198,7 +252,11 @@ export default function Cart() {
                           </p>
                         </div>
                         <div>
-                          <div onClick={(()=>{deleteProduct(product)})} className="cursor-pointer bg-[#c8c8c8] rounded p-3 hover:bg-primary hover:text-white">
+                          <div
+                            onClick={() => {
+                              deleteProduct(product);
+                            }}
+                            className="cursor-pointer bg-[#c8c8c8] rounded p-3 hover:bg-primary hover:text-white">
                             <BiSolidTrash size={20}></BiSolidTrash>
                           </div>
                         </div>
@@ -208,7 +266,9 @@ export default function Cart() {
                 );
               })
             ) : (
-              <p className="text-primary y quitar esto -->">Poner algo Aquí si está vacio</p>
+              <p className="text-primary y quitar esto -->">
+                Poner algo Aquí si está vacio
+              </p>
             )}
           </div>
           <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
@@ -220,7 +280,7 @@ export default function Cart() {
               <p className="text-gray-700">Subtotal</p>
               <p className="text-gray-700">${total.toFixed(2)}</p>
             </div>
-            
+
             <div className="flex justify-between">
               <p className="text-gray-700">Cargos Administrativos</p>
               <p className="text-gray-700">$2.99</p>
@@ -229,18 +289,24 @@ export default function Cart() {
             <div className="flex justify-between">
               <p className="text-lg text-primary font-bold">Total</p>
               <div className="">
-                <p className="mb-1 text-primary text-lg font-bold">${(total + 2.99).toFixed(2)}</p>
+                <p className="mb-1 text-primary text-lg font-bold">
+                  ${(total + 2.99).toFixed(2)}
+                </p>
                 <p className="text-sm text-gray-700">Incluye IVA</p>
               </div>
             </div>
-            <button onClick={()=>{sendRequest()}} className="mt-6 w-full rounded-md bg-primary py-1.5 font-medium text-blue-50 hover:bg-secondary">
+            <button
+              onClick={() => {
+                sendRequest();
+              }}
+              className="mt-6 w-full rounded-md bg-primary py-1.5 font-medium text-blue-50 hover:bg-secondary">
               Enviar
             </button>
           </div>
         </div>
       </div>
 
-
+      <Loader ref={loaderRef} />
 
       <div hidden={true}>
         <div
@@ -260,24 +326,31 @@ export default function Cart() {
             <div>
               <p className="text-primary text-3xl font-bold">Factura</p>
               <p className="flex justify-between gap-[40px] font-bold">
-                <span className="text-gray-400 font-medium">N° Factura</span>{numberOrder}
+                <span className="text-gray-400 font-medium">N° Factura</span>
+                {numberOrder}
               </p>
               <p className="flex justify-between gap-[40px] font-bold">
-                <span className="text-gray-400 font-medium">Pedido</span>{numberOrder}
+                <span className="text-gray-400 font-medium">Pedido</span>
+                {numberOrder}
               </p>
               <p className="flex justify-between gap-[40px] font-bold">
-                <span className="text-gray-400 font-medium">Fecha</span>{new Date().toLocaleDateString()}
+                <span className="text-gray-400 font-medium">Fecha</span>
+                {new Date().toLocaleDateString()}
               </p>
             </div>
             <div>
-              <span className="text-primary text-right font-bold">Facturado a</span>
-              {
-                user ?<div><p className="text-right font-bold">{user.name}</p>
-                <p className="text-right font-bold">{user.email}</p>
-                <p className="text-right font-bold">{user.phoneNumber}</p></div>
-                 : <p className="text-right font-bold">Faltan Campos</p>
-              }
-              
+              <span className="text-primary text-right font-bold">
+                Facturado a
+              </span>
+              {user ? (
+                <div>
+                  <p className="text-right font-bold">{user.name}</p>
+                  <p className="text-right font-bold">{user.email}</p>
+                  <p className="text-right font-bold">{user.phoneNumber}</p>
+                </div>
+              ) : (
+                <p className="text-right font-bold">Faltan Campos</p>
+              )}
             </div>
           </div>
           <div className="w-full mt-[2cm]">
@@ -292,19 +365,29 @@ export default function Cart() {
                 </tr>
               </thead>
               <tbody>
-                {
-                cart.length > 0 ? (
+                {cart.length > 0 ? (
                   cart.map((product, index) => {
-                    return(<tr key={index} className="bg-gray-200 odd:bg-gray-100">
-                    <td className="text-right pr-[15px] py-[5px]">{index + 1}</td>
-                    <td>{product.name}</td>
-                    <td className="text-right py-[5px]">${product.price.toFixed(2)}</td>
-                    <td className="text-right py-[5px]">{product.quantity}</td>
-                    <td className="text-right pr-[10px] py-[5px]">${(product.quantity * product.price).toFixed(2)}</td>
-                  </tr>)
-                  }))
-                  : <tr className="bg-gray-200 odd:bg-gray-100"></tr>
-                }
+                    return (
+                      <tr key={index} className="bg-gray-200 odd:bg-gray-100">
+                        <td className="text-right pr-[15px] py-[5px]">
+                          {index + 1}
+                        </td>
+                        <td>{product.name}</td>
+                        <td className="text-right py-[5px]">
+                          ${product.price.toFixed(2)}
+                        </td>
+                        <td className="text-right py-[5px]">
+                          {product.quantity}
+                        </td>
+                        <td className="text-right pr-[10px] py-[5px]">
+                          ${(product.quantity * product.price).toFixed(2)}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr className="bg-gray-200 odd:bg-gray-100"></tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -313,7 +396,8 @@ export default function Cart() {
               <span className="text-left">Subtotal</span> ${total.toFixed(2)}
             </p>
             <p className="flex gap-[1cm] justify-end">
-              <span className="text-left">Descuentos</span> ${discount.toFixed(2)}
+              <span className="text-left">Descuentos</span> $
+              {discount.toFixed(2)}
             </p>
             <p className="flex gap-[1cm] justify-end">
               <span className="text-left">Gastos Administrativos</span> $2.99

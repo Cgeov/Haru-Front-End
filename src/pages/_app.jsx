@@ -15,6 +15,8 @@ export default function App({ Component, pageProps }) {
   function getDataUser() {
     if (localStorage.getItem("user") != undefined || localStorage.getItem("user") != null) {
       setUser(localStorage.getItem("user"));
+    }else{
+      setUser(null);
     }
   }
 

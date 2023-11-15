@@ -2,6 +2,7 @@ import React, { useState, useEffect, Children, useRef } from "react";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import Modal from '@/components/modal/Modal'
 import axios from 'axios'
+import ModalAlert from "../modal/ModalAlert";
 
 
 const ProductList = ({ products }) => {
@@ -15,15 +16,33 @@ const ProductList = ({ products }) => {
   const [rateProduct, setRateProduct] = useState(0);
   const [productsList, setProductsList] = useState(products);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState("Selecciona...");
+  const [optionFeatured, setOptionFeatured] = useState("Selecciona...");
+  const [featuredProduct, setFeaturedProduct] = useState('');
   const [descriptionProduct, setDescriptionProduct] = useState('');
   const [categoryProduct, setCategoryProduct] = useState('');
+  const [idProducto, setIdProduct] = useState('')
   //Manejo de modal
   const [isOpenNew, setIsOpenNew] = useState(false)
   const [isOpenEdit, setIsOpenEdit] = useState(false)
+  const [isOpenAlert, setIsOpenAlert] = useState(false)
+  const [isProductSuccess, setProductSuccess] = useState(false)
+  const [isProductSuccessEdit, setProductSuccessEdit] = useState(false)
+  const [isDeleteConfirm, setDeleteConfirm] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  //validaciones 
+  const [validaciones, setValidaciones] = useState([])
 
   const handleModalNew = () => {
-    setImgProductNew("");
+    setNameProduct("")
+    setPriceProduct(0)
+    setImgProduct("")
+    setBeforePriceProduct(0)
+    setDescriptionProduct("")
     setOpcionSeleccionada("Selecciona...")
+    setOptionFeatured("Selecciona...")
+    setFeaturedProduct('')
+    setCategoryProduct('')
+    setRateProduct(0)
     setIsOpenNew(!isOpenNew)
   }
   const handleModalEdit = () => {
@@ -33,8 +52,29 @@ const ProductList = ({ products }) => {
     setBeforePriceProduct(0)
     setDescriptionProduct("")
     setOpcionSeleccionada("Selecciona...")
+    setOptionFeatured("Selecciona...")
+    setFeaturedProduct('')
+    setCategoryProduct('')
+    setRateProduct(0)
     setIsOpenEdit(!isOpenEdit)
   }
+  const handleModalAlert = (validaciones) => {
+    setValidaciones(validaciones);
+    setIsOpenAlert(!isOpenAlert);
+  }
+  const handleModalSuccess = () => {
+    setProductSuccess(!isProductSuccess)
+  }
+  const handleModalSuccessEdit = () => {
+    setProductSuccessEdit(!isProductSuccessEdit)
+  }
+  const handleModalSuccessDelete = () => {
+    setIsDelete(!isDelete)
+  }
+  const handleModalDelete = () => {
+    setDeleteConfirm(!isDeleteConfirm)
+  }
+
 
 
   //Using services 
@@ -65,22 +105,61 @@ const ProductList = ({ products }) => {
       name: nameProduct,
       description: descriptionProduct,
       category: categoryProduct,
-      price: priceProduct,
-      priceBefore: beforePriceProduct,
+      price: parseFloat(priceProduct),
+      priceBefore: (beforePriceProduct === "") ? 0 : parseFloat(beforePriceProduct),
       img: imgProductNew,
-      rate: parseInt(rateProduct)
+      rate: parseInt(rateProduct),
+      featured: featuredProduct
     }
   }
 
   const handleSubmitNewProduct = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:5000/service/add', product)
-    console.log(res)
-    form.current.reset();
-    handleUpdateProductList();
-    setImgProductNew("");
-    setOpcionSeleccionada("Selecciona...")
-    handleModalNew();
+    const validaciones = []
+    const esDecimal = /^-?\d*\.?\d+$/
+
+    if (nameProduct === "") {
+      validaciones.push('- Nombre del producto')
+    }
+    if (descriptionProduct === "") {
+      validaciones.push('- Descripción')
+    }
+    if (categoryProduct === "") {
+      validaciones.push('- Categoría')
+    }
+    if (priceProduct === 0) {
+      validaciones.push('- Precio')
+    }
+    if (!esDecimal.test(priceProduct)) {
+      validaciones.push('- Precio incorrecto')
+    }
+    if (beforePriceProduct !== "") {
+      console.log(beforePriceProduct)
+      if (!esDecimal.test(beforePriceProduct)) {
+        validaciones.push('- Precio anterior incorrecto')
+      }
+    }
+    if (imgProductNew === "") {
+      validaciones.push('- Imagén del producto')
+    }
+    if (rateProduct === 0) {
+      validaciones.push('- Rate del producto')
+    }
+    if (featuredProduct === "") {
+      validaciones.push('- Producto destacado')
+    }
+    if (validaciones.length === 0) {
+      const res = await axios.post('http://localhost:5000/service/add', product)
+      console.log(res)
+      form.current.reset();
+      handleUpdateProductList();
+      setImgProductNew("");
+      setOpcionSeleccionada("Selecciona...")
+      handleModalNew();
+      setProductSuccess(!isProductSuccess)
+    } else {
+      handleModalAlert(validaciones)
+    }
   }
 
   //Editar producto
@@ -91,10 +170,11 @@ const ProductList = ({ products }) => {
       name: nameProduct,
       description: descriptionProduct,
       category: categoryProduct,
-      price: priceProduct,
-      priceBefore: beforePriceProduct,
+      price: parseFloat(priceProduct),
+      priceBefore: (beforePriceProduct === "") ? 0 : parseFloat(beforePriceProduct),
       img: imgProduct,
-      rate: parseInt(rateProduct)
+      rate: parseInt(rateProduct),
+      featured: featuredProduct
     }
   }
   const handleEdit = (id) => {
@@ -114,10 +194,11 @@ const ProductList = ({ products }) => {
           setNameProduct(data.name);
           setDescriptionProduct(data.description);
           setCategoryProduct(data.category);
-          setPriceProduct(data.price);
-          setBeforePriceProduct(data.priceBefore);
+          setPriceProduct(parseFloat(data.price));
+          setBeforePriceProduct(parseFloat(data.priceBefore));
           setImgProduct(data.img);
           setRateProduct(data.rate);
+          setFeaturedProduct(data.featured)
         })
         .catch((error) => {
         });
@@ -126,21 +207,59 @@ const ProductList = ({ products }) => {
 
   const handleSubmitEditProduct = async (e) => {
     e.preventDefault();
-    const res = await axios.put('http://localhost:5000/service/update', bodyProduct)
-    console.log(res)
-    form.current.reset();
-    handleUpdateProductList();
-    handleModalEdit()
+    const validaciones = []
+    const esDecimal = /^-?\d*\.?\d+$/
+    if (nameProduct === "") {
+      validaciones.push('- Nombre del producto')
+    }
+    if (descriptionProduct === "") {
+      validaciones.push('- Descripción')
+    }
+    if (categoryProduct === "") {
+      validaciones.push('- Categoría')
+    }
+    if (priceProduct === 0) {
+      validaciones.push('- Precio')
+    }
+    if (!esDecimal.test(priceProduct)) {
+      validaciones.push('- Precio incorrecto')
+    }
+    if (beforePriceProduct !== "") {
+      console.log(beforePriceProduct)
+      if (!esDecimal.test(beforePriceProduct)) {
+        validaciones.push('- Precio anterior incorrecto')
+      }
+    }
+    if (imgProduct === "") {
+      validaciones.push('- Imagén del producto')
+    }
+    if (rateProduct === 0) {
+      validaciones.push('- Rate del producto')
+    }
+    if (featuredProduct === "") {
+      validaciones.push('- Producto destacado')
+    }
+    if (validaciones.length === 0) {
+      const res = await axios.put('http://localhost:5000/service/update', bodyProduct)
+      console.log(res)
+      form.current.reset();
+      handleUpdateProductList();
+      handleModalEdit()
+      setProductSuccessEdit(!isProductSuccessEdit)
+    }
+    else {
+      handleModalAlert(validaciones)
+    }
   }
 
   const handleNameProduct = (event) => {
     setNameProduct(event.target.value);
   }
   const handlePriceProduct = (event) => {
-    setPriceProduct(event.target.value);
+    setPriceProduct((event.target.value));
   }
   const handleBeforePriceProduct = (event) => {
-    setBeforePriceProduct(event.target.value);
+    setBeforePriceProduct((event.target.value));
   }
   const handleImgProduct = (imagen) => {
     setImgProduct(imagen);
@@ -158,6 +277,12 @@ const ProductList = ({ products }) => {
     setOpcionSeleccionada(event.target.value)
     setCategoryProduct(event.target.value)
   }
+  const handlefeatured = (event) => {
+    setOptionFeatured(event.target.value)
+    setFeaturedProduct(event.target.value)
+
+  }
+
 
   //Eliminar 
   const handleDelete = async (id) => {
@@ -167,9 +292,15 @@ const ProductList = ({ products }) => {
         id: id
       }
     }
-    const res = await axios.delete('http://localhost:5000/service/delete', productDeleted)
-    console.log(res)
-    handleUpdateProductList();
+    setDeleteConfirm(!isDeleteConfirm)
+    setIdProduct(id)
+    if (isDeleteConfirm) {
+      const res = await axios.delete('http://localhost:5000/service/delete', productDeleted)
+      console.log(res)
+      handleUpdateProductList();
+      setIdProduct('')
+      setIsDelete(!isDelete)
+    }
   }
   //Actualizar lista de productos 
   const handleUpdateProductList = async () => {
@@ -192,30 +323,31 @@ const ProductList = ({ products }) => {
           <table className="table-auto mt-5">
             <thead className="text-white bg-primary">
               <tr>
-                <th className="border border-black px-3">Nombre</th>
-                <th className="border border-black px-8">Descripción</th>
-                <th className="border border-black px-5">Categoria</th>
-                <th className="border border-black px-5">Precio</th>
-                <th className="border border-black px-5">Precio Anterior</th>
-                <th className="border border-black px-5">Rate</th>
+                <th className="border border-black px-3 w-45 overflow-hidden whitespace-normal break-all">Nombre</th>
+                <th className="border border-black px-5 w-60 overflow-hidden whitespace-normal break-all">Descripción</th>
+                <th className="border border-black px-5 w-30">Categoria</th>
+                <th className="border border-black px-3 w-20 ">Precio</th>
+                <th className="border border-black px-3 w-20 ">Precio Anterior</th>
+                <th className="border border-black px-3 w-20 ">Rate</th>
                 <th className="border border-black px-5">Imagén</th>
+                <th className="border border-black px-3 w-20 text-center">Destacado</th>
                 <th className="border border-black px-5">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-[#ffced3]  text-black">
               {productsList.map((product) => (
                 <tr key={product.id}>
-                  <td className="border border-black px-3">{product.name} </td>
-                  <td className="border border-black px-8">{product.description} </td>
-                  <td className="border border-black px-5">{product.category} </td>
-                  <td className="border border-black px-5">{product.price}</td>
-                  <td className="border border-black px-5">{product.priceBefore}</td>
-                  <td className="border border-black px-5">{product.rate}</td>
-                  <td className="border border-black px-5 bg-white"><img src={product.img} alt={product.name} width="100" height="100" />
-                  </td>
+                  <td className="border border-black px-3 w-45 overflow-hidden whitespace-normal break-all">{product.name} </td>
+                  <td className="border border-black px-5 w-60 overflow-hidden whitespace-normal break-all">{product.description} </td>
+                  <td className="border border-black px-5 w-30">{product.category} </td>
+                  <td className="border border-black px-3 w-20 text-center">${product.price}</td>
+                  <td className="border border-black px-3 w-20 text-center">${product.priceBefore}</td>
+                  <td className="border border-black px-3 w-20 text-center">{product.rate}</td>
+                  <td className="border border-black px-5 bg-white"><img src={product.img} alt={product.name} width="100" height="100" /></td>
+                  <td className="border border-black px-3 w-20 text-center">{product.featured}</td>
                   <td className="border border-black px-5">
                     <div className="space-x-2">
-                      <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-blue-800 px-2 py-1 rounded hover:bg-blue-600">Editar</button>
+                      <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Editar</button>
                       <button onClick={() => handleDelete(product.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                     </div>
                   </td>
@@ -233,12 +365,14 @@ const ProductList = ({ products }) => {
             <input name="name" type="text" placeholder="Nombre" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleNameProduct} />
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Descripción</label>
             <textarea name="name" placeholder="Descripción" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleDescriptionProduct} />
-            <label htmlFor="opciones" className=" text-gray-700 text-sm font-bold mb-2 mt-2">Selecciona una categoria:</label>
+            <label htmlFor="opciones" className=" text-gray-700 text-sm font-bold mb-2 mt-2">Selecciona una categoría:</label>
             <select id="opciones" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" value={opcionSeleccionada} onChange={handleSelectChange}>
               <option value="">Selecciona...</option>
-              <option value="opcion1">Opción 1</option>
-              <option value="opcion2">Opción 2</option>
-              <option value="opcion3">Opción 3</option>
+              <option value="Mixtos">Mixtos</option>
+              <option value="Canasta">Canasta</option>
+              <option value="Girasoles">Girasoles</option>
+              <option value="Detalles">Detalles(regalos)</option>
+              <option value="Rosas">Rosas</option>
             </select>
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Precio</label>
             <input name="price" type="text" placeholder="Precio" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handlePriceProduct} />
@@ -255,7 +389,14 @@ const ProductList = ({ products }) => {
             </UploadButton>
             <input name="img" value={imgProductNew} type="text" placeholder="Imagen" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleImgProductNew} disabled />
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Rate</label>
-            <input name="rate" type="number" placeholder="rate" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleRateProduct} />
+            <input name="rate" type="number" max={5} min={1} placeholder="rate" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleRateProduct} />
+            <label htmlFor="opcionesDestacado" className=" text-gray-700 text-sm font-bold mb-2 mt-4">¿Es un producto destacado?</label>
+            <select id="opcionesDestacado" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" value={optionFeatured} onChange={handlefeatured}>
+              <option value="">Selecciona...</option>
+              <option value="Sí">Sí</option>
+              <option value="No">No</option>
+            </select>
+
             <button className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Guardar</button>
           </form>
         </Modal>
@@ -268,18 +409,20 @@ const ProductList = ({ products }) => {
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto</label>
               <input name="name" value={nameProduct} type="text" placeholder="Nombre" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleNameProduct} />
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Descripción</label>
-              <textarea name="name" placeholder="Descripción" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleDescriptionProduct}  value={descriptionProduct}/>
-              <label htmlFor="opciones" className=" text-gray-700 text-sm font-bold mb-2 mt-2">Selecciona una categoria:</label>
+              <textarea name="name" placeholder="Descripción" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" onChange={handleDescriptionProduct} value={descriptionProduct} />
+              <label htmlFor="opciones" className=" text-gray-700 text-sm font-bold mb-2 mt-2">Selecciona una categoría:</label>
               <select id="opciones" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" value={categoryProduct} onChange={handleSelectChange}>
                 <option value="">Selecciona...</option>
-                <option value="opcion1">Opción 1</option>
-                <option value="opcion2">Opción 2</option>
-                <option value="opcion3">Opción 3</option>
+                <option value="Mixtos">Mixtos</option>
+                <option value="Canasta">Canasta</option>
+                <option value="Girasoles">Girasoles</option>
+                <option value="Detalles">Detalles(regalos)</option>
+                <option value="Rosas">Rosas</option>
               </select>
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Precio</label>
               <input name="price" value={priceProduct} type="text" placeholder="Precio" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handlePriceProduct} />
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Precio Anterior</label>
-              <input name="priceBefore" value={beforePriceProduct} type="number" placeholder="Precio Anterior" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleBeforePriceProduct} />
+              <input name="priceBefore" value={beforePriceProduct} type="text" placeholder="Precio Anterior" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleBeforePriceProduct} />
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Imagen</label>
               <UploadButton options={options}
                 onComplete={files => handleImgProduct(files.map(x => x.fileUrl))}>
@@ -291,12 +434,78 @@ const ProductList = ({ products }) => {
               </UploadButton>
               <input name="img" value={imgProduct} type="text" placeholder="Imagen" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleImgProduct} disabled />
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 mt-2">Rate</label>
-              <input name="rate" value={rateProduct} type="number" placeholder="rate" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleRateProduct} />
+              <input name="rate" value={rateProduct} max={5} min={1} type="number" placeholder="rate" className="shadow appearance-none border rourded w-full py-2 px-3 text-black" onChange={handleRateProduct} />
+              <label htmlFor="opcionesDestacado" className=" text-gray-700 text-sm font-bold mb-2 mt-4">¿Es un producto destacado?</label>
+              <select id="opcionesDestacado" className="shadow appearance-none border rourded w-full py-1 px-3 text-black" value={featuredProduct} onChange={handlefeatured}>
+                <option value="">Selecciona...</option>
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+              </select>
               <button className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Editar</button>
             </form>
           </Modal>
         )
       }
+
+      {isOpenAlert && (
+        <ModalAlert handleModal={handleModalAlert} Title="¡Campos Requeridos!" >
+          <div>
+            <ul>
+              {validaciones.map((item, index) => (
+                <li className="block text-gray-700 text-sm font-bold mb-2 mt-2" key={index}>{item}</li>
+              ))}
+            </ul>
+            <div className="flex justify-center">
+              <button onClick={() => { handleModalAlert() }} className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Aceptar</button>
+            </div>
+          </div>
+        </ModalAlert>
+
+      )}
+      {isProductSuccess && (
+        <ModalAlert handleModal={handleModalAlert} Title="¡Producto Añadido con Éxito!" >
+          <div>
+            <div className="flex justify-center">
+              <button onClick={() => { handleModalSuccess() }} className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Aceptar</button>
+            </div>
+          </div>
+        </ModalAlert>
+
+      )
+      }
+      {isProductSuccessEdit && (
+        <ModalAlert handleModal={handleModalAlert} Title="¡Producto Editado con Éxito!" >
+          <div>
+            <div className="flex justify-center">
+              <button onClick={() => { handleModalSuccessEdit() }} className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Aceptar</button>
+            </div>
+          </div>
+        </ModalAlert>
+      )
+      }
+      {isDeleteConfirm && (
+        <ModalAlert handleModal={handleModalAlert} Title="¿Seguro que desea eliminar el producto?" >
+          <div>
+            <div className="flex justify-center">
+              <button onClick={() => { handleDelete(idProducto) }} className="bg-red-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Aceptar</button>
+              <button onClick={() => { handleModalDelete() }} className="bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5  ml-5">Cancelar</button>
+            </div>
+          </div>
+        </ModalAlert>
+      )
+      }
+      {isDelete && (
+        <ModalAlert handleModal={handleModalAlert} Title="¡Producto eliminado con éxito" >
+          <div>
+            <div className="flex justify-center">
+              <button onClick={() => { handleModalSuccessDelete() }} className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Aceptar</button>
+            </div>
+          </div>
+        </ModalAlert>
+      )
+      }
+
+
 
 
     </>

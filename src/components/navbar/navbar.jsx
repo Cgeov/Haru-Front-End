@@ -153,7 +153,7 @@ export default function Navbar() {
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
           {
-            user ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
+            (user != null || user != undefined) ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
             className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
             href={"/login"}>
             Inicia Sesión
