@@ -1,7 +1,7 @@
 import { BsCart3 } from "react-icons/bs";
 import Star from "../stars/stars";
 import { Slide } from "react-slideshow-image";
-import ViewProduct from "../viewProduct/ViewProduct";
+import ViewProduct from "../../components/viewProduct/viewProduct";
 import { Modal } from "flowbite";
 import { useContext } from "react";
 import { ContextUser } from "@/context/context";
