@@ -5,10 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { ContextUser } from "../../context/context";
 
-import {RxHamburgerMenu} from "react-icons/rx"
-import {BiPieChartAlt} from "react-icons/bi"
-import {GrClose} from "react-icons/gr"
-import {BsChevronDown, BsFillTelephoneFill} from "react-icons/bs"
+import { RxHamburgerMenu } from "react-icons/rx";
+import { BiPieChartAlt } from "react-icons/bi";
+import { GrClose } from "react-icons/gr";
+import { BsChevronDown, BsFillTelephoneFill } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 
@@ -55,7 +55,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const {user} = useContext(ContextUser);
+  const { user } = useContext(ContextUser);
 
   return (
     <header>
@@ -63,10 +63,10 @@ export default function Navbar() {
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link href={"/"} className="-m-1.5 p-1.5">
             <span className="sr-only">Haru</span>
-            <Image className="h-12 w-auto" src={logo} alt=""></Image>
-          </a>
+              <Image className="h-12 w-auto" src={logo} alt=""></Image>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -77,104 +77,125 @@ export default function Navbar() {
             <RxHamburgerMenu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-12">
-          <Link
-            href={"/"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Inicio
-          </Link>
-          <Link
-            href={"/services"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Servicios
-          </Link>
-          <Link
-            href={"/gallery"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Galería
-          </Link>
-          <Link
-            href={"/quote"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Cotizaciones
-          </Link>
-          <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
-              Categorias
-              <BsChevronDown
-                className="h-5 w-5 flex-none text-primary"
-                aria-hidden="true"
-              />
-            </Popover.Button>
+        {(user == null || user.typeUser == "client") ? (
+          <Popover.Group className="hidden lg:flex lg:gap-x-12">
+            <Link
+              href={"/"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Inicio
+            </Link>
+            <Link
+              href={"/services"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Servicios
+            </Link>
+            <Link
+              href={"/gallery"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Galería
+            </Link>
+            <Link
+              href={"/quote"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Cotizaciones
+            </Link>
+            <Popover className="relative">
+              <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
+                Categorias
+                <BsChevronDown
+                  className="h-5 w-5 flex-none text-primary"
+                  aria-hidden="true"
+                />
+              </Popover.Button>
 
-            <Transition
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1">
-              <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                <div className="p-4">
-                  {products.map((item) => (
-                    <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+              <Transition
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1">
+                <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                  <div className="p-4">
+                    {products.map((item) => (
+                      <div
+                        key={item.name}
+                        className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <item.icon
+                            className="h-6 w-6 text-gray-600 group-hover:text-secondary"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <div className="flex-auto">
+                          <a
+                            href={item.href}
+                            className="block font-semibold text-gray-900">
+                            {item.name}
+                            <span className="absolute inset-0" />
+                          </a>
+                          <p className="mt-1 text-gray-600">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                    {callsToAction.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100">
                         <item.icon
-                          className="h-6 w-6 text-gray-600 group-hover:text-secondary"
+                          className="h-5 w-5 flex-none text-gray-400"
                           aria-hidden="true"
                         />
-                      </div>
-                      <div className="flex-auto">
-                        <a
-                          href={item.href}
-                          className="block font-semibold text-gray-900">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100">
-                      <item.icon
-                        className="h-5 w-5 flex-none text-gray-400"
-                        aria-hidden="true"
-                      />
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </Popover>
-          <Link
-            href={"/about-us"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Sobre Haru
-          </Link>
-        </Popover.Group>
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+            <Link
+              href={"/about-us"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Sobre Haru
+            </Link>
+          </Popover.Group>
+        ) : (<Popover.Group className="hidden lg:flex lg:gap-x-12">
+        <Link
+          href={"/manage-products"}
+          className="text-lg font-semibold leading-6 text-primary">
+          Gestión de Productos
+        </Link>
+        <Link
+          href={"/manage-quotes"}
+          className="text-lg font-semibold leading-6 text-primary">
+          Gestión de Cotizaciones
+        </Link>
+        <Link
+          href={"/manage-orders"}
+          className="text-lg font-semibold leading-6 text-primary">
+          Gestión de Ordenes
+        </Link>
+      </Popover.Group>) }
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-[10px]">
           <Link
             href="/cart"
             className="text-lg font-semibold leading-6 text-gray-900">
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
-          {
-            (user != null || user != undefined) ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
-            className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
-            href={"/login"}>
-            Inicia Sesión
-          </Link> 
-          }
-          
+          {user != null || user != undefined ? (
+            <FaUserCircle size={30} className="text-primary"></FaUserCircle>
+          ) : (
+            <Link
+              className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
+              href={"/login"}>
+              Inicia Sesión
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog
@@ -254,7 +275,9 @@ export default function Navbar() {
           </div>
         </Dialog.Panel>
       </Dialog>
-      <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+      <script
+        defer
+        src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </header>
   );
 }

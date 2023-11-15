@@ -9,6 +9,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
+    localStorage.clear()
   }, []);
 
   function getDataUser() {
@@ -33,9 +34,15 @@ export default function App({ Component, pageProps }) {
   }
 
   const login = (userData) => {
+    console.log(userData)
     setUser(userData);
     localStorage.setItem("user", userData);
-    Router.replace("/");
+    if(userData.typeUser== 'admin'){
+      Router.replace("/manage-products");
+    }else{
+      Router.replace("/");
+    }
+    
   };
 
   const cartProducts = (cartData) => {
