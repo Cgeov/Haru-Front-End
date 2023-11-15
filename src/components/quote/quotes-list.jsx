@@ -1,7 +1,4 @@
-import React, { useState, useEffect, Children, useRef } from "react";
-import Modal from '@/components/modal/Modal'
-import axios from 'axios'
-import ModalAlert from "../modal/ModalAlert";
+import React, { useState, useEffect } from "react";
 import ModalDetails from "../modal/ModalDetails"
 
 
