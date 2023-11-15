@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Slide } from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css';
 
@@ -53,9 +54,9 @@ export default function CardService(){
                                 <div className="flex flex-col gap-20 pr-5">
                                     <h3 className="text-primary text-5xl">{service.title}</h3>
                                     <p className="text-primary">{service.description}</p>
-                                    <a href="/quote" class="w-full">
+                                    <Link href={"/quote"} class="w-full">
                                     <button className="rounded-md bg-primary py-3 px-6 text-white font-bold" >Ver más</button>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div>
                                     <img className="h-[100%]" src={service.image} alt={service.title}></img>
