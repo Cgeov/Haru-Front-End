@@ -1,9 +1,10 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
 import Image from "next/image";
 import { ContextUser } from "../../context/context";
+
 import {RxHamburgerMenu} from "react-icons/rx"
 import {BiPieChartAlt, BiSolidFlorist, BiBasket, } from "react-icons/bi"
 import {GrClose} from "react-icons/gr"
@@ -11,8 +12,6 @@ import {BsChevronDown, BsFillTelephoneFill, BsFlower1, BsGift} from "react-icons
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import {IoIosRose} from "react-icons/io";
-import Category from "@/pages/category";
-
 
 const products = [
   {
@@ -47,14 +46,21 @@ const products = [
   },
 ];
 
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const {user} = useContext(ContextUser);
+  const { user, logout } = useContext(ContextUser);
+
+  const handleLogout = () => {
+    confirmationAlert().then((result) => {
+      if (result.isConfirmed == true) {
+        logout();
+      }
+    });
+  };
 
   return (
     <header>
@@ -62,10 +68,10 @@ export default function Navbar() {
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5">
+          <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Haru</span>
             <Image className="h-12 w-auto" src={logo} alt=""></Image>
-          </a>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -76,35 +82,36 @@ export default function Navbar() {
             <RxHamburgerMenu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-12">
-          <Link
-            href={"/"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Inicio
-          </Link>
-          <Link
-            href={"/services"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Servicios
-          </Link>
-          <Link
-            href={"/gallery"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Galería
-          </Link>
-          <Link
-            href={"/quote"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Cotizaciones
-          </Link>
-          <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
-              Categorias
-              <BsChevronDown
-                className="h-5 w-5 flex-none text-primary"
-                aria-hidden="true"
-              />
-            </Popover.Button>
+        {user == null || user.typeUser == "client" ? (
+          <Popover.Group className="hidden lg:flex lg:gap-x-12">
+            <Link
+              href={"/"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Inicio
+            </Link>
+            <Link
+              href={"/services"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Servicios
+            </Link>
+            <Link
+              href={"/gallery"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Galería
+            </Link>
+            <Link
+              href={"/quote"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Cotizaciones
+            </Link>
+            <Popover className="relative">
+              <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
+                Categorias
+                <BsChevronDown
+                  className="h-5 w-5 flex-none text-primary"
+                  aria-hidden="true"
+                />
+              </Popover.Button>
 
             <Transition
               enter="transition ease-out duration-200"
@@ -126,11 +133,12 @@ export default function Navbar() {
                         />
                       </div>
                       <div className="flex-auto">
-                        <Link href={`/category?cat=${item.name}`} className="block font-semibold text-gray-900">
-                        
+                        <a
+                          href={item.href}
+                          className="block font-semibold text-gray-900">
                           {item.name}
-                          
-                        </Link>
+                          <span className="absolute inset-0" />
+                        </a>
                         <p className="mt-1 text-gray-600">{item.description}</p>
                       </div>
                     </div>
@@ -152,14 +160,47 @@ export default function Navbar() {
             className="text-lg font-semibold leading-6 text-gray-900">
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
-          {
-            (user != null || user != undefined) ? <FaUserCircle size={30} className="text-primary"></FaUserCircle> :  <Link
-            className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
-            href={"/login"}>
-            Inicia Sesión
-          </Link> 
-          }
-          
+          {user != null || user != undefined ? (
+            <Popover className="relative">
+              <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
+                <FaUserCircle size={30} className="text-primary"></FaUserCircle>
+              </Popover.Button>
+              <Transition
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1">
+                <Popover.Panel className="absolute -left-[80px] w-[200px] top-full z-10 mt-3 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                  <div className="text-primary flex flex-col">
+                    <div className="font-medium pt-[20px] pb-[12px] px-[10px] hover:bg-gray-100 cursor-pointer">
+                      <Link
+                        className="flex items-center gap-[10px]"
+                        href={"/view-orders"}>
+                        <TbShoppingBagSearch size={35} />
+                        Ver Mis Pedidos
+                      </Link>
+                    </div>
+                    <div
+                      onClick={(e) => {
+                        handleLogout();
+                      }}
+                      className="font-medium pb-[20px] pt-[12px] px-[10px] flex items-center gap-[10px] hover:bg-gray-100 cursor-pointer">
+                      <IoLogOutOutline size={35} />
+                      Cerrar Sesión
+                    </div>
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+          ) : (
+            <Link
+              className="bg-primary py-[5px] px-[15px] text-white rounded-lg"
+              href={"/login"}>
+              Inicia Sesión
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog
@@ -198,6 +239,17 @@ export default function Navbar() {
                           aria-hidden="true"
                         />
                       </Disclosure.Button>
+                      <Disclosure.Panel className="mt-2 space-y-2">
+                        {[...products, ...callsToAction].map((item) => (
+                          <Disclosure.Button
+                            key={item.name}
+                            as="a"
+                            href={item.href}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                            {item.name}
+                          </Disclosure.Button>
+                        ))}
+                      </Disclosure.Panel>
                     </>
                   )}
                 </Disclosure>
@@ -228,7 +280,9 @@ export default function Navbar() {
           </div>
         </Dialog.Panel>
       </Dialog>
-      <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+      <script
+        defer
+        src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </header>
   );
 }

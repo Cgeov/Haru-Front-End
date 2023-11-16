@@ -1,3 +1,4 @@
+import showSweetAlert from "@/components/Alerts/Alert";
 import { ContextUser } from "@/context/context";
 import "@/styles/globals.css";
 import Router from "next/router";
@@ -10,7 +11,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
-    localStorage.clear();
+    localStorage.clear()
   }, []);
 
   function getDataUser() {
@@ -35,9 +36,15 @@ export default function App({ Component, pageProps }) {
   }
 
   const login = (userData) => {
+    console.log(userData)
     setUser(userData);
     localStorage.setItem("user", userData);
-    Router.replace("/");
+    if(userData.typeUser== 'admin'){
+      Router.replace("/manage-products");
+    }else{
+      Router.replace("/");
+    }
+    
   };
 
   const cartProducts = (cartData) => {
@@ -45,19 +52,15 @@ export default function App({ Component, pageProps }) {
     localStorage.setItem("cart", cartData);
   };
 
-  const cleanCart = () => {
-    setCart([]);
-    localStorage.setItem("cart", undefined);
-  };
-
   const logout = () => {
     setUser(null);
-    localStorage.setItem("user", undefined);
+    localStorage.setItem("user", user);
+    showSweetAlert("Sesión Cerrada!", "success")
   };
 
   return (
     <ContextUser.Provider
-      value={{ user, cart, login, logout, cleanCart, cartProducts }}
+      value={{ user, cart, login, logout, cartProducts }}
     >
       <Component {...pageProps} />
     </ContextUser.Provider>

@@ -23,18 +23,17 @@ export default function Home() {
       headers: headers,
       body: JSON.stringify({
         collection: "products",
-        filter: [{
-          field: 'featured', 
-          comparison: '==',
-          value: 'Sí'
-      }]
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setFlowers(data);
+        console.log(data)
+        if(data.hasOwnProperty("error")){
+          setFlowers([]);
+        }else{
+          setFlowers(data);
+        }
         setLoading(false);
-        console.log(data);
       })
       .catch((error) => {
         setLoading(false);
