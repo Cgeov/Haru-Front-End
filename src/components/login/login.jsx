@@ -30,14 +30,6 @@ export default function LoginForm() {
       .then((data) => {
         if(data.hasOwnProperty('error')){
           showSweetAlert("Creedenciales Incorrectas", "error");
-          const prueba = {
-            email: "prueba223@gmail.com",
-            id: "Qjvv5S1SX9SGiHHzuQmxlCAZm9X2",
-            name: "cris",
-            lastname: "tobar",
-            typeUser: "client"
-          }
-          login(prueba);
         }else{
           login(data);
           showSweetAlert("Bienvenido "+ data.name + "!", "success");
