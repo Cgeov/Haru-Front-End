@@ -1,17 +1,19 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
 import Image from "next/image";
 import { ContextUser } from "../../context/context";
-
-import {RxHamburgerMenu} from "react-icons/rx"
-import {BiSolidFlorist, BiBasket, } from "react-icons/bi"
-import {GrClose} from "react-icons/gr"
-import {BsChevronDown, BsFlower1, BsGift} from "react-icons/bs"
+import { RxHamburgerMenu } from "react-icons/rx";
+import { BiSolidFlorist, BiBasket } from "react-icons/bi";
+import { GrClose } from "react-icons/gr";
+import { BsChevronDown, BsFlower1, BsGift } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
-import {IoIosRose} from "react-icons/io";
+import { IoIosRose } from "react-icons/io";
+import { IoLogOutOutline } from "react-icons/io5";
+import { TbShoppingBagSearch } from "react-icons/tb";
+import { confirmationAlert } from "../Alerts/Alert";
 
 const products = [
   {
@@ -46,14 +48,21 @@ const products = [
   },
 ];
 
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user } = useContext(ContextUser);
+  const { user, logout } = useContext(ContextUser);
+
+  const handleLogout = () => {
+    confirmationAlert().then((result) => {
+      if (result.isConfirmed == true) {
+        logout();
+      }
+    });
+  };
 
   return (
     <header>
@@ -63,7 +72,7 @@ export default function Navbar() {
         <div className="flex lg:flex-1">
           <Link href={"/"} className="-m-1.5 p-1.5">
             <span className="sr-only">Haru</span>
-              <Image className="h-12 w-auto" src={logo} alt=""></Image>
+            <Image className="h-12 w-auto" src={logo} alt=""></Image>
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -75,7 +84,7 @@ export default function Navbar() {
             <RxHamburgerMenu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        {(user == null || user.typeUser == "client") ? (
+        {user == null || user.typeUser == "client" ? (
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link
               href={"/"}
@@ -148,23 +157,25 @@ export default function Navbar() {
               Sobre Haru
             </Link>
           </Popover.Group>
-        ) : (<Popover.Group className="hidden lg:flex lg:gap-x-12">
-        <Link
-          href={"/manage-products"}
-          className="text-lg font-semibold leading-6 text-primary">
-          Gestión de Productos
-        </Link>
-        <Link
-          href={"/manage-quotes"}
-          className="text-lg font-semibold leading-6 text-primary">
-          Gestión de Cotizaciones
-        </Link>
-        <Link
-          href={"/manage-orders"}
-          className="text-lg font-semibold leading-6 text-primary">
-          Gestión de Ordenes
-        </Link>
-      </Popover.Group>) }
+        ) : (
+          <Popover.Group className="hidden lg:flex lg:gap-x-12">
+            <Link
+              href={"/manage-products"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Productos
+            </Link>
+            <Link
+              href={"/manage-quotes"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Cotizaciones
+            </Link>
+            <Link
+              href={"/manage-orders"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Ordenes
+            </Link>
+          </Popover.Group>
+        )}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-[10px]">
           <Link
             href="/cart"
@@ -172,7 +183,39 @@ export default function Navbar() {
             <MdShoppingCart className="text-primary" size={35}></MdShoppingCart>
           </Link>
           {user != null || user != undefined ? (
-            <FaUserCircle size={30} className="text-primary"></FaUserCircle>
+            <Popover className="relative">
+              <Popover.Button className="flex items-center gap-x-1 text-lg font-semibold leading-6 text-primary">
+                <FaUserCircle size={30} className="text-primary"></FaUserCircle>
+              </Popover.Button>
+              <Transition
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1">
+                <Popover.Panel className="absolute -left-[80px] w-[200px] top-full z-10 mt-3 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                  <div className="text-primary flex flex-col">
+                    <div className="font-medium pt-[20px] pb-[12px] px-[10px] hover:bg-gray-100 cursor-pointer">
+                      <Link
+                        className="flex items-center gap-[10px]"
+                        href={"/view-orders"}>
+                        <TbShoppingBagSearch size={35} />
+                        Ver Mis Pedidos
+                      </Link>
+                    </div>
+                    <div
+                      onClick={(e) => {
+                        handleLogout();
+                      }}
+                      className="font-medium pb-[20px] pt-[12px] px-[10px] flex items-center gap-[10px] hover:bg-gray-100 cursor-pointer">
+                      <IoLogOutOutline size={35} />
+                      Cerrar Sesión
+                    </div>
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </Popover>
           ) : (
             <Link
               className="bg-primary py-[5px] px-[15px] text-white rounded-lg"

@@ -1,3 +1,4 @@
+import showSweetAlert from "@/components/Alerts/Alert";
 import { ContextUser } from "@/context/context";
 import "@/styles/globals.css";
 import Router from "next/router";
@@ -52,7 +53,8 @@ export default function App({ Component, pageProps }) {
 
   const logout = () => {
     setUser(null);
-    localStorage.setItem("user", undefined);
+    localStorage.setItem("user", user);
+    showSweetAlert("Sesión Cerrada!", "success")
   };
 
   return (

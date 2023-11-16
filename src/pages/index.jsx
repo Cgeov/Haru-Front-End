@@ -18,18 +18,27 @@ export default function Home() {
   headers.append("GET", "POST", "OPTIONS");
 
   useEffect(() => {
-    fetch("http://localhost:5000/service/getCollection", {
+    fetch("http://localhost:5000/service/getDocsFilter", {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
         collection: "products",
+        filter: [{
+            field: 'featured', 
+            comparison: '==',
+            value: 'Sí'
+        }]
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setFlowers(data);
+        console.log(data)
+        if(data.hasOwnProperty("error")){
+          setFlowers([]);
+        }else{
+          setFlowers(data);
+        }
         setLoading(false);
-        console.log(data);
       })
       .catch((error) => {
         setLoading(false);

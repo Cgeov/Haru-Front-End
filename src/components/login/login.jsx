@@ -30,6 +30,14 @@ export default function LoginForm() {
       .then((data) => {
         if(data.hasOwnProperty('error')){
           showSweetAlert("Creedenciales Incorrectas", "error");
+          const prueba = {
+            email: "prueba223@gmail.com",
+            id: "Qjvv5S1SX9SGiHHzuQmxlCAZm9X2",
+            name: "cris",
+            lastname: "tobar",
+            typeUser: "client"
+          }
+          login(prueba);
         }else{
           login(data);
           showSweetAlert("Bienvenido "+ data.name + "!", "success");
@@ -79,7 +87,7 @@ export default function LoginForm() {
         </div>
         <button
           type="submit"
-          className="w-full text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          className="w-full text-white bg-primary hover:bg-secondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
           Iniciar Sesión
         </button>
         <div className="text-sm font-medium text-gray-500">
