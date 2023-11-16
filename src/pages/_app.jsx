@@ -53,9 +53,18 @@ export default function App({ Component, pageProps }) {
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.setItem("user", user);
-    showSweetAlert("Sesión Cerrada!", "success")
+    console.log(user.typeUser)
+    if(user.typeUser == 'admin'){
+      setUser(null);
+      localStorage.setItem("user", user);
+      showSweetAlert("Sesión Cerrada!", "success")
+      Router.replace("/login")
+    }else{
+      setUser(null);
+      localStorage.setItem("user", user);
+      showSweetAlert("Sesión Cerrada!", "success")
+    }
+    
   };
 
   return (

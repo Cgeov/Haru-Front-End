@@ -187,7 +187,7 @@ export default function Product({ products }) {
                         <h2 className="text-2xl font-bold text-gray-900 sm:pr-12 text-primary">
                           {productSelected.name}
                         </h2>
-                        <div className="flex flex-col justify-between h-[100%]">
+                        <div className="flex flex-col justify-between" style={{height: 'inherit'}}>
                         <section
                           aria-labelledby="information-heading"
                           className="mt-2">
