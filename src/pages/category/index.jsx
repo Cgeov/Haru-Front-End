@@ -1,32 +1,24 @@
 import React, { useState, Fragment, useContext, useEffect } from "react";
 import Star from "@/components/stars/stars";
 import { BsCart3 } from "react-icons/bs";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
-import logo from "../../assets/img/logoText.png";
-import Link from "next/link";
-import Image from "next/image";
 import { ContextUser } from "../../context/context";
 import Layout from "../layout";
-import {RxHamburgerMenu} from "react-icons/rx"
-import {BiPieChartAlt, BiSolidFlorist, BiBasket, } from "react-icons/bi"
-import {GrClose} from "react-icons/gr"
-import {BsChevronDown, BsFillTelephoneFill, BsFlower1, BsGift} from "react-icons/bs"
-import { MdShoppingCart } from "react-icons/md";
-import { FaUserCircle } from "react-icons/fa";
-import {IoIosRose} from "react-icons/io";
+import showSweetAlert from "@/components/Alerts/Alert";
+import { useRouter } from "next/router";
+
+
 
 export default function Category(){
 
-    const { user, cart, cartProducts, cleanCart } = useContext(ContextUser);
-    const [flowers, setFlowers] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    const body = {
-        collection: "products", 
-        category: 'Canasta'
-    }
 
-    let headers = new Headers();
+  const { user, cart, cartProducts, cleanCart } = useContext(ContextUser);
+  const [flowers, setFlowers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  
+  
+  let headers = new Headers();
 
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
@@ -35,6 +27,7 @@ export default function Category(){
   headers.append("GET", "POST", "OPTIONS");
 
   useEffect(() => {
+    
     fetch("http://localhost:5000/service/getDocsFilter", {
       method: "POST",
       headers: headers,
@@ -51,12 +44,12 @@ export default function Category(){
       .then((data) => {
         setFlowers(data);
         setLoading(false);
-        console.log(data);
+        
       })
       .catch((error) => {
         setLoading(false);
       });
-      console.log()
+      
   }, []);
 
   //Añadir los productos al carrito
@@ -102,6 +95,7 @@ export default function Category(){
                 <p className="text-primary text-base dark:text-dark-6">
                 En Haru los las flores son una forma de expresar sentimientos, celebrar ocasiones o decorar espacios con flores naturales. Descubre lo que tenemos para ofrecerte
                 </p>
+                
               </div>
             </div>
           </div>
@@ -111,7 +105,7 @@ export default function Category(){
       </section>
       <div className="mt-[50px] mb-[20px] mx-[50px]">
       <h2 className="text-2xl font-bold text-primary ml-[60px]">
-        Nuestros floweros
+        Nuetras flores
       </h2>
       <div className='grid grid-rows-4 grid-flow-col gap-4'>
       {flowers.map((flower) => (

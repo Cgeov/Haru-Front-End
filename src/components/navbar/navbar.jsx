@@ -4,7 +4,6 @@ import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
 import Image from "next/image";
 import { ContextUser } from "../../context/context";
-
 import {RxHamburgerMenu} from "react-icons/rx"
 import {BiPieChartAlt, BiSolidFlorist, BiBasket, } from "react-icons/bi"
 import {GrClose} from "react-icons/gr"
@@ -12,12 +11,14 @@ import {BsChevronDown, BsFillTelephoneFill, BsFlower1, BsGift} from "react-icons
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import {IoIosRose} from "react-icons/io";
+import Category from "@/pages/category";
+
 
 const products = [
   {
     name: "Mixtos",
     description: "Combina tus flores preferidas",
-    href: "/category",
+    href: '/category',
     icon: BiSolidFlorist,
   },
   {
@@ -61,7 +62,7 @@ export default function Navbar() {
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Haru</span>
             <Image className="h-12 w-auto" src={logo} alt=""></Image>
           </a>
@@ -125,12 +126,11 @@ export default function Navbar() {
                         />
                       </div>
                       <div className="flex-auto">
-                        <a
-                          href={item.href}
-                          className="block font-semibold text-gray-900">
+                        <Link href={`/category?cat=${item.name}`} className="block font-semibold text-gray-900">
+                        
                           {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
+                          
+                        </Link>
                         <p className="mt-1 text-gray-600">{item.description}</p>
                       </div>
                     </div>
@@ -170,7 +170,7 @@ export default function Navbar() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Haru</span>
               <Image className="h-12 w-auto" src={logo} alt=""></Image>
             </a>
@@ -198,17 +198,6 @@ export default function Navbar() {
                           aria-hidden="true"
                         />
                       </Disclosure.Button>
-                      <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...products, ...callsToAction].map((item) => (
-                          <Disclosure.Button
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                            {item.name}
-                          </Disclosure.Button>
-                        ))}
-                      </Disclosure.Panel>
                     </>
                   )}
                 </Disclosure>

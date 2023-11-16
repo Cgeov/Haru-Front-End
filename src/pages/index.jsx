@@ -18,11 +18,16 @@ export default function Home() {
   headers.append("GET", "POST", "OPTIONS");
 
   useEffect(() => {
-    fetch("http://localhost:5000/service/getCollection", {
+    fetch("http://localhost:5000/service/getDocsFilter", {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
         collection: "products",
+        filter: [{
+          field: 'featured', 
+          comparison: '==',
+          value: 'Sí'
+      }]
       }),
     })
       .then((response) => response.json())

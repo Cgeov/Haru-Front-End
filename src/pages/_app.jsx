@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
+
   useEffect(() => {
     getDataUser();
     getDataCart();
