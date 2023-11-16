@@ -1,23 +1,25 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
 import Image from "next/image";
-import { ContextUser } from "../../context/context";
-
-import {RxHamburgerMenu} from "react-icons/rx"
-import {BiPieChartAlt, BiSolidFlorist, BiBasket, } from "react-icons/bi"
-import {GrClose} from "react-icons/gr"
-import {BsChevronDown, BsFillTelephoneFill, BsFlower1, BsGift} from "react-icons/bs"
+import { ContextUser, ContextCat } from "../../context/context";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { BiSolidFlorist, BiBasket } from "react-icons/bi";
+import { GrClose } from "react-icons/gr";
+import { BsChevronDown, BsFlower1, BsGift } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
-import {IoIosRose} from "react-icons/io";
+import { IoIosRose } from "react-icons/io";
+import { IoLogOutOutline } from "react-icons/io5";
+import { TbShoppingBagSearch } from "react-icons/tb";
+import { confirmationAlert } from "../Alerts/Alert";
 
 const products = [
   {
     name: "Mixtos",
     description: "Combina tus flores preferidas",
-    href: '/category',
+    href: "/category",
     icon: BiSolidFlorist,
   },
   {
@@ -53,6 +55,7 @@ function classNames(...classes) {
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout } = useContext(ContextUser);
+  const {cat, productCategory} = useContext(ContextCat);
 
   const handleLogout = () => {
     confirmationAlert().then((result) => {
@@ -61,6 +64,9 @@ export default function Navbar() {
       }
     });
   };
+  useEffect(()=>{
+    productCategory()
+  },[cat]);
 
   return (
     <header>
@@ -68,7 +74,7 @@ export default function Navbar() {
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link href={"/"} className="-m-1.5 p-1.5">
             <span className="sr-only">Haru</span>
             <Image className="h-12 w-auto" src={logo} alt=""></Image>
           </Link>
@@ -113,47 +119,66 @@ export default function Navbar() {
                 />
               </Popover.Button>
 
-            <Transition
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1">
-              <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                <div className="p-4">
-                  {products.map((item) => (
-                    <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <item.icon
-                          className="h-6 w-6 text-gray-600 group-hover:text-secondary"
-                          aria-hidden="true"
-                        />
+              <Transition
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1">
+                <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                  <div className="p-4">
+                    {products.map((item) => (
+                      <div
+                        key={item.name}
+                        className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <item.icon
+                            className="h-6 w-6 text-gray-600 group-hover:text-secondary"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <div className="flex-auto">
+                          <Link
+                            href={`/category?cat=${item.name}`}
+                            className="block font-semibold text-gray-900"
+                          >
+                            {item.name}</Link>
+                          <p className="mt-1 text-gray-600">
+                            {item.description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-auto">
-                        <a
-                          href={item.href}
-                          className="block font-semibold text-gray-900">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-              </Popover.Panel>
-            </Transition>
-          </Popover>
-          <Link
-            href={"/about-us"}
-            className="text-lg font-semibold leading-6 text-primary">
-            Sobre Haru
-          </Link>
-        </Popover.Group>
+                    ))}
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+            <Link
+              href={"/about-us"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Sobre Haru
+            </Link>
+          </Popover.Group>
+        ) : (
+          <Popover.Group className="hidden lg:flex lg:gap-x-12">
+            <Link
+              href={"/manage-products"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Productos
+            </Link>
+            <Link
+              href={"/manage-quotes"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Cotizaciones
+            </Link>
+            <Link
+              href={"/manage-orders"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Ordenes
+            </Link>
+          </Popover.Group>
+        )}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-[10px]">
           <Link
             href="/cart"
@@ -211,7 +236,7 @@ export default function Navbar() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="/" className="-m-1.5 p-1.5">
+            <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Haru</span>
               <Image className="h-12 w-auto" src={logo} alt=""></Image>
             </a>
@@ -240,7 +265,7 @@ export default function Navbar() {
                         />
                       </Disclosure.Button>
                       <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...products, ...callsToAction].map((item) => (
+                        {[...products].map((item) => (
                           <Disclosure.Button
                             key={item.name}
                             as="a"

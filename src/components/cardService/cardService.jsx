@@ -55,7 +55,7 @@ export default function CardService(){
                                 <div className="flex flex-col justify-between w-[45%] min-w-[190px]">
                                     <h3 className="text-primary text-5xl">{service.title}</h3>
                                     <p className="text-primary">{service.description}</p>
-                                    <a href="/quote" class="w-full">
+                                    <a href="/quote" className="w-full">
                                     <button className="rounded-md bg-primary py-3 px-6 text-white font-bold" >Ver más</button>
                                     </a>
                                 </div>

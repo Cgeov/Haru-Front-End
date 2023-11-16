@@ -23,6 +23,11 @@ export default function Home() {
       headers: headers,
       body: JSON.stringify({
         collection: "products",
+        filter: [{
+            field: 'featured', 
+            comparison: '==',
+            value: 'Sí'
+        }]
       }),
     })
       .then((response) => response.json())
