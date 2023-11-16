@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ModalDetails from "../modal/ModalDetails"
+import { Checkbox } from "flowbite-react";
+import { Input } from "postcss";
+import showSweetAlert from "../Alerts/Alert";
 
 
 
-const ProductList = ({ quotes }) => {
+const QuotesList = ({ quotes }) => {
   //Datos de la cotizacióm
   const [idDocument, setIdDocument] = useState('')
   const [firstNameQuote, setFirstNameQuote] = useState('')
@@ -12,6 +15,32 @@ const ProductList = ({ quotes }) => {
   const [phoneQuote, setPhoneQuote] = useState('')
   const [messageQuote, setMessageQuote] = useState('')
   const [imgQuote, setImgQuote] = useState('')
+  const [estadoLecturaQuote, setEstadoLecturaQuote] = useState('')
+
+  //contenedor de quotes
+  const [quotesobj, setQuotesobj] = useState(quotes);
+
+  //control checkbox
+  const [isChecked, setIsChecked] = useState(false);
+
+  //Contenedores de para quote modificado
+  const [idDocumentEDIT, setIdDocumentEDIT] = useState('')
+
+  const bodyObj = {
+    collection: "quotes",
+    id: idDocumentEDIT,
+    document: {
+      firstName: firstNameQuote,
+      lastName: lastNameQuote,
+      message: messageQuote,
+      phone: phoneQuote,
+      email: emailQuote,
+      img: imgQuote,
+      leido: Boolean(true)
+    }
+  }
+
+
 
   //Contreol de  modales
   const [isOpenModalSeeDetails, setIsOpenModalSeeDetails] = useState(false)
@@ -31,34 +60,52 @@ const ProductList = ({ quotes }) => {
   headers.append("Access-Control-Allow-Credentials", "true");
   headers.append("GET", "POST", "OPTIONS");
 
+  const getQuotes = async () => {
+    await fetch("http://localhost:5000/service/getDoc", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFirstNameQuote(data.firstName)
+        setLastNameQuote(data.lastName)
+        setPhoneQuote(data.phone)
+        setEmailQuote(data.email)
+        setMessageQuote(data.message)
+        setImgQuote(data.img)
+        setLoadingData(!loadingData)
+        setIdDocument('')
+        setEstadoLecturaQuote(data.leido)
+      })
+      .catch((error) => {
+      });
+
+  }
+  //funcion para actualizar datos
+  const updateQuotes = async () => {
+
+
+    const body = {
+      collection: "quotes",
+
+    };
+    const res = await axios.post('http://localhost:5000/service/getCollection', body)
+    setQuotesobj(res.data);
+  }
+
 
   useEffect(() => {
     if (idDocument !== "") {
+      getQuotes();
 
-      fetch("http://localhost:5000/service/getDoc", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(body),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setFirstNameQuote(data.firstName)
-          setLastNameQuote(data.lastName)
-          setPhoneQuote(data.phone)
-          setEmailQuote(data.email)
-          setMessageQuote(data.message)
-          setImgQuote(data.img)
-          setLoadingData(!loadingData)
-          setIdDocument('')
-        })
-        .catch((error) => {
-        });
     }
   }, [isOpenModalSeeDetails]);
 
 
   const handleSeeDetails = (id) => {
     setIdDocument(id)
+    setIdDocumentEDIT(id)
 
   }
   const handleModalSeeDetails = () => {
@@ -72,10 +119,45 @@ const ProductList = ({ quotes }) => {
 
   }
 
+  //toshi
+  const handleCotizacionEstado = async (e) => {
+    e.preventDefault();
+    const res = await axios.put('http://localhost:5000/service/update', bodyObj)
+
+    handleCerrar();
+
+  }
+
+  const handleOnChange = () => {
+    setIsChecked(!isChecked);
+    filtroEstado();
+
+  }
+
+
+  const filtroEstado = () => {
+
+    if (isChecked == false) {
+
+      const quotesobjfiltrado = quotesobj.filter(quote => quote.leido === false);
+      setQuotesobj(quotesobjfiltrado);
+    }
+    else {
+      updateQuotes();
+
+
+    }
+
+  }
+
   return (
     <>
-      <div className="mt-10">
+      <div className="mt-7">
         <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Cotizaciones</h1>
+        <div className="flex justify-center">
+          <h3 className="text-base font-semibold mx-2 text-black">Ver solo las pendientes: </h3>
+          <input className="mt-1" type="checkbox" checked={isChecked} onChange={handleOnChange} />
+        </div>
         <div className="flex justify-center">
           <table className="table-auto mt-5">
             <thead className="text-white bg-primary">
@@ -90,7 +172,7 @@ const ProductList = ({ quotes }) => {
               </tr>
             </thead>
             <tbody className="white  text-black">
-              {quotes.map((quote, index) => (
+              {quotesobj.map((quote, index) => (
                 <tr key={quote.id}>
                   <td className="border border-black px-2 text-center">{index + 1}</td>
                   <td className="border border-black px-3 w-30 text-center">{quote.firstName} </td>
@@ -136,12 +218,12 @@ const ProductList = ({ quotes }) => {
               </div>
               <p className="text-black w-30 font-bold underline mb-3 mt-3">Imagenes adjuntas</p>
               <div className="px-70 overflow-hidden">
-                <img src={imgQuote} alt="" width="200" height="200"/>
+                <img src={imgQuote} alt="" width="200" height="200" />
               </div>
               <div className="space-x-2 mt-4">
-                      <button  className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Marcar como leído</button>
-                      <button  className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar</button>
-                    </div>
+                <button onClick={handleCotizacionEstado} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Marcar como leído</button>
+                <button className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar</button>
+              </div>
             </div>
           </ModalDetails>
         )
@@ -151,4 +233,4 @@ const ProductList = ({ quotes }) => {
   );
 };
 
-export default ProductList;
+export default QuotesList;
