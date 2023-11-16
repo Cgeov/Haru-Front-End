@@ -1,13 +1,13 @@
-import QuotesList from "@/components/quote/quotes-list";
+import OrdersList from "@/components/order/orders-list";
 import Layout from "../layout";
 import React, { useState, useEffect } from "react";
 
 
-export default function ManageQuotes(){
-    const [quotes, setQuotes] = useState(null);
+export default function ManageOrders(){
+    const [orders, setOrders] = useState(null);
     const [loading, setLoading] = useState(true);
     const body = {
-        collection: "quotes",
+        collection: "orders",
     };
     let headers = new Headers();
 
@@ -25,7 +25,7 @@ export default function ManageQuotes(){
         })
         .then((response) => response.json())
         .then((data) => {
-            setQuotes(data);
+            setOrders(data);
             setLoading(false);
             console.log(data);
         })
@@ -38,7 +38,7 @@ export default function ManageQuotes(){
          <div>Cargando ..</div>
         ) : (
             <>
-                <QuotesList quotes={quotes}></QuotesList>
+                <OrdersList orders={orders}></OrdersList>
             </>
          )}
     </Layout>;

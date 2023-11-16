@@ -9,7 +9,7 @@ const Modal = ({ handleModal, Title = "", children }) => {
                 <div className="flex justify-center">
                     <h1 className="text-black p-5 font-bold uppercase">{Title}</h1>
                 </div>
-                <div className="flex justify-center items-center h-full">
+                <div className="flex items-start h-full">
                     {children}
                 </div>
             </div>
