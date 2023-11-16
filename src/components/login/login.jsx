@@ -41,7 +41,7 @@ export default function LoginForm() {
 
   return (
     <div className="w-full my-20 mx-auto max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
-      <form className="space-y-6" onSubmit={handleSubmitSignUp}>
+      <form className="space-y-6" onSubmit={(e) => {handleSubmitSignUp(e)}}>
         <h5 className="text-xl font-medium text-primary">
           Iniciar Sesión en nuestra plataforma
         </h5>
