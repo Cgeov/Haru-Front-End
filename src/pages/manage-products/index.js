@@ -1,18 +1,20 @@
 import ProductList from "@/components/product/product-list";
 import Layout from "../layout";
 import React, { useState, useEffect, useContext } from "react";
-import { useRouter } from "next/router";
 import { ContextUser } from "@/context/context";
+import { useRouter } from "next/router";
 
-export default function ManageProducts() {
-  const router = useRouter();
-  const {user} = useContext(ContextUser)
-  const [flowers, setFlowers] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const body = {
-    collection: "products",
-  };
-  let headers = new Headers();
+
+export default function ManageProducts(){
+    const [flowers, setFlowers] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const { user, logout } = useContext(ContextUser);
+    const router = useRouter();
+
+    const body = {
+        collection: "products",
+    };
+    let headers = new Headers();
 
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");

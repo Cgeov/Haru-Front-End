@@ -100,12 +100,12 @@ export default function Category() {
   return (
     <Layout>
 
-      <section className="pt-20 pb-12 lg:pt-[100px] lg:pb-[90px] dark:bg-dark">
+      <section className="pt-20 pb-12 lg:pt-[50px] lg:pb-[30px] dark:bg-dark">
         <div className="container mx-auto">
           <div className="flex flex-wrap -mx-4">
             <div className="w-full px-4">
               <div className="mx-auto mb-[60px] max-w-[510px] text-center">
-                <span className="text-primary mb-2 block text-lg font-semibold">
+                <span className="text-primary  block text-lg font-semibold">
                   Productos de
                 </span>
                 <h2 className="text-primary mb-3 text-3xl leading-[1.208] font-bold sm:text-4xl md:text-[40px]">
@@ -123,7 +123,7 @@ export default function Category() {
         </div>
       </section>
       <section class="py-10 bg-gray-100">
-        <div class="mx-auto grid max-w-6xl  grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div class="mx-auto grid max-w-7xl  grid-cols-1 gap-6 p-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
           {flowers.map((flores) => (
             <div

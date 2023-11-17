@@ -6,6 +6,7 @@ import showSweetAlert from "../Alerts/Alert";
 export default function LoginForm() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+  const { user, logout } = useContext(ContextUser);
 
   const {login} = useContext(ContextUser);
 
