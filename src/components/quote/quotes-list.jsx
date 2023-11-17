@@ -3,7 +3,7 @@ import ModalDetails from "../modal/ModalDetails"
 import { Checkbox } from "flowbite-react";
 import { Input } from "postcss";
 import showSweetAlert from "../Alerts/Alert";
-
+import axios from "axios";
 
 
 const QuotesList = ({ quotes }) => {
@@ -14,7 +14,7 @@ const QuotesList = ({ quotes }) => {
   const [emailQuote, setEmailQuote] = useState('')
   const [phoneQuote, setPhoneQuote] = useState('')
   const [messageQuote, setMessageQuote] = useState('')
-  const [imgQuote, setImgQuote] = useState('')
+  const [imgQuote, setImgQuote] = useState([])
   const [estadoLecturaQuote, setEstadoLecturaQuote] = useState('')
 
   //contenedor de quotes
@@ -74,6 +74,7 @@ const QuotesList = ({ quotes }) => {
         setEmailQuote(data.email)
         setMessageQuote(data.message)
         setImgQuote(data.img)
+        console.log(data.img)
         setLoadingData(!loadingData)
         setIdDocument('')
         setEstadoLecturaQuote(data.leido)
@@ -181,7 +182,7 @@ const QuotesList = ({ quotes }) => {
                   <td className="border border-black px-5 text-center">{quote.email}</td>
                   <td className="border border-black px-5 w-60 text-center overflow-hidden whitespace-normal break-all">{quote.message}</td>
                   <td className="border border-black px-5">
-                    <div className="space-x-2">
+                    <div className="space-x-3 p-3 ">
                       <button onClick={() => { handleSeeDetails(quote.id), handleModalSeeDetails() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Ver Detalles</button>
                       <button onClick={() => handleDelete(quote.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                     </div>
@@ -196,31 +197,36 @@ const QuotesList = ({ quotes }) => {
         isOpenModalSeeDetails && (
           <ModalDetails handleModal={handleCerrar} Title="Datos de Cotización">
             <div className="">
-              <div className="flex items-center mb-2">
-                <p className="text-black font-bold">Nombre: </p>
-                <p className="text-black w-20 ml-2 ">{firstNameQuote}</p>
+              <div className="flex items-center mb-3 ml-1">
+                <p className="text-primary font-bold underline">Cliente: </p>
+                <p className="text-black w-30 ml-2 font-bold">{firstNameQuote + " " + lastNameQuote}</p>
               </div>
-              <div className="flex items-center mb-2">
-                <p className="text-black font-bold">Apellido: </p>
-                <p className="text-black w-20 ml-2 ">{lastNameQuote}</p>
+              <div className="flex justify-between mb-3 ml-1">
+                <div className="flex">
+                  <p className="text-primary  font-bold underline">Correo: </p>
+                  <p className="text-black w-30 ml-2 font-bold">{emailQuote}</p>
+                </div>
+                <div className="flex">
+                  <p className="text-primary  font-bold underline">Teléfono: </p>
+                  <p className="text-black w-30 ml-2 font-bold">{phoneQuote}</p>
+                </div>
               </div>
-              <div className="flex items-center mb-2">
-                <p className="text-black font-bold">Correo: </p>
-                <p className="text-black w-20 ml-2 ">{emailQuote}</p>
+              <p className="text-primary font-bold underline mb-3 ml-1">Mensaje</p>
+              <div className="px-70 overflow-hidden ml-1">
+                <p className="text-black whitespace-normal break-all font-bold">{messageQuote}</p>
               </div>
-              <div className="flex items-center mb-2">
-                <p className="text-black font-bold">Teléfono: </p>
-                <p className="text-black w-20 ml-2 ">{phoneQuote}</p>
-              </div>
-              <p className="text-black w-20 font-bold underline mb-3">Mensaje</p>
-              <div className="px-70 overflow-hidden">
-                <p className="text-black whitespace-normal break-all">{messageQuote}</p>
-              </div>
-              <p className="text-black w-30 font-bold underline mb-3 mt-3">Imagenes adjuntas</p>
-              <div className="px-70 overflow-hidden">
-                <img src={imgQuote} alt="" width="200" height="200" />
-              </div>
-              <div className="space-x-2 mt-4">
+              {imgQuote.length > 0 && (<>
+                <p className="text-primary w-30 font-bold underline mb-4 mt-3 ml-1">Imagenes adjuntas</p>
+                <div className="space-x-3  flex flex-wrap -mx-3 ml-1">
+                {imgQuote.map((img, index) => (
+                  <div key={index} className="px-70 overflow-hidden">
+                    <img src={img} alt="" width="200" height="200" />
+                  </div>))}
+                </div>
+                
+              </>
+              )}
+              <div className="space-x-2 mt-6">
                 <button onClick={handleCotizacionEstado} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Marcar como leído</button>
                 <button className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar</button>
               </div>
