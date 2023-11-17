@@ -3,7 +3,7 @@ import ModalDetails from "../modal/ModalDetails"
 import { Checkbox } from "flowbite-react";
 import { Input } from "postcss";
 import showSweetAlert from "../Alerts/Alert";
-
+import axios from "axios";
 
 
 const QuotesList = ({ quotes }) => {
