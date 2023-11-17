@@ -3,7 +3,7 @@ import ModalDetails from "../modal/ModalDetails"
 import { Checkbox } from "flowbite-react";
 import { Input } from "postcss";
 import showSweetAlert from "../Alerts/Alert";
-import axios from "axios";
+
 
 
 const QuotesList = ({ quotes }) => {
@@ -15,7 +15,6 @@ const QuotesList = ({ quotes }) => {
   const [phoneQuote, setPhoneQuote] = useState('')
   const [messageQuote, setMessageQuote] = useState('')
   const [imgQuote, setImgQuote] = useState([])
-  const [urls, setUrls] = useState([])
   const [estadoLecturaQuote, setEstadoLecturaQuote] = useState('')
 
   //contenedor de quotes
@@ -84,15 +83,6 @@ const QuotesList = ({ quotes }) => {
       });
 
   }
-
-  useEffect(() => {
-    const urls = [];
-    imgQuote.forEach(url => {
-      urls.push(url.replace('.crop', ''));
-    });
-    setUrls(urls)
-
-  }, [imgQuote])
   //funcion para actualizar datos
   const updateQuotes = async () => {
 
@@ -155,7 +145,10 @@ const QuotesList = ({ quotes }) => {
     }
     else {
       updateQuotes();
+
+
     }
+
   }
 
   return (
@@ -225,11 +218,12 @@ const QuotesList = ({ quotes }) => {
               {imgQuote.length > 0 && (<>
                 <p className="text-primary w-30 font-bold underline mb-4 mt-3 ml-1">Imagenes adjuntas</p>
                 <div className="space-x-3  flex flex-wrap -mx-3 ml-1">
-                  {urls.map((img, index) => (
-                    <div key={index} className="px-70 overflow-hidden">
-                      <img src={img} alt="" width="200" height="200" />
-                    </div>))}
+                {imgQuote.map((img, index) => (
+                  <div className="px-70 overflow-hidden">
+                    <img key={index} src={img} alt="" width="200" height="200" />
+                  </div>))}
                 </div>
+                
               </>
               )}
               <div className="space-x-2 mt-6">

@@ -1,5 +1,5 @@
 import showSweetAlert from "@/components/Alerts/Alert";
-import { ContextUser } from "@/context/context";
+import { ContextUser, ContextCat } from "@/context/context";
 import "@/styles/globals.css";
 import Router from "next/router";
 import { useEffect, useState } from "react";
@@ -7,16 +7,17 @@ import { useEffect, useState } from "react";
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
+  const [cat, setCat] = useState("");
+
   useEffect(() => {
     getDataUser();
     getDataCart();
-    localStorage.clear()
   }, []);
 
   function getDataUser() {
     if (localStorage.getItem("user") != undefined || localStorage.getItem("user") != null) {
       setUser(localStorage.getItem("user"));
-    }else{
+    } else {
       setUser(null);
     }
   }
@@ -38,12 +39,12 @@ export default function App({ Component, pageProps }) {
     console.log(userData)
     setUser(userData);
     localStorage.setItem("user", userData);
-    if(userData.typeUser== 'admin'){
+    if (userData.typeUser == 'admin') {
       Router.replace("/manage-products");
-    }else{
+    } else {
       Router.replace("/");
     }
-    
+
   };
 
   const cartProducts = (cartData) => {
@@ -52,25 +53,35 @@ export default function App({ Component, pageProps }) {
   };
 
   const logout = () => {
-    console.log(user.typeUser)
-    if(user.typeUser == 'admin'){
+    if (user.typeUser == 'admin') {
       setUser(null);
       localStorage.setItem("user", user);
       showSweetAlert("Sesión Cerrada!", "success")
       Router.replace("/login")
-    }else{
+    } else {
       setUser(null);
       localStorage.setItem("user", user);
       showSweetAlert("Sesión Cerrada!", "success")
+      Router.replace("/")
     }
-    
+
+  };
+  const productCategory = (prodCategory) => {
+    setCat(prodCategory)
   };
 
   return (
-    <ContextUser.Provider
-      value={{ user, cart, login, logout, cartProducts }}
-    >
-      <Component {...pageProps} />
-    </ContextUser.Provider>
+    <>
+      <ContextUser.Provider
+        value={{ user, cart, login, logout, cartProducts }}
+      >
+        <ContextCat.Provider value={{cat, productCategory}}>
+        <Component {...pageProps} />
+        </ContextCat.Provider>
+
+      </ContextUser.Provider>
+
+
+    </>
   );
 }

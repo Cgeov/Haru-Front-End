@@ -9,6 +9,7 @@ import showSweetAlert from "../Alerts/Alert";
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { GrClose } from "react-icons/gr";
 
+
 const responsiveSettings = [
   {
     breakpoint: 1300,
@@ -73,6 +74,7 @@ export default function Product({ products }) {
     showSweetAlert("Producto agregado a tu carrito.", "success");
     console.log(localStorage.getItem("cart"));
   };
+
 
   return (
     <div className="mt-[50px] mb-[20px] mx-[50px]">
