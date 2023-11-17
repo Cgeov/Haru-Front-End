@@ -324,9 +324,9 @@ const ProductList = ({ products }) => {
   return (
     <>
       <div className="mt-10">
-        <h1 className="text-2xl font-semibold mx-10 mb-10 text-black text-primary">Lista de Productos</h1>
+        <h1 className="text-2xl font-semibold mx-10 mb-10  text-primary">Lista de Productos</h1>
         <div className="mx-10">
-          <button onClick={() => { handleModalNew() }} className="text-white bg-primary px-2 py-1 rounded hover:bg-secondary font-bold">Nuevo Producto</button>
+          <button onClick={() => { handleModalNew() }} className="text-white bg-primary px-2 py-1 rounded hover:bg-rose-800 font-bold">Nuevo Producto</button>
         </div>
         <div className="flex justify-center">
           <table className="table-auto mt-5">
@@ -358,7 +358,7 @@ const ProductList = ({ products }) => {
                   <td className="border border-black px-3 w-20 text-center">{product.featured}</td>
                   <td className="border border-black px-5">
                     <div className="space-x-2">
-                      <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Editar</button>
+                      <button onClick={() => { handleEdit(product.id), handleModalEdit() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-rose-800">Editar</button>
                       <button onClick={() => handleDelete(product.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                     </div>
                   </td>

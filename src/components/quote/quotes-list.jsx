@@ -144,7 +144,7 @@ const QuotesList = ({ quotes }) => {
 
     handleCerrar();
     //Alerta
-    showSweetAlert("¡La cotizacion a sido Leida!","success");
+    showSweetAlert("¡La cotización ha sido Leída!","success");
     handleUpdateQuotetList();
   }
 
@@ -157,7 +157,7 @@ const QuotesList = ({ quotes }) => {
       setquoteToShow(results);
     }else if(type == 'notRead'){
       const results = quotesobj.filter((result) => {
-        return !result.hasOwnProperty('leido');
+        return result.leido === false;
       });
       setquoteToShow(results);
     }else{
@@ -180,7 +180,7 @@ const QuotesList = ({ quotes }) => {
   return (
     <>
       <div className="mt-7">
-        <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Cotizaciones</h1>
+        <h1 className="text-2xl font-semibold mx-10 mb-10 text-primary">Lista de Cotizaciones</h1>
         <div className="flex gap-[20px] justify-center">
           <div onClick={()=>{filtroEstado('all')}} className={leidoStatus == 'all' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4': 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Todos</div>
           <div onClick={()=>{filtroEstado('read')}} className={leidoStatus == 'read'? 'bg-primary rounded-lg cursor-pointer px-6 py-4' :'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Leidos</div>
@@ -211,7 +211,7 @@ const QuotesList = ({ quotes }) => {
                   <td className="border border-black px-5 w-60 text-center overflow-hidden whitespace-normal break-all">{quote.message}</td>
                   <td className="border border-black px-5">
                     <div className="space-x-3 p-3 ">
-                      <button onClick={() => { handleSeeDetails(quote.id), handleModalSeeDetails() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Ver Detalles</button>
+                      <button onClick={() => { handleSeeDetails(quote.id), handleModalSeeDetails() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-rose-800">Ver Detalles</button>
                       <button onClick={() => handleDelete(quote.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                     </div>
                   </td>
@@ -255,7 +255,7 @@ const QuotesList = ({ quotes }) => {
               </>
               )}
               <div className="space-x-2 mt-6">
-                <button onClick={handleCotizacionEstado} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Marcar como leído</button>
+                <button onClick={handleCotizacionEstado} className=" text-white bg-primary px-2 py-1 rounded hover:bg-rose-800">Marcar como leído</button>
                 <button className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar</button>
               </div>
             </div>

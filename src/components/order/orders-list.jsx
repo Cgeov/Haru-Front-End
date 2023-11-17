@@ -60,6 +60,11 @@ const OrdersList = ({ orders }) => {
         id: idDocument
     };
 
+    useEffect(() => {
+        setorderToShow([...orderList]);
+    }, [orderList]);
+
+
     let headers = new Headers();
 
     headers.append("Content-Type", "application/json");
@@ -147,6 +152,11 @@ const OrdersList = ({ orders }) => {
         //Se vacia el id de la orden para evitar que se active el useEffect
         setAhora(false)
         setIdDocument('')
+        const results = orderList.filter((result) => {
+            return result.status == 'pendidg';
+        })
+        setorderToShow(results);
+        setStatusOrder('all')
         //Activa la alerta
         //setProductSuccessEdit(!isProductSuccessEdit)
     }
@@ -205,7 +215,6 @@ const OrdersList = ({ orders }) => {
     //Alertas
     const handleMostrarConfirmacion = async (estado, titulo, mensaje) => {
         const result = await confirmationAlert(titulo);
-
         if (result.isConfirmed) {
             handleSubmitChangeStatus(estado)
             showSweetAlert(mensaje, "success");
@@ -216,34 +225,34 @@ const OrdersList = ({ orders }) => {
 
     //Filtro
     const filtroEstado = (type) => {
-    setStatusOrder(type);
-    if(type == 'success'){
-      const results = orderList.filter((result) => {
-        return result.status == 'success';
-      });
-      setorderToShow(results);
-    }else if(type == 'pending'){
-      const results = orderList.filter((result) => {
-        return result.status == 'pending';
-      });
-      setorderToShow(results);
-    }else if(type == 'cancel'){
-        const results = orderList.filter((result) => {
-          return result.status == 'cancel';
-        });
-        setorderToShow(results);
-      }
-    else{
-      setorderToShow(orderList);
+        setStatusOrder(type);
+        if (type == 'success') {
+            const results = orderList.filter((result) => {
+                return result.status == 'success';
+            });
+            setorderToShow(results);
+        } else if (type == 'pending') {
+            const results = orderList.filter((result) => {
+                return result.status == 'pending';
+            });
+            setorderToShow(results);
+        } else if (type == 'cancel') {
+            const results = orderList.filter((result) => {
+                return result.status == 'cancel';
+            });
+            setorderToShow(results);
+        }
+        else {
+            setorderToShow(orderList);
+        }
     }
-}
 
 
     return (
         <>
 
             <div className="mt-7">
-                <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Ordenes</h1>
+                <h1 className="text-2xl font-semibold mx-10 mb-10 text-primary">Lista de Ordenes</h1>
                 <div className="flex gap-[20px] justify-center">
                     <div onClick={() => { filtroEstado('all') }} className={statusOrder == 'all' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4' : 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Todos</div>
                     <div onClick={() => { filtroEstado('pending') }} className={statusOrder == 'pending' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4' : 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Pendientes</div>
@@ -270,7 +279,7 @@ const OrdersList = ({ orders }) => {
                                     <td className="border border-black px-3 w-30 text-center">{(order.status === "pending" ? "Pendiente" : order.status === "success" ? "Completado" : "Cancelado")} </td>
                                     <td className="border border-black px-5">
                                         <div className="space-x-3 p-3">
-                                            <button onClick={() => { handleSeeDetails(order.id), handleModalSeeDetails() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Ver Detalles</button>
+                                            <button onClick={() => { handleSeeDetails(order.id), handleModalSeeDetails() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-rose-800">Ver Detalles</button>
                                             <a href={order.invoice}>
                                                 <button className="bg-secondary text-white px-2 py-1  rounded hover:bg-red-600">Descargar Factura</button>
                                             </a>
@@ -297,7 +306,7 @@ const OrdersList = ({ orders }) => {
                             <div className="flex justify-between">
                                 <div className="flex items-center mb-2 ml-5">
                                     <p className="text-primary underline font-bold">Cliente: </p>
-                                    <p className="text-black w-30 ml-2 font-bold ">{name + ' ' + lastName}dljssadldsldskaj</p>
+                                    <p className="text-black w-30 ml-2 font-bold ">{name + ' ' + lastName}</p>
                                 </div>
                                 <div className="flex items-center mb-2">
                                     <p className="text-primary underline font-bold">Correo: </p>
@@ -352,7 +361,7 @@ const OrdersList = ({ orders }) => {
                             <div className="space-x-2 mt-4 ml-5 mb-2 flex justify-start">
                                 {status === "pending" && (
                                     <>
-                                        <button onClick={() => { handleMostrarConfirmacion("success", "¿Desea completar el pedido?", "¡Entrega completada con éxito!") }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Completar</button>
+                                        <button onClick={() => { handleMostrarConfirmacion("success", "¿Desea completar el pedido?", "¡Entrega completada con éxito!") }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-rose-800">Completar</button>
                                         <button onClick={() => { handleMostrarConfirmacion("cancel", "¿Desea cancelar el pedido?", "¡Entrega cancelada con éxito!") }} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar orden</button>
                                     </>
                                 )}
