@@ -18,7 +18,7 @@ const QuotesList = ({ quotes }) => {
 
   //contenedor de quotes
   const [quotesobj, setQuotesobj] = useState(quotes);
-  const [quoteToShow, setquoteToShow] = useState([...quotesobj]);
+  const [quoteToShow, setquoteToShow] = useState(quotesobj);
 
   //control checkbox
   const [isChecked, setIsChecked] = useState(false);
