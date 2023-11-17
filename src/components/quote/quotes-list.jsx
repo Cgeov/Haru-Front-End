@@ -3,6 +3,7 @@ import ModalDetails from "../modal/ModalDetails"
 import axios from "axios";
 import showSweetAlert,{DeleteQuote} from "../Alerts/Alert";
 
+
 const QuotesList = ({ quotes }) => {
   //Datos de la cotizacióm
   const [idDocument, setIdDocument] = useState('')

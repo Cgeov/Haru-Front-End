@@ -155,7 +155,7 @@ export default function Navbar() {
               </Transition>
             </Popover>
             <Link
-              href={"/about-us"}
+              href={"#about"}
               className="text-lg font-semibold leading-6 text-primary">
               Sobre Haru
             </Link>
