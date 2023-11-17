@@ -240,7 +240,16 @@ const QuotesList = ({ quotes }) => {
               </>
               )}
               <div className="space-x-2 mt-6">
-                <button onClick={handleCotizacionEstado} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Marcar como leído</button>
+              
+              {!estadoLecturaQuote && (
+              <button
+                onClick={handleCotizacionEstado}
+                className="text-white bg-primary px-2 py-1 rounded hover:bg-blue-600"
+              >
+                Marcar como leído
+              </button>
+              )}
+                      
                 <button className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar</button>
               </div>
             </div>
