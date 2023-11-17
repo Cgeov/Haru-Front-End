@@ -1,11 +1,16 @@
 import OrdersList from "@/components/order/orders-list";
 import Layout from "../layout";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import { ContextUser } from "@/context/context";
+import { useRouter } from "next/router";
 
 
 export default function ManageOrders(){
     const [orders, setOrders] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { user, logout } = useContext(ContextUser);
+    const router = useRouter();
+
     const body = {
         collection: "orders",
     };
@@ -18,6 +23,9 @@ export default function ManageOrders(){
     headers.append("GET", "POST", "OPTIONS");
 
     useEffect(() => {
+        if(user == null || user.typeUser == "client"){
+            router.push("/")
+        }else{
         fetch("http://localhost:5000/service/getCollection", {
         method: "POST",
         headers: headers,
@@ -31,7 +39,9 @@ export default function ManageOrders(){
         })
         .catch((error) => {
             setLoading(false);
-        }); }, []);
+        });
+    } 
+}, []);
 
     return <Layout>
         {loading ? (

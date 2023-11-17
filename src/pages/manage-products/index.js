@@ -2,7 +2,6 @@ import ProductList from "@/components/product/product-list";
 import Layout from "../layout";
 import React, { useState, useEffect, useContext } from "react";
 import { ContextUser } from "@/context/context";
-import Home from "..";
 import { useRouter } from "next/router";
 
 
@@ -24,7 +23,7 @@ export default function ManageProducts(){
     headers.append("GET", "POST", "OPTIONS");
 
     useEffect(() => {
-        if(user == null){
+        if(user == null || user.typeUser == "client"){
             router.push("/")
         }else{
             fetch("http://localhost:5000/service/getCollection", {
