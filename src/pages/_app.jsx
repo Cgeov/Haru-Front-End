@@ -12,6 +12,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
+    localStorage.clear();
   }, []);
 
   function getDataUser() {

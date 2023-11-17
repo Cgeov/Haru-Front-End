@@ -324,7 +324,7 @@ const ProductList = ({ products }) => {
   return (
     <>
       <div className="mt-10">
-        <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Productos</h1>
+        <h1 className="text-2xl font-semibold mx-10 mb-10 text-black text-primary">Lista de Productos</h1>
         <div className="mx-10">
           <button onClick={() => { handleModalNew() }} className="text-white bg-primary px-2 py-1 rounded hover:bg-secondary font-bold">Nuevo Producto</button>
         </div>
