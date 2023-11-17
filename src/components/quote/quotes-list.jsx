@@ -249,7 +249,7 @@ const QuotesList = ({ quotes }) => {
                 <div className="space-x-3  flex flex-wrap -mx-3 ml-1">
                 {imgQuote.map((img, index) => (
                   <div key={index} className="px-70 overflow-hidden">
-                    <img src={img} alt="" width="200" height="200" />
+                    <img src={img} alt="" className="w-[200px] h-[200px]" />
                   </div>))}
                 </div>
                 
@@ -260,7 +260,7 @@ const QuotesList = ({ quotes }) => {
               <button onClick={handleCotizacionEstado} className=" text-white bg-primary px-2 py-1 rounded hover:bg-rose-800">Marcar como leído</button>
               )}
                       
-                <button className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar</button>
+                <button onClick={()=> {handleCerrar()}} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Salir</button>
               </div>
             </div>
           </ModalDetails>

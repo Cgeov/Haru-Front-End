@@ -228,7 +228,7 @@ const ProductList = ({ products }) => {
           setRateProduct(data.rate);
           setFeaturedProduct(data.featured);
         })
-        .catch((error) => {});
+        .catch((error) => { });
     }
   }, [isOpenEdit]);
 
@@ -366,8 +366,8 @@ const ProductList = ({ products }) => {
           </button>
         </div>
 
-        <div className="flex gap-[20px]">
-          <div className="flex justify-between">
+        <div className="flex justify-center gap-[20px] mt-5 mb-5">
+          <div className="flex w-3/4 justify-between">
             <div className="inline-flex border rounded w-7/12 px-2 lg:px-6 h-12 bg-transparent">
               <div className="flex flex-wrap items-stretch w-full h-full mb-6 relative">
                 <div className="flex">
@@ -399,13 +399,13 @@ const ProductList = ({ products }) => {
                     handleSearch(e);
                   }}
                   type="text"
-                  className="flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-none border-l-0 rounded rounded-l-none px-3 relative focus:outline-none text-sm lg:text-sm lg:text-base text-gray-500 font-thin"
+                  className="shadow flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-none border-l-0 rounded rounded-l-none px-3 relative focus:outline-none text-sm lg:text-sm lg:text-base text-gray-500 font-thin"
                   placeholder="Buscar"
                 />
               </div>
             </div>
           </div>
-          <div>
+          <div className="w-1/8">
             <div className="relative">
               <select
                 onChange={(e) => {
