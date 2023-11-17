@@ -232,8 +232,8 @@ const QuotesList = ({ quotes }) => {
                 <p className="text-primary w-30 font-bold underline mb-4 mt-3 ml-1">Imagenes adjuntas</p>
                 <div className="space-x-3  flex flex-wrap -mx-3 ml-1">
                 {imgQuote.map((img, index) => (
-                  <div className="px-70 overflow-hidden">
-                    <img key={index} src={img} alt="" width="200" height="200" />
+                  <div key={index} className="px-70 overflow-hidden">
+                    <img src={img} alt="" width="200" height="200" />
                   </div>))}
                 </div>
                 
