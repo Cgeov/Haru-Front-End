@@ -33,4 +33,13 @@ export function confirmationAlert(){
   })
 }
 
+export function DeleteQuote(){
+  return Swal.fire({
+    icon: "warning",
+    title: "¿Desea Eliminar este Registro?",
+    showCancelButton: true,
+    confirmButtonColor: '#7C2750'
+  })
+}
+
 export default showSweetAlert;

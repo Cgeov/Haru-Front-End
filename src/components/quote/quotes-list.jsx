@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ModalDetails from "../modal/ModalDetails"
 import axios from "axios";
-
+import showSweetAlert,{DeleteQuote} from "../Alerts/Alert";
 
 const QuotesList = ({ quotes }) => {
   //Datos de la cotizacióm
@@ -87,19 +87,7 @@ const QuotesList = ({ quotes }) => {
       });
 
   }
-  //funcion para actualizar datos
-  const updateQuotes = async () => {
-
-
-    const body = {
-      collection: "quotes",
-
-    };
-    const res = await axios.post('http://localhost:5000/service/getCollection', body)
-    setQuotesobj(res.data);
-  }
-
-
+  
   useEffect(() => {
     if (idDocument !== "") {
       getQuotes();
@@ -120,8 +108,33 @@ const QuotesList = ({ quotes }) => {
     setLoadingData(false)
     setIsOpenModalSeeDetails(false)
   }
-  const handleDelete = () => {
+  const handleDelete = async (id) => {
+    const result = await DeleteQuote("¿Desea eliminar este producto?");
+    const quoteDeleted = {
+      data: {
+        collection: "quotes",
+        id: id
+      }
+    }
 
+    if (result.isConfirmed) {
+      const res = await axios.delete('http://localhost:5000/service/delete', quoteDeleted)
+      console.log(res)
+      handleUpdateQuotetList();
+      showSweetAlert("¡Cotizacion eliminada con éxito!", "success");
+      //setIdProduct('')
+      //setIsDelete(!isDelete)
+    } else if (result.isDismissed) {
+      console.log("Se canceló la acción");
+    }
+  }
+  //Actualizar lista de cotizaciones
+  const handleUpdateQuotetList = async () => {
+    const body = {
+      collection: "quotes",
+    };
+    const res = await axios.post('http://localhost:5000/service/getCollection', body)
+    setQuotesobj(res.data);
   }
 
   //toshi
@@ -130,7 +143,9 @@ const QuotesList = ({ quotes }) => {
     const res = await axios.put('http://localhost:5000/service/update', bodyObj)
 
     handleCerrar();
-
+    //Alerta
+    showSweetAlert("¡La cotizacion a sido Leida!","success");
+    handleUpdateQuotetList();
   }
 
   const filtroEstado = (type) => {
