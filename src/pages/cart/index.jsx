@@ -212,7 +212,7 @@ export default function Cart() {
                       />
                     </div>
                     <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-                      <div className="mt-5 sm:mt-0 flex flex-col justify-between">
+                      <div className="mt-5 sm:mt-0 flex flex-col justify-between lg:pr-[30px]">
                         <div>
                           <h2 className="text-lg font-bold text-gray-900">
                             {product.name}

@@ -10,7 +10,20 @@ export default function MyOrders() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [orderSelected, setOrderSelected] = useState({});
-  const [total, setTotal] = useState(0);
+
+  const [ordersToShow, setOrdersToShow] = useState([...orders]);
+
+  const handleSearch = (e) => {
+    const searchValue = e.target.value;
+    const results = orders.filter((result) => {
+      return result.numberOrder.toString().includes(searchValue);
+    });
+    setOrdersToShow(results);
+  };
+
+  useEffect(() => {
+    setOrdersToShow([...orders]);
+  }, [orders]);
 
   let headers = new Headers();
   headers.append("Content-Type", "application/json");
@@ -21,7 +34,6 @@ export default function MyOrders() {
 
   useEffect(() => {
     if (user) {
-      console.log(user.id);
       fetch("http://localhost:5000/service/getDocsFilter", {
         method: "POST",
         headers: headers,
@@ -38,7 +50,6 @@ export default function MyOrders() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setOrders(data);
           setLoading(false);
         })
@@ -87,6 +98,9 @@ export default function MyOrders() {
                   </span>
                 </div>
                 <input
+                  onChange={(e) => {
+                    handleSearch(e);
+                  }}
                   type="text"
                   class="flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-none border-l-0 rounded rounded-l-none px-3 relative focus:outline-none text-sm lg:text-sm lg:text-base text-gray-500 font-thin"
                   placeholder="Buscar"
@@ -109,7 +123,7 @@ export default function MyOrders() {
                   Email
                 </th>
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
-                  #Productos
+                  Total
                 </th>
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
                   Estado
@@ -121,7 +135,7 @@ export default function MyOrders() {
               </tr>
             </thead>
             <tbody class="bg-white">
-              {orders.map((order, i) => {
+              {ordersToShow.map((order, i) => {
                 return (
                   <tr key={i}>
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
@@ -142,7 +156,7 @@ export default function MyOrders() {
                       {order.user.email}
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
-                      {order.products.length}
+                      ${order.total.toFixed(2)}
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
                       {order.status == "success" && (
@@ -183,9 +197,11 @@ export default function MyOrders() {
                           class="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
                           Ver Productos
                         </button>
-                        <button class="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
+                        <a
+                          href={order.invoice}
+                          class="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
                           Descargar Factura
-                        </button>
+                        </a>
                       </div>
                     </td>
                   </tr>
@@ -193,73 +209,6 @@ export default function MyOrders() {
               })}
             </tbody>
           </table>
-          <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-            <div>
-              <p class="text-sm leading-5 text-primary">
-                Mostrando
-                <span class="font-medium">1</span>a
-                <span class="font-medium">200</span>
-                de
-                <span class="font-medium">{orders.length}</span>
-                Resultados
-              </p>
-            </div>
-            <div>
-              <nav class="relative z-0 inline-flex shadow-sm">
-                <div>
-                  <a
-                    href="#"
-                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                    aria-label="Previous">
-                    <svg
-                      class="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor">
-                      <path
-                        fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-primary focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-primary active:text-gray-700 transition ease-in-out duration-150 hover:bg-primary hover:text-white">
-                    1
-                  </a>
-                  <a
-                    href="#"
-                    class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-primary focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-primary active:text-gray-700 transition ease-in-out duration-150 hover:bg-primary hover:text-white">
-                    2
-                  </a>
-                  <a
-                    href="#"
-                    class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-primary focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-primary active:text-gray-700 transition ease-in-out duration-150 hover:bg-primary hover:text-white">
-                    3
-                  </a>
-                </div>
-                <div v-if="pagination.current_page < pagination.last_page">
-                  <a
-                    href="#"
-                    class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                    aria-label="Next">
-                    <svg
-                      class="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor">
-                      <path
-                        fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </nav>
-            </div>
-          </div>
         </div>
       </div>
       <Transition.Root show={open} as={Fragment}>
