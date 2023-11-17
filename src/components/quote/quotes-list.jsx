@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ModalDetails from "../modal/ModalDetails"
-import axios from "axios";
+import { Checkbox } from "flowbite-react";
+import { Input } from "postcss";
+import showSweetAlert from "../Alerts/Alert";
+
 
 
 const QuotesList = ({ quotes }) => {
@@ -13,8 +16,6 @@ const QuotesList = ({ quotes }) => {
   const [messageQuote, setMessageQuote] = useState('')
   const [imgQuote, setImgQuote] = useState([])
   const [estadoLecturaQuote, setEstadoLecturaQuote] = useState('')
-  const [leidoStatus, setLeidoStatus] = useState('all');
-  
 
   //contenedor de quotes
   const [quotesobj, setQuotesobj] = useState(quotes);
@@ -39,10 +40,6 @@ const QuotesList = ({ quotes }) => {
       leido: Boolean(true)
     }
   }
-
-  useEffect(() => {
-    setquoteToShow([...quotesobj]);
-  }, [quotesobj]);
 
 
 
@@ -133,32 +130,25 @@ const QuotesList = ({ quotes }) => {
 
   }
 
-  const filtroEstado = (type) => {
-    setLeidoStatus(type);
-    if(type == 'read'){
-      const results = quotesobj.filter((result) => {
-        return result.leido == true;
-      });
-      setquoteToShow(results);
-    }else if(type == 'notRead'){
-      const results = quotesobj.filter((result) => {
-        return !result.hasOwnProperty('leido');
-      });
-      setquoteToShow(results);
-    }else{
-      setquoteToShow(quotesobj);
+  const handleOnChange = () => {
+    setIsChecked(!isChecked);
+    filtroEstado();
+
+  }
+
+
+  const filtroEstado = () => {
+
+    if (isChecked == false) {
+
+      const quotesobjfiltrado = quotesobj.filter(quote => quote.leido === false);
+      setQuotesobj(quotesobjfiltrado);
     }
-
-    // if (isChecked == false) {
-
-    //   const quotesobjfiltrado = quotesobj.filter(quote => quote.leido === false);
-    //   setQuotesobj(quotesobjfiltrado);
-    // }
-    // else {
-    //   updateQuotes();
+    else {
+      updateQuotes();
 
 
-    // }
+    }
 
   }
 
@@ -166,12 +156,10 @@ const QuotesList = ({ quotes }) => {
     <>
       <div className="mt-7">
         <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Cotizaciones</h1>
-        <div className="flex gap-[20px] justify-center">
-          <div onClick={()=>{filtroEstado('all')}} className={leidoStatus == 'all' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4': 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Todos</div>
-          <div onClick={()=>{filtroEstado('read')}} className={leidoStatus == 'read'? 'bg-primary rounded-lg cursor-pointer px-6 py-4' :'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Leidos</div>
-          <div onClick={()=>{filtroEstado('notRead')}} className={leidoStatus == 'notRead'? 'bg-primary rounded-lg cursor-pointer px-6 py-4' :'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>No Leidos</div>
+        <div className="flex justify-center">
+          <h3 className="text-base font-semibold mx-2 text-black">Ver solo las pendientes: </h3>
+          <input className="mt-1" type="checkbox" checked={isChecked} onChange={handleOnChange} />
         </div>
-
         <div className="flex justify-center">
           <table className="table-auto mt-5">
             <thead className="text-white bg-primary">
@@ -186,7 +174,7 @@ const QuotesList = ({ quotes }) => {
               </tr>
             </thead>
             <tbody className="white  text-black">
-              {quoteToShow.map((quote, index) => (
+              {quotesobj.map((quote, index) => (
                 <tr key={quote.id}>
                   <td className="border border-black px-2 text-center">{index + 1}</td>
                   <td className="border border-black px-3 w-30 text-center">{quote.firstName} </td>
@@ -232,8 +220,8 @@ const QuotesList = ({ quotes }) => {
                 <p className="text-primary w-30 font-bold underline mb-4 mt-3 ml-1">Imagenes adjuntas</p>
                 <div className="space-x-3  flex flex-wrap -mx-3 ml-1">
                 {imgQuote.map((img, index) => (
-                  <div key={index} className="px-70 overflow-hidden">
-                    <img src={img} alt="" width="200" height="200" />
+                  <div className="px-70 overflow-hidden">
+                    <img key={index} src={img} alt="" width="200" height="200" />
                   </div>))}
                 </div>
                 
