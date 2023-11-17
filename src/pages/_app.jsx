@@ -12,7 +12,6 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
-    localStorage.clear()
   }, []);
 
   function getDataUser() {
@@ -54,7 +53,6 @@ export default function App({ Component, pageProps }) {
   };
 
   const logout = () => {
-    console.log(user.typeUser)
     if (user.typeUser == 'admin') {
       setUser(null);
       localStorage.setItem("user", user);
@@ -64,6 +62,7 @@ export default function App({ Component, pageProps }) {
       setUser(null);
       localStorage.setItem("user", user);
       showSweetAlert("Sesión Cerrada!", "success")
+      Router.replace("/")
     }
 
   };
