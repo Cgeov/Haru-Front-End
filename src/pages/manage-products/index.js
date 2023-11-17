@@ -1,11 +1,17 @@
 import ProductList from "@/components/product/product-list";
 import Layout from "../layout";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { ContextUser } from "@/context/context";
+import Home from "..";
+import { useRouter } from "next/router";
 
 
 export default function ManageProducts(){
     const [flowers, setFlowers] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { user, logout } = useContext(ContextUser);
+    const router = useRouter();
+
     const body = {
         collection: "products",
     };
@@ -18,20 +24,25 @@ export default function ManageProducts(){
     headers.append("GET", "POST", "OPTIONS");
 
     useEffect(() => {
-        fetch("http://localhost:5000/service/getCollection", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(body),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            setFlowers(data);
-            setLoading(false);
-            console.log(data);
-        })
-        .catch((error) => {
-            setLoading(false);
-        }); }, []);
+        if(user == null){
+            router.push("/")
+        }else{
+            fetch("http://localhost:5000/service/getCollection", {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(body),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    setFlowers(data);
+                    setLoading(false);
+                    console.log(data);
+                })
+                .catch((error) => {
+                    setLoading(false);
+                });
+        } 
+    }, []);
 
     return <Layout>
         {loading ? (
