@@ -38,6 +38,7 @@ const OrdersList = ({ orders }) => {
     const [nanoseconds, setNanoSeconds] = useState(832000000)
     //contenedor de orders
     const [orderList, setOrderList] = useState(orders)
+    const [orderToShow, setorderToShow] = useState([...orderList]);
     //control checkbox
     const [isChecked, setIsChecked] = useState(false);
 
@@ -50,6 +51,9 @@ const OrdersList = ({ orders }) => {
 
     //Control del useEffect
     const [ahora, setAhora] = useState(false)
+
+    //Filtros
+    const [statusOrder, setStatusOrder] = useState('all')
 
     const body = {
         collection: "orders",
@@ -210,12 +214,42 @@ const OrdersList = ({ orders }) => {
         }
     };
 
+    //Filtro
+    const filtroEstado = (type) => {
+    setStatusOrder(type);
+    if(type == 'success'){
+      const results = orderList.filter((result) => {
+        return result.status == 'success';
+      });
+      setorderToShow(results);
+    }else if(type == 'pending'){
+      const results = orderList.filter((result) => {
+        return result.status == 'pending';
+      });
+      setorderToShow(results);
+    }else if(type == 'cancel'){
+        const results = orderList.filter((result) => {
+          return result.status == 'cancel';
+        });
+        setorderToShow(results);
+      }
+    else{
+      setorderToShow(orderList);
+    }
+}
+
 
     return (
         <>
 
             <div className="mt-7">
                 <h1 className="text-2xl font-semibold mx-10 mb-10 text-black">Lista de Ordenes</h1>
+                <div className="flex gap-[20px] justify-center">
+                    <div onClick={() => { filtroEstado('all') }} className={statusOrder == 'all' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4' : 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Todos</div>
+                    <div onClick={() => { filtroEstado('pending') }} className={statusOrder == 'pending' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4' : 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Pendientes</div>
+                    <div onClick={() => { filtroEstado('success') }} className={statusOrder == 'success' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4' : 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Compleados</div>
+                    <div onClick={() => { filtroEstado('cancel') }} className={statusOrder == 'cancel' ? 'bg-primary rounded-lg cursor-pointer px-6 py-4' : 'bg-neutral-400 rounded-lg cursor-pointer px-6 py-4'}>Cancelados</div>
+                </div>
                 <div className="flex justify-center">
                     <table className="table-auto mt-5">
                         <thead className="text-white bg-primary">
@@ -228,7 +262,7 @@ const OrdersList = ({ orders }) => {
                             </tr>
                         </thead>
                         <tbody className="white  text-black">
-                            {orderList.map((order, index) => (
+                            {orderToShow.map((order, index) => (
                                 <tr key={order.id}>
                                     <td className="border border-black px-2 text-center">{order.numberOrder}</td>
                                     <td className="border border-black px-2 text-center">{order.user.name + order.user.lastname}</td>
