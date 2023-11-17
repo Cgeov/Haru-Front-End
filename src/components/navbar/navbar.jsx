@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import logo from "../../assets/img/logoText.png";
 import Link from "next/link";
 import Image from "next/image";
-import { ContextUser } from "../../context/context";
+import { ContextUser, ContextCat } from "../../context/context";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BiSolidFlorist, BiBasket } from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
@@ -55,6 +55,7 @@ function classNames(...classes) {
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout } = useContext(ContextUser);
+  const {cat, productCategory} = useContext(ContextCat);
 
   const handleLogout = () => {
     confirmationAlert().then((result) => {
@@ -63,6 +64,9 @@ export default function Navbar() {
       }
     });
   };
+  useEffect(()=>{
+    productCategory()
+  },[cat]);
 
   return (
     <header>
@@ -135,12 +139,11 @@ export default function Navbar() {
                           />
                         </div>
                         <div className="flex-auto">
-                          <a
-                            href={item.href}
-                            className="block font-semibold text-gray-900">
-                            {item.name}
-                            <span className="absolute inset-0" />
-                          </a>
+                          <Link
+                            href={`/category?cat=${item.name}`}
+                            className="block font-semibold text-gray-900"
+                          >
+                            {item.name}</Link>
                           <p className="mt-1 text-gray-600">
                             {item.description}
                           </p>

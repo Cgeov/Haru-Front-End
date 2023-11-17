@@ -12,7 +12,7 @@ const images = [
 const services = [
     {
         title: "Bodas",
-        description: "¿Estás buscando una forma de darle un toque especial a tu evento? Ya sea una boda, un cumpleaños, un aniversario o cualquier otra ocasión, los arreglos florales son una excelente opción para decorar y crear un ambiente único. En nuestra empresa, te ofrecemos servicios de arreglos florales para diferentes eventos, centros de mesa, ramos, arcos florales y más.",
+        description: "Si quieres que tu boda sea un día inolvidable, no puedes descuidar los detalles de la decoración. Los arreglos florales son un elemento esencial para crear un ambiente romántico, elegante y acogedor. Desde centros de mesas, arcos de flores y el ramo de la novia, nosotros nos encargamos, conoce más de nosotros",
         image: "https://i.pinimg.com/736x/ee/50/83/ee5083836b7fba86ea032ce5d5a27d8f.jpg"
     },
     {
@@ -55,9 +55,10 @@ export default function CardService(){
                                 <div className="flex flex-col justify-between w-[45%] min-w-[190px]">
                                     <h3 className="text-primary text-5xl">{service.title}</h3>
                                     <p className="text-primary">{service.description}</p>
-                                    <Link href={"/quote"} className="w-full">
-                                        <button className="w-full rounded-md bg-primary py-3 px-6 text-white font-bold hover:bg-secondary" >Ver más</button>
-                                    </Link>
+                                    
+                                    <Link href={"/quote"}><button className="w-full rounded-md bg-primary py-3 px-6 text-white font-bold" >Ver más</button></Link>
+                                    
+                                    
                                 </div>
                                 <div className="w-[50%]">
                                     <img className="h-[100%] w-[100%]" src={service.image} alt={service.title}></img>
