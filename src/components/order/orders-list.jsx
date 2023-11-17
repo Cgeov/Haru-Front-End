@@ -5,8 +5,8 @@ import ModalAlert from "../modal/ModalAlert";
 import ModalDetails from "../modal/ModalDetails"
 import { Checkbox } from "flowbite-react";
 import { Input } from "postcss";
-import showSweetAlert from "../Alerts/Alert";
-
+import Swal from 'sweetalert2';
+import showSweetAlert, { CotizacionError, confirmationAlert } from '../Alerts/AlertManage';
 
 
 const OrdersList = ({ orders }) => {
@@ -27,6 +27,15 @@ const OrdersList = ({ orders }) => {
     const [invoice, setInvoice] = useState('')
     const [status, setStatus] = useState('')
     const [products, setProducts] = useState([])
+    const opcionesFormato = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'UTC' // Ajusta según tu zona horaria
+    }
+    const [fechaPedido, SetFechaPedido] = useState(new Date())
+    const [seconds, setSeconds] = useState(1700097373)
+    const [nanoseconds, setNanoSeconds] = useState(832000000)
     //contenedor de orders
     const [orderList, setOrderList] = useState(orders)
     //control checkbox
@@ -123,10 +132,7 @@ const OrdersList = ({ orders }) => {
             invoice: invoice,
             status: status,
             products: products,
-            /*created_at: {
-                seconds: seconds,
-                nanoseconds: nanoseconds
-            }*/
+            created_at: new Date(seconds * 1000)
         }
     }
 
@@ -168,27 +174,43 @@ const OrdersList = ({ orders }) => {
     }
 
     const handleDelete = async (id) => {
-        const body = {
-            data: {
-              collection: "orders",
-              id: id
+        const result = await confirmationAlert("¿Desea eliminar la orden?");
+        //setDeleteConfirm(!isDeleteConfirm)
+        //setIdProduct(id)
+        //if (isDeleteConfirm) {
+        if (result.isConfirmed) {
+            const body = {
+                data: {
+                    collection: "orders",
+                    id: id
+                }
             }
-          }
-          //setDeleteConfirm(!isDeleteConfirm)
-          //setIdProduct(id)
-          //if (isDeleteConfirm) {
+
             const res = await axios.delete('http://localhost:5000/service/delete', body)
             console.log(res)
             handleUpdateOrderList();
-            //setIdProduct('')
-            //setIsDelete(!isDelete)
-          //}
-
-
-
-
-
+        }
+        else if (result.isDismissed) {
+            console.log("Se canceló");
+        }
+        //setIdProduct('')
+        //setIsDelete(!isDelete)
+        //}
     }
+
+    //Alertas
+    const handleMostrarConfirmacion = async (estado, titulo, mensaje) => {
+        const result = await confirmationAlert(titulo);
+
+        if (result.isConfirmed) {
+            handleSubmitChangeStatus(estado)
+            showSweetAlert(mensaje, "success");
+        } else if (result.isDismissed) {
+            console.log("Se canceló");
+        }
+    };
+
+
     return (
         <>
 
@@ -199,8 +221,9 @@ const OrdersList = ({ orders }) => {
                         <thead className="text-white bg-primary">
                             <tr>
                                 <th className="border border-black px-2 text-center"># Orden</th>
+                                <th className="border border-black px-2 w-30 text-center"> Cliente</th>
+                                <th className="border border-black px-3 w-30 text-center">Fecha del Pedido</th>
                                 <th className="border border-black px-3 w-30 text-center">Estado</th>
-                                <th className="border border-black px-3 w-30 text-center">Fecha</th>
                                 <th className="border border-black px-5">Acciones</th>
                             </tr>
                         </thead>
@@ -208,12 +231,16 @@ const OrdersList = ({ orders }) => {
                             {orderList.map((order, index) => (
                                 <tr key={order.id}>
                                     <td className="border border-black px-2 text-center">{order.numberOrder}</td>
-                                    <td className="border border-black px-3 w-30 text-center">{(order.status === "pending"?"Pendiente" : order.status === "success"? "Completado": "Cancelado" )} </td>
-                                    <td className="border border-black px-3 w-30 text-center"></td>
+                                    <td className="border border-black px-2 text-center">{order.user.name + order.user.lastname}</td>
+                                    <td className="border border-black px-3 w-30 text-center">{new Date(order.created_at).toLocaleDateString('es-Es', opcionesFormato)}</td>
+                                    <td className="border border-black px-3 w-30 text-center">{(order.status === "pending" ? "Pendiente" : order.status === "success" ? "Completado" : "Cancelado")} </td>
                                     <td className="border border-black px-5">
-                                        <div className="space-x-2">
+                                        <div className="space-x-3 p-3">
                                             <button onClick={() => { handleSeeDetails(order.id), handleModalSeeDetails() }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Ver Detalles</button>
-                                            <button onClick={() => handleDelete(order.id)} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
+                                            <a href={order.invoice}>
+                                                <button className="bg-secondary text-white px-2 py-1  rounded hover:bg-red-600">Descargar Factura</button>
+                                            </a>
+                                            <button onClick={() => handleDelete(order.id)} className="bg-red-700 text-white px-2 py-1 rounded hover:bg-red-600">Eliminar</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -227,20 +254,20 @@ const OrdersList = ({ orders }) => {
                     <ModalDetails Title="Detalle de la orden" handleModal={handleModalClose}>
                         <div className="">
                             <div className="flex justify-between items-center mb-2 ml-5">
-                                <p className="text-black underline font-bold">Nº{numOrder}</p>
-                                <span className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded ${status === "pending" ? "dark:bg-red-900 dark:text-red-300 bg-red-100 text-red-800" : status === "success" ? "dark:bg-green-900 dark:text-green-300 bg-green-100 text-green-800" : "bg-gray-100 dark:bg-gray-700 dark:text-gray-300"}`}>{status === "pending" ? "Pendiente" : status === "success"? "Completado": "Cancelado"}</span>
+                                <p className="text-primary underline font-bold">Nº{numOrder}</p>
+                                <span className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded ${status === "pending" ? "dark:bg-red-900 dark:text-red-300 bg-red-100 text-red-800" : status === "success" ? "dark:bg-green-900 dark:text-green-300 bg-green-100 text-green-800" : "bg-gray-100 dark:bg-gray-700 dark:text-gray-300"}`}>{status === "pending" ? "Pendiente" : status === "success" ? "Completado" : "Cancelado"}</span>
                             </div>
                             <div className="ml-5 mb-1">
                                 <p className="text-black underline font-bold">Datos del cliente</p>
                             </div>
                             <div className="flex justify-between">
                                 <div className="flex items-center mb-2 ml-5">
-                                    <p className="text-black font-bold">Cliente: </p>
-                                    <p className="text-black w-20 ml-2 ">{name + ' ' + lastName}</p>
+                                    <p className="text-primary underline font-bold">Cliente: </p>
+                                    <p className="text-black w-30 ml-2 font-bold ">{name + ' ' + lastName}dljssadldsldskaj</p>
                                 </div>
                                 <div className="flex items-center mb-2">
-                                    <p className="text-black font-bold">Correo: </p>
-                                    <p className="text-black w-20 ml-2 mr-20">{email}</p>
+                                    <p className="text-primary underline font-bold">Correo: </p>
+                                    <p className="text-black w-20 ml-2 font-bold mr-20">{email}</p>
                                 </div>
                             </div>
                             <div className="ml-5">
@@ -291,8 +318,8 @@ const OrdersList = ({ orders }) => {
                             <div className="space-x-2 mt-4 ml-5 mb-2 flex justify-start">
                                 {status === "pending" && (
                                     <>
-                                        <button onClick={() => { handleSubmitChangeStatus("success") }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Completar</button>
-                                        <button onClick={() => { handleSubmitChangeStatus("cancel") }} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar orden</button>
+                                        <button onClick={() => { handleMostrarConfirmacion("success", "¿Desea completar el pedido?", "¡Entrega completada con éxito!") }} className=" text-white bg-primary px-2 py-1 rounded hover:bg-blue-600">Completar</button>
+                                        <button onClick={() => { handleMostrarConfirmacion("cancel", "¿Desea cancelar el pedido?", "¡Entrega cancelada con éxito!") }} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Cancelar orden</button>
                                     </>
                                 )}
                                 {status === "success" && (
@@ -304,7 +331,7 @@ const OrdersList = ({ orders }) => {
                                 )}
                                 {status === "cancel" && (
                                     <>
-                                            <button onClick={handleModalClose}className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Salir</button>
+                                        <button onClick={handleModalClose} className="bg-secondary text-white px-2 py-1 rounded hover:bg-red-600">Salir</button>
                                     </>
                                 )}
 

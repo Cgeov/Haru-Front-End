@@ -2,6 +2,8 @@ import React, { useState, useEffect, Children, useRef } from "react";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import Modal from '@/components/modal/Modal'
 import axios from 'axios'
+import Swal from 'sweetalert2';
+import showSweetAlert, { ManageError, confirmationAlert } from '../Alerts/AlertManage';
 import ModalAlert from "../modal/ModalAlert";
 
 
@@ -119,34 +121,34 @@ const ProductList = ({ products }) => {
     const esDecimal = /^-?\d*\.?\d+$/
 
     if (nameProduct === "") {
-      validaciones.push('- Nombre del producto')
+      validaciones.push('Nombre')
     }
     if (descriptionProduct === "") {
-      validaciones.push('- Descripción')
+      validaciones.push('Descripción')
     }
     if (categoryProduct === "") {
-      validaciones.push('- Categoría')
+      validaciones.push('Categoría')
     }
     if (priceProduct === 0) {
-      validaciones.push('- Precio')
+      validaciones.push('Precio')
     }
     if (!esDecimal.test(priceProduct)) {
-      validaciones.push('- Precio incorrecto')
+      validaciones.push('Precio incorrecto')
     }
     if (beforePriceProduct !== "") {
       console.log(beforePriceProduct)
       if (!esDecimal.test(beforePriceProduct)) {
-        validaciones.push('- Precio anterior incorrecto')
+        validaciones.push('Precio anterior incorrecto')
       }
     }
     if (imgProductNew === "") {
-      validaciones.push('- Imagén del producto')
+      validaciones.push('Imagén')
     }
     if (rateProduct === 0) {
-      validaciones.push('- Rate del producto')
+      validaciones.push('Rate')
     }
     if (featuredProduct === "") {
-      validaciones.push('- Producto destacado')
+      validaciones.push('¿Es un producto destacado?')
     }
     if (validaciones.length === 0) {
       const res = await axios.post('http://localhost:5000/service/add', product)
@@ -156,9 +158,10 @@ const ProductList = ({ products }) => {
       setImgProductNew("");
       setOpcionSeleccionada("Selecciona...")
       handleModalNew();
-      setProductSuccess(!isProductSuccess)
+      showSweetAlert("¡Producto añadido con éxito!", "success");
     } else {
-      handleModalAlert(validaciones)
+      ManageError(validaciones);
+      //handleModalAlert(validaciones)
     }
   }
 
@@ -210,45 +213,47 @@ const ProductList = ({ products }) => {
     const validaciones = []
     const esDecimal = /^-?\d*\.?\d+$/
     if (nameProduct === "") {
-      validaciones.push('- Nombre del producto')
+      validaciones.push('Nombre')
     }
     if (descriptionProduct === "") {
-      validaciones.push('- Descripción')
+      validaciones.push('Descripción')
     }
     if (categoryProduct === "") {
-      validaciones.push('- Categoría')
+      validaciones.push('Categoría')
     }
     if (priceProduct === 0) {
-      validaciones.push('- Precio')
+      validaciones.push('Precio')
     }
     if (!esDecimal.test(priceProduct)) {
-      validaciones.push('- Precio incorrecto')
+      validaciones.push('Precio incorrecto')
     }
     if (beforePriceProduct !== "") {
       console.log(beforePriceProduct)
       if (!esDecimal.test(beforePriceProduct)) {
-        validaciones.push('- Precio anterior incorrecto')
+        validaciones.push('Precio anterior incorrecto')
       }
     }
     if (imgProduct === "") {
-      validaciones.push('- Imagén del producto')
+      validaciones.push('Imagén')
     }
     if (rateProduct === 0) {
-      validaciones.push('- Rate del producto')
+      validaciones.push('Rate')
     }
     if (featuredProduct === "") {
-      validaciones.push('- Producto destacado')
+      validaciones.push('¿Es un producto destacado?')
     }
     if (validaciones.length === 0) {
       const res = await axios.put('http://localhost:5000/service/update', bodyProduct)
       console.log(res)
       form.current.reset();
-      handleUpdateProductList();
       handleModalEdit()
-      setProductSuccessEdit(!isProductSuccessEdit)
+      handleUpdateProductList();
+      showSweetAlert("¡Producto editado con éxito!", "success");
+      //setProductSuccessEdit(!isProductSuccessEdit)
     }
     else {
-      handleModalAlert(validaciones)
+      ManageError(validaciones);
+      //handleModalAlert(validaciones)
     }
   }
 
@@ -286,20 +291,24 @@ const ProductList = ({ products }) => {
 
   //Eliminar 
   const handleDelete = async (id) => {
+    const result = await confirmationAlert("¿Desea eliminar este producto?");
     const productDeleted = {
       data: {
         collection: "products",
         id: id
       }
     }
-    setDeleteConfirm(!isDeleteConfirm)
-    setIdProduct(id)
-    if (isDeleteConfirm) {
+    //setDeleteConfirm(!isDeleteConfirm)
+    //setIdProduct(id)
+    if (result.isConfirmed) {
       const res = await axios.delete('http://localhost:5000/service/delete', productDeleted)
       console.log(res)
       handleUpdateProductList();
-      setIdProduct('')
-      setIsDelete(!isDelete)
+      showSweetAlert("¡Producto eliminado con éxito!", "success");
+      //setIdProduct('')
+      //setIsDelete(!isDelete)
+    } else if (result.isDismissed) {
+      console.log("Se canceló la acción");
     }
   }
   //Actualizar lista de productos 
@@ -323,6 +332,7 @@ const ProductList = ({ products }) => {
           <table className="table-auto mt-5">
             <thead className="text-white bg-primary">
               <tr>
+                <th className="border border-black px-3 w-15">#</th>
                 <th className="border border-black px-3 w-45 overflow-hidden whitespace-normal break-all">Nombre</th>
                 <th className="border border-black px-5 w-60 overflow-hidden whitespace-normal break-all">Descripción</th>
                 <th className="border border-black px-5 w-30">Categoria</th>
@@ -335,8 +345,9 @@ const ProductList = ({ products }) => {
               </tr>
             </thead>
             <tbody className="bg-[#ffced3]  text-black">
-              {productsList.map((product) => (
+              {productsList.map((product, index) => (
                 <tr key={product.id}>
+                  <td className="border border-black px-3 w-15">{index + 1}</td>
                   <td className="border border-black px-3 w-45 overflow-hidden whitespace-normal break-all">{product.name} </td>
                   <td className="border border-black px-5 w-60 overflow-hidden whitespace-normal break-all">{product.description} </td>
                   <td className="border border-black px-5 w-30">{product.category} </td>
@@ -462,7 +473,7 @@ const ProductList = ({ products }) => {
         </ModalAlert>
 
       )}
-      {isProductSuccess && (
+      {/*isProductSuccess && (
         <ModalAlert handleModal={handleModalAlert} Title="¡Producto Añadido con Éxito!" >
           <div>
             <div className="flex justify-center">
@@ -472,8 +483,8 @@ const ProductList = ({ products }) => {
         </ModalAlert>
 
       )
-      }
-      {isProductSuccessEdit && (
+      */}
+      {/* isProductSuccessEdit && (
         <ModalAlert handleModal={handleModalAlert} Title="¡Producto Editado con Éxito!" >
           <div>
             <div className="flex justify-center">
@@ -482,8 +493,8 @@ const ProductList = ({ products }) => {
           </div>
         </ModalAlert>
       )
-      }
-      {isDeleteConfirm && (
+      */}
+      {/*isDeleteConfirm && (
         <ModalAlert handleModal={handleModalAlert} Title="¿Seguro que desea eliminar el producto?" >
           <div>
             <div className="flex justify-center">
@@ -493,8 +504,8 @@ const ProductList = ({ products }) => {
           </div>
         </ModalAlert>
       )
-      }
-      {isDelete && (
+     */}
+      {/*isDelete && (
         <ModalAlert handleModal={handleModalAlert} Title="¡Producto eliminado con éxito" >
           <div>
             <div className="flex justify-center">
@@ -503,7 +514,7 @@ const ProductList = ({ products }) => {
           </div>
         </ModalAlert>
       )
-      }
+      */}
 
 
 
