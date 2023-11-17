@@ -23,8 +23,12 @@ export default function ManageQuotes(){
     headers.append("GET", "POST", "OPTIONS");
 
     useEffect(() => {
-        if(user == null || user.typeUser == "client"){
-            router.push("/")
+        if (
+            user == null ||
+            (user && user.hasOwnProperty("userType") && user.userType != "admin")
+          ) {
+            router.push("/login");
+          
         }else{
         fetch("http://localhost:5000/service/getCollection", {
         method: "POST",

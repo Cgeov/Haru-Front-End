@@ -1,7 +1,7 @@
 import showSweetAlert from "@/components/Alerts/Alert";
 import { ContextUser, ContextCat } from "@/context/context";
 import "@/styles/globals.css";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function App({ Component, pageProps }) {
@@ -13,7 +13,6 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getDataUser();
     getDataCart();
-    localStorage.clear();
   }, []);
 
   function getDataUser() {
