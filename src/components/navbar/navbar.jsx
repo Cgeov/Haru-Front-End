@@ -84,7 +84,25 @@ export default function Navbar() {
             <RxHamburgerMenu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        {user == null || user.typeUser == "client" ? (
+        {user && user.hasOwnProperty('typeUser') && user.typeUser == "admin" ? (
+          <Popover.Group className="hidden lg:flex lg:gap-x-12">
+            <Link
+              href={"/manage-products"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Productos
+            </Link>
+            <Link
+              href={"/manage-quotes"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Cotizaciones
+            </Link>
+            <Link
+              href={"/manage-orders"}
+              className="text-lg font-semibold leading-6 text-primary">
+              Gestión de Ordenes
+            </Link>
+          </Popover.Group>
+        ): (
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link
               href={"/"}
@@ -156,25 +174,7 @@ export default function Navbar() {
               Sobre Haru
             </Link>
           </Popover.Group>
-        ) : (
-          <Popover.Group className="hidden lg:flex lg:gap-x-12">
-            <Link
-              href={"/manage-products"}
-              className="text-lg font-semibold leading-6 text-primary">
-              Gestión de Productos
-            </Link>
-            <Link
-              href={"/manage-quotes"}
-              className="text-lg font-semibold leading-6 text-primary">
-              Gestión de Cotizaciones
-            </Link>
-            <Link
-              href={"/manage-orders"}
-              className="text-lg font-semibold leading-6 text-primary">
-              Gestión de Ordenes
-            </Link>
-          </Popover.Group>
-        )}
+        )  }
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-[10px]">
           <Link
             href="/cart"
