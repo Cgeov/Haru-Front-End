@@ -33,6 +33,7 @@ export default function MyOrders() {
   headers.append("GET", "POST", "OPTIONS");
 
   useEffect(() => {
+    console.log(user)
     if (user) {
       fetch("http://localhost:5000/service/getDocsFilter", {
         method: "POST",
@@ -68,31 +69,31 @@ export default function MyOrders() {
 
   return (
     <Layout>
-      <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
-        <div class="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white shadow-lg px-12">
-          <div class="flex justify-between">
-            <div class="inline-flex border rounded w-7/12 px-2 lg:px-6 h-12 bg-transparent">
-              <div class="flex flex-wrap items-stretch w-full h-full mb-6 relative">
-                <div class="flex">
-                  <span class="flex items-center leading-normal bg-transparent rounded rounded-r-none border border-r-0 border-none lg:px-3 py-2 whitespace-no-wrap text-grey-dark text-sm">
+      <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
+        <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white shadow-lg px-12">
+          <div className="flex justify-between">
+            <div className="inline-flex border rounded w-7/12 px-2 lg:px-6 h-12 bg-transparent">
+              <div className="flex flex-wrap items-stretch w-full h-full mb-6 relative">
+                <div className="flex">
+                  <span className="flex items-center leading-normal bg-transparent rounded rounded-r-none border border-r-0 border-none lg:px-3 py-2 whitespace-no-wrap text-grey-dark text-sm">
                     <svg
                       width="18"
                       height="18"
-                      class="w-4 lg:w-auto"
+                      className="w-4 lg:w-auto"
                       viewBox="0 0 18 18"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z"
                         stroke="#455A64"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
                       />
                       <path
                         d="M16.9993 16.9993L13.1328 13.1328"
                         stroke="#455A64"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
                       />
                     </svg>
                   </span>
@@ -102,104 +103,103 @@ export default function MyOrders() {
                     handleSearch(e);
                   }}
                   type="text"
-                  class="flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-none border-l-0 rounded rounded-l-none px-3 relative focus:outline-none text-sm lg:text-sm lg:text-base text-gray-500 font-thin"
+                  className="flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-none border-l-0 rounded rounded-l-none px-3 relative focus:outline-none text-sm lg:text-sm lg:text-base text-gray-500 font-thin"
                   placeholder="Buscar"
                 />
               </div>
             </div>
           </div>
         </div>
-        <div class="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="min-w-full">
+        <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg">
+          <table className="min-w-full">
             <thead>
               <tr>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-primary tracking-wider">
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-primary tracking-wider">
                   ID
                 </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
                   Nombre
                 </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
                   Email
                 </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
                   Total
                 </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
                   Estado
                 </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
                   Fecha Orden
                 </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300"></th>
+                <th className="px-6 py-3 border-b-2 border-gray-300"></th>
               </tr>
             </thead>
-            <tbody class="bg-white">
+            <tbody className="bg-white">
               {ordersToShow.map((order, i) => {
                 return (
                   <tr key={i}>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                      <div class="flex items-center">
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                      <div className="flex items-center">
                         <div>
-                          <div class="text-sm leading-5 text-primary">
+                          <div className="text-sm leading-5 text-primary">
                             #{order.numberOrder}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                      <div class="text-sm leading-5 text-primary">
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                      <div className="text-sm leading-5 text-primary">
                         {order.user.name + " " + order.user.lastname}
                       </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
+                    <td className="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
                       {order.user.email}
                     </td>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
+                    <td className="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
                       ${order.total.toFixed(2)}
                     </td>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
+                    <td className="px-6 py-4 whitespace-no-wrap border-b text-primary border-gray-500 text-sm leading-5">
                       {order.status == "success" && (
-                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                        <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                           <span
                             aria-hidden
-                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                          <span class="relative text-xs">Entregado</span>
+                            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                          <span className="relative text-xs">Entregado</span>
                         </span>
                       )}
                       {order.status == "cancel" && (
-                        <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                        <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                           <span
                             aria-hidden
-                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                          <span class="relative text-xs">Cancelado</span>
+                            className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                          <span className="relative text-xs">Cancelado</span>
                         </span>
                       )}
                       {order.status == "pending" && (
-                        <span class="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
+                        <span className="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
                           <span
                             aria-hidden
-                            class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
-                          <span class="relative text-xs">En Proceso</span>
+                            className="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                          <span className="relative text-xs">En Proceso</span>
                         </span>
                       )}
                     </td>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-primary text-sm leading-5">
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-primary text-sm leading-5">
                       {new Date(order.created_at).toLocaleString("es-Es")}
                     </td>
-                    <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                    <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                       <div className="flex gap-[15px]">
                         <button
                           onClick={(e) => {
                             handleModalViewOrder(order, e);
                           }}
-                          on
-                          class="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
+                          className="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
                           Ver Productos
                         </button>
                         <a
                           href={order.invoice}
-                          class="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
+                          className="px-5 py-2 border-primary border text-primary rounded transition duration-300 hover:bg-primary hover:text-white focus:outline-none">
                           Descargar Factura
                         </a>
                       </div>
@@ -244,23 +244,23 @@ export default function MyOrders() {
                       <GrClose className="h-6 w-6" aria-hidden="true" />
                     </button>
 
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                           <tr>
-                            <th scope="col" class="px-16 py-3">
-                              <span class="sr-only">Imagen</span>
+                            <th scope="col" className="px-16 py-3">
+                              <span className="sr-only">Imagen</span>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                               Producto
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                               Cantidad
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                               Precio
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                               Total
                             </th>
                           </tr>
@@ -271,24 +271,24 @@ export default function MyOrders() {
                                 return (
                                   <tr
                                     key={i}
-                                    class="bg-white border-b hover:bg-gray-50">
-                                    <td class="p-4">
+                                    className="bg-white border-b hover:bg-gray-50">
+                                    <td className="p-4">
                                       <img
                                         src={product.img}
-                                        class="w-16 md:w-32 max-w-full max-h-full"
+                                        className="w-16 md:w-32 max-w-full max-h-full"
                                         alt="Apple Watch"
                                       />
                                     </td>
-                                    <td class="px-6 py-4 font-semibold">
+                                    <td className="px-6 py-4 font-semibold">
                                       {product.name}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td className="px-6 py-4">
                                       {product.quantity}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td className="px-6 py-4">
                                       ${product.price.toFixed(2)}
                                     </td>
-                                    <td class="px-6 py-4 text-gray-900">
+                                    <td className="px-6 py-4 text-gray-900">
                                       <div>
                                         $
                                         {(

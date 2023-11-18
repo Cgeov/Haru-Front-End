@@ -382,14 +382,14 @@ const ProductList = ({ products }) => {
                       <path
                         d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z"
                         stroke="#455A64"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
                       />
                       <path
                         d="M16.9993 16.9993L13.1328 13.1328"
                         stroke="#455A64"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </span>
@@ -408,6 +408,7 @@ const ProductList = ({ products }) => {
           <div className="w-1/8">
             <div className="relative">
               <select
+                defaultValue='default'
                 onChange={(e) => {
                   handleSearchSelect(e);
                 }}
@@ -418,7 +419,7 @@ const ProductList = ({ products }) => {
                       [&:not(:placeholder-shown)]:pb-2
                       autofill:pt-6
                       autofill:pb-2">
-                <option selected>Abre para seleccionar opciones</option>
+                <option value="default">Abre para seleccionar opciones</option>
                 <option value="Mixtos">Mixtos</option>
                 <option value="Canasta">Canastas</option>
                 <option value="Girasoles">Girasoles</option>

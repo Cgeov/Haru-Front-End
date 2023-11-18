@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function App({ Component, pageProps }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [cart, setCart] = useState([]);
   const router = useRouter()
 
@@ -15,16 +15,18 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   function getDataUser() {
-    console.log(localStorage.getItem("user"))
-    if (localStorage.getItem("user") != undefined || localStorage.getItem("user") != null) {
-      setUser(localStorage.getItem("user"));
+    
+    if (localStorage.getItem("user") != undefined || localStorage.getItem("user") != null || localStorage.getItem("user") != "") {
+      console.log(localStorage.getItem("user"))
+      setUser((localStorage.getItem("user")));
+      console.log(user)
     } else {
-      setUser(null);
+      setUser({});
     }
   }
 
   function getDataCart() {
-    console.log(localStorage.getItem("cart"));
+    //console.log(localStorage.getItem("cart"));
     if (
       localStorage.getItem("cart") != undefined &&
       localStorage.getItem("cart").length > 0 &&
@@ -37,31 +39,29 @@ export default function App({ Component, pageProps }) {
   }
 
   const login = (userData) => {
-    console.log(userData)
     setUser(userData);
-    localStorage.setItem("user", userData);
+    localStorage.setItem("user", JSON.stringify(userData));
     if (userData.typeUser == 'admin') {
       router.push("/manage-products");
     } else {
       router.push("/");
     }
-
   };
 
   const cartProducts = (cartData) => {
     setCart(cartData);
-    localStorage.setItem("cart", cartData);
+    localStorage.setItem("cart", JSON.stringify(cartData));
   };
 
   const logout = () => {
     if (user.typeUser == 'admin') {
       setUser(null);
-      localStorage.setItem("user", user);
+      localStorage.setItem("user", JSON.stringify(null));
       showSweetAlert("Sesión Cerrada!", "success")
       router.push("/login")
     } else {
       setUser(null);
-      localStorage.setItem("user", user);
+      localStorage.setItem("user", JSON.stringify(null));
       showSweetAlert("Sesión Cerrada!", "success")
       router.push("/")
     }

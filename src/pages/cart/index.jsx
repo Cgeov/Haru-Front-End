@@ -66,23 +66,19 @@ export default function Cart() {
       cartProducts(
         cart.filter((productsCart) => productsCart.id !== product.id)
       );
-      localStorage.setItem("cart", JSON.stringify(cart));
       showSweetAlert("Producto Eliminado del Carrito", "warning");
     } else {
       cartProducts([...cart]);
-      localStorage.setItem("cart", JSON.stringify(cart));
     }
   };
 
   const addQuantity = (product) => {
     product.quantity += 1;
     cartProducts([...cart]);
-    localStorage.setItem("cart", JSON.stringify(cart));
   };
 
   const deleteProduct = (product) => {
     cartProducts(cart.filter((productsCart) => productsCart.id !== product.id));
-    localStorage.setItem("cart", JSON.stringify(cart));
     showSweetAlert("Producto Eliminado del Carrito", "warning");
   };
 

@@ -50,10 +50,8 @@ export default function Category() {
     if (alreadyExist) {
       console.log(cart);
       cartProducts([...cart]);
-      localStorage.setItem("cart", JSON.stringify(cart));
     } else {
       cartProducts([...cart, product]);
-      localStorage.setItem("cart", JSON.stringify(cart));
     }
 
     showSweetAlert("Producto agregado a tu carrito.", "success");
@@ -122,8 +120,8 @@ export default function Category() {
 
         </div>
       </section>
-      <section class="py-10 bg-gray-100">
-        <div class="mx-auto grid max-w-7xl  grid-cols-1 gap-6 p-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <section className="py-10 bg-gray-100">
+        <div className="mx-auto grid max-w-7xl  grid-cols-1 gap-6 p-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
           {flowers.map((flores) => (
             <div

@@ -65,10 +65,8 @@ export default function Product({ products }) {
     if (alreadyExist) {
       console.log(cart);
       cartProducts([...cart]);
-      localStorage.setItem("cart", JSON.stringify(cart));
     } else {
       cartProducts([...cart, product]);
-      localStorage.setItem("cart", JSON.stringify(cart));
     }
 
     showSweetAlert("Producto agregado a tu carrito.", "success");
