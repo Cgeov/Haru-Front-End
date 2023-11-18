@@ -11,11 +11,10 @@ const ServiceDetail = ({ handleModal, title }) => {
               className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
               <li>
                 <div className="flex items-center">
-                  <a
-                    href="#"
+                  <div
                     className="mr-2 text-sm font-medium text-gray-900">
                     Men
-                  </a>
+                  </div>
                   <svg
                     width="16"
                     height="20"
@@ -29,11 +28,11 @@ const ServiceDetail = ({ handleModal, title }) => {
               </li>
               <li>
                 <div className="flex items-center">
-                  <a
+                  <div
                     href="#"
                     className="mr-2 text-sm font-medium text-gray-900">
                     Clothing
-                  </a>
+                  </div>
                   <svg
                     width="16"
                     height="20"
@@ -47,12 +46,12 @@ const ServiceDetail = ({ handleModal, title }) => {
               </li>
 
               <li className="text-sm">
-                <a
+                <div
                   href="#"
                   aria-current="page"
                   className="font-medium text-gray-500 hover:text-gray-600">
                   Basic Tee 6-Pack
-                </a>
+                </div>
               </li>
             </ol>
           </nav>
@@ -162,11 +161,11 @@ const ServiceDetail = ({ handleModal, title }) => {
                     </svg>
                   </div>
                   <p className="sr-only">4 out of 5 stars</p>
-                  <a
+                  <div
                     href="#"
                     className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
                     117 reviews
-                  </a>
+                  </div>
                 </div>
               </div>
 
@@ -231,11 +230,11 @@ const ServiceDetail = ({ handleModal, title }) => {
                 <div className="mt-10">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                    <a
+                    <div
                       href="#"
                       className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                       Size guide
-                    </a>
+                    </div>
                   </div>
 
                   <fieldset className="mt-4">

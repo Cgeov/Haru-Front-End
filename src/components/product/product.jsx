@@ -91,7 +91,6 @@ export default function Product({ products }) {
           <div
             key={product.id}
             className="relative mx-auto my-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md">
-            <a href="#">
               <img
                 onClick={(e) => {
                   handleModalViewProduct(product, e);
@@ -100,16 +99,13 @@ export default function Product({ products }) {
                 src={product.img}
                 alt={product.name}
               />
-            </a>
             <span className="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-primary text-center text-sm text-white">
               Sale
             </span>
             <div className="mt-4 px-5 pb-5">
-              <a href="#">
                 <h5 className="whitespace-nowrap overflow-hidden text-ellipsis text-xl font-semibold tracking-tight text-slate-900">
                   {product.name}
                 </h5>
-              </a>
               <div className="mt-2.5 mb-5 flex items-center">
                 <span className="mr-2 rounded bg-primary text-white px-2.5 py-0.5 text-xs font-semibold">
                   {product.rate}
@@ -131,13 +127,13 @@ export default function Product({ products }) {
                     </span>
                   )}
                 </p>
-                <a
+                <div
                   onClick={() => {
                     addProduct(product);
                   }}
                   className="cursor-pointer flex items-center gap-[5px] rounded-md bg-primary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300">
                   <BsCart3 color="white" size={20}></BsCart3>
-                </a>
+                </div>
               </div>
             </div>
           </div>

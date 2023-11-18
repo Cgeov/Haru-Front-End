@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import ServiceDetail from "../modal/ServiceDetails";
 import { FaLeaf } from "react-icons/fa";
+import Link from "next/link";
 
 const ServiceCard = ({
     showCard,
@@ -39,12 +40,12 @@ const ServiceCard = ({
                 {category}
               </span>
               <h3 className="text-dark dark:text-primary mb-5 text-xl font-bold">{title}</h3>
-              <a
+              <Link
               href={buttonHref}
               className="text-primary dark:text-dark-6 hover:border-primary hover:bg-primary inline-block rounded-md border border-stroke dark:border-dark-3 py-[10px] px-7 text-sm font-medium transition hover:text-white"
             >
               {button}
-            </a>
+            </Link>
             </div>
           </div>
         </div>
