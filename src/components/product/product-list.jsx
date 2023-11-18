@@ -140,8 +140,13 @@ const ProductList = ({ products }) => {
     if (!esDecimal.test(priceProduct)) {
       validaciones.push("Precio incorrecto");
     }
+    if (priceProduct < 0 || priceProduct > 5000) {
+      validaciones.push("Rango de precio incorrecto");
+    }
     if (beforePriceProduct !== "") {
-      console.log(beforePriceProduct);
+      if (beforePriceProduct < 0 || beforePriceProduct > 5000) {
+        validaciones.push("Rango de precio anterior incorrecto");
+      }
       if (!esDecimal.test(beforePriceProduct)) {
         validaciones.push("Precio anterior incorrecto");
       }
@@ -251,8 +256,13 @@ const ProductList = ({ products }) => {
     if (!esDecimal.test(priceProduct)) {
       validaciones.push("Precio incorrecto");
     }
-    if (beforePriceProduct !== "") {
-      console.log(beforePriceProduct);
+    if (priceProduct<0 || priceProduct > 5000) {
+      validaciones.push("Rango de precio incorrecto");
+    }
+     if (beforePriceProduct !== "") {
+      if (beforePriceProduct < 0 || beforePriceProduct > 5000) {
+        validaciones.push("Rango de precio anterior incorrecto");
+      }
       if (!esDecimal.test(beforePriceProduct)) {
         validaciones.push("Precio anterior incorrecto");
       }
