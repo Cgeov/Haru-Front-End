@@ -275,7 +275,7 @@ const OrdersList = ({ orders }) => {
                                 <tr key={order.id}>
                                     <td className="border border-black px-2 text-center">{order.numberOrder}</td>
                                     <td className="border border-black px-2 text-center">{order.user.name + order.user.lastname}</td>
-                                   {<td className="border border-black px-3 w-30 text-center">{new Date(order.created_at).toLocaleDateString('es-Es', opcionesFormato) === 'Invalid Date' ?"Indefinido": new Date(order.created_at).toLocaleDateString('es-Es', opcionesFormato)}</td>}
+                                   {<td className="border border-black px-3 w-30 text-center">{new Date(order.created_at).toLocaleDateString('es-Es', opcionesFormato) === 'Invalid Date' ? new Date(seconds * 1000).toLocaleDateString('es-Es', opcionesFormato) : new Date(order.created_at).toLocaleDateString('es-Es', opcionesFormato)}</td>}
                                     <td className="border border-black px-3 w-30 text-center">{(order.status === "pending" ? "Pendiente" : order.status === "success" ? "Completado" : "Cancelado")} </td>
                                     <td className="border border-black px-5">
                                         <div className="space-x-3 p-3">
