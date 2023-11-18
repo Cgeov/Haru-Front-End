@@ -51,6 +51,7 @@ export default function MyOrders() {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
           setOrders(data);
           setLoading(false);
         })
@@ -186,7 +187,7 @@ export default function MyOrders() {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-primary text-sm leading-5">
-                      {new Date(order.created_at).toLocaleString("es-Es")}
+                      {order.status == 'pending' ? new Date(order.created_at.seconds*1000).toLocaleString(): new Date(order.created_at).toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                       <div className="flex gap-[15px]">
