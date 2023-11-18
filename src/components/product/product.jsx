@@ -1,13 +1,13 @@
 import { BsCart3 } from "react-icons/bs";
 import Star from "../stars/stars";
 import { Slide } from "react-slideshow-image";
-import ViewProduct from "../../components/viewProduct/viewProduct";
-import { Modal } from "flowbite";
 import { Fragment, useContext, useState } from "react";
 import { ContextUser } from "@/context/context";
 import showSweetAlert from "../Alerts/Alert";
-import { Dialog, RadioGroup, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { GrClose } from "react-icons/gr";
+import logo from "../../assets/img/logo.png"
+import Image from "next/image";
 
 
 const responsiveSettings = [
@@ -228,10 +228,7 @@ export default function Product({ products }) {
                         <section
                           aria-labelledby="options-heading"
                           className="mt-10">
-                            <button        
-                              className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-white hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                              Añadir al Carrito
-                            </button>
+                            <Image src={logo} width={40} height={30} alt="logo"></Image>
                         </section>
                         </div>
                       </div>

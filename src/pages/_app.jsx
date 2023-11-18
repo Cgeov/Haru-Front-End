@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function App({ Component, pageProps }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const router = useRouter()
 
@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }) {
       setUser((localStorage.getItem("user")));
       console.log(user)
     } else {
-      setUser({});
+      setUser(null);
     }
   }
 
