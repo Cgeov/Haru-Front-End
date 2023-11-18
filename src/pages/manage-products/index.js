@@ -23,6 +23,8 @@ export default function ManageProducts(){
   headers.append("GET", "POST", "OPTIONS");
 
   useEffect(() => {
+
+    console.log(user)
     if (
       user == null ||
       (user && user.hasOwnProperty("userType") && user.userType != "admin")

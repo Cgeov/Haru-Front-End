@@ -34,7 +34,7 @@ export default function MyOrders() {
 
   useEffect(() => {
     console.log(user)
-    if (user) {
+    if (user != null) {
       fetch("http://localhost:5000/service/getDocsFilter", {
         method: "POST",
         headers: headers,
@@ -58,7 +58,7 @@ export default function MyOrders() {
           setLoading(false);
         });
     }
-  }, []);
+  }, [user]);
 
   const handleModalViewOrder = (order, event) => {
     event.preventDefault();

@@ -260,10 +260,6 @@ export default function Category() {
                         <section
                           aria-labelledby="options-heading"
                           className="mt-10">
-                            <button        
-                              className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-white hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                              Añadir al Carrito
-                            </button>
                         </section>
                         </div>
                       </div>

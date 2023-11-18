@@ -15,10 +15,9 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   function getDataUser() {
-    
     if (localStorage.getItem("user") != undefined || localStorage.getItem("user") != null || localStorage.getItem("user") != "") {
       console.log(localStorage.getItem("user"))
-      setUser((localStorage.getItem("user")));
+      setUser(JSON.parse(localStorage.getItem("user")));
       console.log(user)
     } else {
       setUser(null);
@@ -39,8 +38,10 @@ export default function App({ Component, pageProps }) {
   }
 
   const login = (userData) => {
+    console.log(userData)
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
+    console.log(localStorage.getItem('user'))
     if (userData.typeUser == 'admin') {
       router.push("/manage-products");
     } else {
